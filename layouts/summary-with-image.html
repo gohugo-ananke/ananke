@@ -1,4 +1,17 @@
 {{ $featured_image := partials.Include "func/GetFeaturedImage.html" . }}
+{{ $show_date := and
+    (not .Date.IsZero)
+    (or
+        (and
+            (not (eq false site.Params.ananke.pages.show_date))
+            (not (eq false .Params.ananke.show_date))
+        )
+        (and
+            (eq false site.Params.ananke.pages.show_date)
+            (eq true .Params.ananke.show_date)
+        )
+    )
+}}
 <article class="bb b--black-10">
   <div class="db pv4 ph3 ph0-l dark-gray no-underline">
     <div class="flex-column flex-row-ns flex">
@@ -11,6 +24,11 @@
         </div>
       {{ end }}
       <div class="blah w-100{{ if $featured_image }} w-60-ns {{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pr3-ns" "pl3-ns" }}{{ end }}">
+        {{ if $show_date }}
+          <time class="f6 db" {{ fmt.Printf `datetime="%s"` (.Date.Format "2006-01-02T15:04:05Z07:00") | safe.HTMLAttr }}>
+            {{- .Date | time.Format (compare.Default "January 2, 2006" .Site.Params.date_format) -}}
+          </time>
+        {{ end }}
         <h1 class="f3 fw1 athelas mt0 lh-title">
           <a href="{{.RelPermalink}}" class="color-inherit dim link">
             {{ .Title }}
