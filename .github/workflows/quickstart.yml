@@ -46,6 +46,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run quickstart test
+      # Default (local) mode installs the checked-out working tree as the theme,
+      # so this gate actually exercises the code on the current branch / PR.
+      - name: Run quickstart test (local working tree)
         run: |
           node scripts/test-hugo-quickstart.ts
+
+      # Additionally verify the documented submodule install against the published
+      # theme, but only after merge to a release branch to avoid testing stale
+      # published code on feature branches and PRs.
+      - name: Run quickstart test (published submodule)
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        run: |
+          node scripts/test-hugo-quickstart.ts --use-submodule
