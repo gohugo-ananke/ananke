@@ -43,8 +43,8 @@ Priority tags: `prio:{critical,high,medium,low}`.
 | General config (contact form, logo, date) | layouts, i18n | `configuration/general.md` | `[~]` thin |
 | SEO / internal templates | `_partials/head-additions.html` | `configuration/seo.md` | `[ ]` stub (10 words) |
 | Social follow/share/networks/particles | `_partials/social/*`, `params.toml` | `configuration/social-media-networks.md` | `[~]` strong |
-| Hooks & filters — concept | `_partials/{hook,filter}.html` | `hooks-and-filters/introduction.md` | `[~]` good |
-| Hooks & filters — **list of hook points** | `layouts/**` (only `article/section-link`) | `hooks-and-filters/all.md` | `[ ]` **empty table** |
+| Hooks & filters — concept | `_partials/{hook,filter}.html` | `hooks-and-filters/introduction.md` | `[x]` done (path fixed, reconciled) |
+| Hooks & filters — **list of hook points** | `layouts/**` (12 hook points) | `hooks-and-filters/all.md` + `examples.md` | `[x]` done |
 | Front matter options (full list) | layouts + `archetypes/default.md` | `content/frontmatter.md` | `[~]` incomplete |
 | Reading time / word count | `_partials/page-header.html` | `content/reading-time.md` | `[~]` ok |
 | Content general | layouts | `content/general.md` | `[~]` thin |
