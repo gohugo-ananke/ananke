@@ -34,16 +34,31 @@
 {{/* Generated social network hover colours */}}
 {{- with site.Params.ananke.social -}}
   {{- $config := . -}}
-  {{- $networks := $config.follow.networks | default collections.Slice -}}
-  {{- $setups := collections.Where $config.networks "slug" "in" $networks -}}
 
-  {{- with $setups -}}
+  {{/* Cover both the follow and the share links, since either can render an
+       icon that should pick up its configured brand colour on hover. */}}
+  {{- $follow_networks := collections.Slice -}}
+  {{- with $config.follow -}}
+    {{- $follow_networks = .networks | default collections.Slice -}}
+  {{- end -}}
+  {{- $share_networks := collections.Slice -}}
+  {{- with $config.share -}}
+    {{- $share_networks = .networks | default collections.Slice -}}
+  {{- end -}}
+  {{- $networks := collections.Union $follow_networks $share_networks -}}
+
+  {{- with $networks -}}
     {{- $socials_rules := collections.Slice -}}
 
-    {{- range $service := . -}}
-      {{- with $service.color -}}
-        {{- $rule := fmt.Printf ".ananke-socials a.%s:hover {\n  color: %s !important;\n}" $service.slug . -}}
-        {{- $socials_rules = $socials_rules | collections.Append $rule -}}
+    {{- range $slug := . -}}
+      {{- with collections.Index $config.networks $slug -}}
+        {{- with .color -}}
+          {{- $color := . -}}
+          {{/* Set both `color` and `fill` so monochrome SVG icons (which inherit
+               `fill: currentColor`) and any other markup react to the hover. */}}
+          {{- $rule := fmt.Printf ".ananke-socials a.%s:hover {\n  color: %s !important;\n  fill: %s !important;\n}" $slug $color $color -}}
+          {{- $socials_rules = $socials_rules | collections.Append $rule -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
 
