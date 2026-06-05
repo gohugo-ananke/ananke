@@ -2,3 +2,4 @@ node_modules
 public
 .hugo_build.lock
 resources/_gen
+todo*.md
