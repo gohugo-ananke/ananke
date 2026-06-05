@@ -31,7 +31,7 @@
 		"tachyons": "4.12.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.15",
+		"@biomejs/biome": "2.4.16",
 		"@github/markdownlint-github": "0.8.0",
 		"@release-it/conventional-changelog": "11.0.0",
 		"@types/node": "25.8.0",
