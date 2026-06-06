@@ -711,6 +711,104 @@ async function assertDraftHiddenInProduction(
 }
 
 /**
+ * Sentinel CSS class used to verify the configurable hero header spacing.
+ *
+ * Issue #504: the height of the hero header is controlled by the
+ * `header_section_class` parameter. The value is unique so it can only appear in
+ * the output when the front matter override is honoured.
+ */
+const HEADER_SECTION_CLASS_MARKER = "ananke-header-test-pv7";
+
+/**
+ * Default header section spacing rendered by `page-header.html` for a single
+ * page with a featured image when `header_section_class` is not set.
+ */
+const DEFAULT_PAGE_HEADER_SECTION_CLASS = "tc-l pv6 ph3 ph4-ns";
+
+/**
+ * Create two single pages that exercise the configurable header section class:
+ * one overrides `header_section_class` in front matter, the other relies on the
+ * theme default. Both set `featured_image` so the hero header branch renders.
+ *
+ * @param contentDir Absolute path to the project `content` directory.
+ */
+async function writeHeaderSectionClassFixtures(
+	contentDir: string,
+): Promise<void> {
+	const overridePage = [
+		"+++",
+		"title = 'Custom Header Height'",
+		"featured_image = '/images/custom-hero.jpg'",
+		`header_section_class = '${HEADER_SECTION_CLASS_MARKER} ph3 ph4-ns'`,
+		"+++",
+		"",
+		"Body.",
+		"",
+	].join("\n");
+
+	const defaultPage = [
+		"+++",
+		"title = 'Default Header Height'",
+		"featured_image = '/images/default-hero.jpg'",
+		"+++",
+		"",
+		"Body.",
+		"",
+	].join("\n");
+
+	await writeTextFile(join(contentDir, "custom-header.md"), overridePage);
+	await writeTextFile(join(contentDir, "default-header.md"), defaultPage);
+}
+
+/**
+ * Assert that the configurable `header_section_class` parameter is honoured on
+ * hero headers and that omitting it keeps the historical default spacing.
+ *
+ * @param projectRoot Absolute path to the temporary quickstart project.
+ * @throws Error when the override is dropped, leaks, or the default changes.
+ */
+async function assertHeaderSectionClassConfigurable(
+	projectRoot: string,
+): Promise<void> {
+	const failures: string[] = [];
+
+	const overrideHtml = await readTextFile(
+		join(projectRoot, "public", "custom-header", "index.html"),
+	);
+	const defaultHtml = await readTextFile(
+		join(projectRoot, "public", "default-header", "index.html"),
+	);
+
+	if (!overrideHtml.includes(HEADER_SECTION_CLASS_MARKER)) {
+		failures.push(
+			`- custom 'header_section_class' value '${HEADER_SECTION_CLASS_MARKER}' was not applied to the hero header`,
+		);
+	}
+
+	if (defaultHtml.includes(HEADER_SECTION_CLASS_MARKER)) {
+		failures.push(
+			"- custom 'header_section_class' value leaked onto a page that did not set it",
+		);
+	}
+
+	if (!defaultHtml.includes(DEFAULT_PAGE_HEADER_SECTION_CLASS)) {
+		failures.push(
+			`- default header section spacing '${DEFAULT_PAGE_HEADER_SECTION_CLASS}' was missing when 'header_section_class' was not set`,
+		);
+	}
+
+	if (failures.length > 0) {
+		throw new Error(
+			[
+				"Strict assertion failed: configurable header section class did not behave as expected.",
+				"Failed assertions:",
+				...failures,
+			].join("\n"),
+		);
+	}
+}
+
+/**
  * Determine whether a directory is the work tree of a Git repository.
  *
  * @param path Absolute directory path.
@@ -1102,6 +1200,41 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
 
 		await assertDraftHiddenInProduction(projectRoot, homepagePath);
 		console.log("[OK ] Production build should exclude draft content");
+
+		console.log("\n[RUN] Configurable hero header section class (issue #504)");
+		await writeHeaderSectionClassFixtures(join(projectRoot, "content"));
+		const headerSectionBuildStep: StepDefinition = {
+			name: "Build site with configurable header section fixtures",
+			command: "hugo",
+			args: [],
+			cwd: projectRoot,
+			expectedFiles: [
+				"public/custom-header/index.html",
+				"public/default-header/index.html",
+			],
+		};
+		const headerSectionBuildReport = await executeHugoBuildStep(
+			headerSectionBuildStep,
+			projectRoot,
+		);
+		reports.push(headerSectionBuildReport);
+
+		if (options.verbose) {
+			console.log(
+				`      ${formatCommand(headerSectionBuildStep.command, headerSectionBuildStep.args)}`,
+			);
+			console.log(
+				`[OK ] ${headerSectionBuildStep.name} (${headerSectionBuildReport.result.durationMs} ms, exit ${String(headerSectionBuildReport.result.code)})`,
+			);
+
+			const trimmedOutput = headerSectionBuildReport.result.combined.trim();
+			if (trimmedOutput) {
+				console.log(trimmedOutput);
+			}
+		}
+
+		await assertHeaderSectionClassConfigurable(projectRoot);
+		console.log("[OK ] Configurable hero header section class (issue #504)");
 
 		console.log("\nResult: PASS");
 
