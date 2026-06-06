@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.17.0](https://github.com/gohugo-ananke/ananke/compare/v2.16.0...v2.17.0) (2026-05-17)
+
+### Features
+
+* theme hooks and filters ([#964](https://github.com/gohugo-ananke/ananke/issues/964)) ([6dedd8e](https://github.com/gohugo-ananke/ananke/commit/6dedd8ebbc8a25bcd34669201853861d836d12e6))
+
+### Bug Fixes
+
+* remove deprecated partials ([9dc44d5](https://github.com/gohugo-ananke/ananke/commit/9dc44d5b04092c54a2a16ce03a41423a7a434572))
+* remove external link indicator from social icons ([1a185ea](https://github.com/gohugo-ananke/ananke/commit/1a185ea6b62acad9dfebcf57c6ecbcd1b902a2e6))
+* remove font size from code highlighting ([399075e](https://github.com/gohugo-ananke/ananke/commit/399075ed6fdb2abd7afe04019b1b912e4099773c))
+* remove stray overflow from code highlighting ([09d711c](https://github.com/gohugo-ananke/ananke/commit/09d711ccf52aa944e662c5e2ac0cf2fd109ce3c6))
+* rename theme styles from main.css to theme.css ([918148e](https://github.com/gohugo-ananke/ananke/commit/918148e0d10f438b26d4893a69fde4bb713e81c0))
+* slightly larger font size in code blocks ([9cac210](https://github.com/gohugo-ananke/ananke/commit/9cac2102da3dbc771195ad7fd4ed9c4bac7cc4ff))
+* support images array for featured image ([#967](https://github.com/gohugo-ananke/ananke/issues/967)) ([ad43367](https://github.com/gohugo-ananke/ananke/commit/ad433679f34ff636f07026d42b21ffeb3dd54e97)), closes [gohugo-ananke/documentation#10](https://github.com/gohugo-ananke/documentation/issues/10) [#77](https://github.com/gohugo-ananke/ananke/issues/77)
+
+### Build
+
+* **config:** update workspace configuration ([bcc90b5](https://github.com/gohugo-ananke/ananke/commit/bcc90b5cbbc14f3a556c064dfe54abb52107a144))
+* **fix:** create a release on github when publishing a new release ([d72fdad](https://github.com/gohugo-ananke/ananke/commit/d72fdad1ef44bbbf6f91a488bc9334c384c8bae8))
+* **fix:** create discussion on release ([9a5cadd](https://github.com/gohugo-ananke/ananke/commit/9a5cadd1058926426fdc419e379145304577ce33))
+
+### CI
+
+* **fix:** do not check the whole code base on TS changes ([998b060](https://github.com/gohugo-ananke/ananke/commit/998b060a26963eca175439ce55579ef69cce66fb))
+
 ## [2.16.0](https://github.com/gohugo-ananke/ananke/compare/v2.15.0...v2.16.0) (2026-05-16)
 
 ### Features
