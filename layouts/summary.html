@@ -1,16 +1,4 @@
-{{ $show_date := and
-    (not .Date.IsZero)
-    (or
-        (and
-            (not (eq false site.Params.ananke.pages.show_date))
-            (not (eq false .Params.ananke.show_date))
-        )
-        (and
-            (eq false site.Params.ananke.pages.show_date)
-            (eq true .Params.ananke.show_date)
-        )
-    )
-}}
+{{ $show_date := partials.Include "func/ShowDate.html" . }}
 <div class="w-100 mb4 nested-copy-line-height relative bg-white">
   <div class="mb3 pa4 gray overflow-hidden bg-white">
     {{with .CurrentSection.Title }}<span class="f6 db">{{ . }}</span>{{end}}

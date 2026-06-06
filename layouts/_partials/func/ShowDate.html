@@ -1,0 +1,31 @@
+{{/*
+	ShowDate
+
+	Decides whether a page's date should be rendered.
+
+	Dates are shown by default. They are hidden when the site sets
+	`ananke.pages.show_date = false`, unless a page opts back in with
+	`ananke.show_date = true` in its front matter. A page can also hide its
+	own date with `ananke.show_date = false`. Pages without a date
+	(`.Date.IsZero`) never render one.
+
+	This mirrors the date logic used in `single.html` so that single pages and
+	summary cards stay consistent.
+
+	@param . The page context.
+	@return boolean True when the date should be displayed.
+
+*/}}
+{{ return and
+	(not .Date.IsZero)
+	(or
+		(and
+			(not (eq false site.Params.ananke.pages.show_date))
+			(not (eq false .Params.ananke.show_date))
+		)
+		(and
+			(eq false site.Params.ananke.pages.show_date)
+			(eq true .Params.ananke.show_date)
+		)
+	)
+}}

@@ -1,17 +1,5 @@
 {{ $featured_image := partials.Include "func/GetFeaturedImage.html" . }}
-{{ $show_date := and
-    (not .Date.IsZero)
-    (or
-        (and
-            (not (eq false site.Params.ananke.pages.show_date))
-            (not (eq false .Params.ananke.show_date))
-        )
-        (and
-            (eq false site.Params.ananke.pages.show_date)
-            (eq true .Params.ananke.show_date)
-        )
-    )
-}}
+{{ $show_date := partials.Include "func/ShowDate.html" . }}
 <article class="bb b--black-10">
   <div class="db pv4 ph3 ph0-l dark-gray no-underline">
     <div class="flex-column flex-row-ns flex">

@@ -1,16 +1,4 @@
-  {{ $show_date := and
-      (not .Date.IsZero)
-      (or
-          (and
-              (not (eq false site.Params.ananke.pages.show_date))
-              (not (eq false .Params.ananke.show_date))
-          )
-          (and
-              (eq false site.Params.ananke.pages.show_date)
-              (eq true .Params.ananke.show_date)
-          )
-      )
-  }}
+  {{ $show_date := partials.Include "func/ShowDate.html" . }}
   <div class="mb3 pa4 {{ $.Param "text_color" | compare.Default "mid-gray" }} overflow-hidden">
     {{ if $show_date }}
       <time class="f6 db" {{ fmt.Printf `datetime="%s"` (.Date.Format "2006-01-02T15:04:05Z07:00") | safe.HTMLAttr }}>
