@@ -1,0 +1,5 @@
+# Built fixture site and Playwright artifacts
+fixtures/site/public/
+fixtures/site/resources/
+fixtures/site/.hugo_build.lock
+.playwright/

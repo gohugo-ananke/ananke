@@ -1,0 +1,22 @@
+# Feature -> test catalog (coverage gate).
+#
+# Every [ananke] parameter and every shortcode in layouts/_shortcodes must be
+# listed here with at least one test reference, or `npm run test:coverage-gate`
+# fails. This forces a test to accompany each new or changed feature.
+#
+# `tests` entries are free-form references (spec files or fixture folders) for
+# humans; the gate only checks that the key is present and has a non-empty list.
+
+params:
+  ananke.show_recent_posts:
+    tests: ["scripts/test-hugo-quickstart.ts"]
+  ananke.show_categories:
+    tests: ["scripts/test-hugo-quickstart.ts"]
+  ananke.copy_code:
+    tests: ["tests/e2e/copy-button.spec.ts"]
+
+shortcodes:
+  form-contact:
+    tests: ["scripts/test-hugo-quickstart.ts"] # TODO: add a dedicated form-contact test
+  page-index:
+    tests: ["scripts/test-hugo-quickstart.ts"] # TODO: add a dedicated page-index test

@@ -1,0 +1,26 @@
+baseURL = "http://localhost:4321/"
+title = "Ananke Test Fixture"
+theme = "ananke"
+enableRobotsTXT = true
+
+[taxonomies]
+category = "categories"
+tag = "tags"
+
+[params]
+mainSections = ["posts"]
+
+[params.ananke]
+show_recent_posts = true
+show_categories = true
+copy_code = true
+
+[[menus.main]]
+name = "Posts"
+pageRef = "/posts/"
+weight = 10
+
+[[menus.main]]
+name = "About"
+pageRef = "/about/"
+weight = 20

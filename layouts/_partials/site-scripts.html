@@ -14,10 +14,18 @@
   (function () {
     "use strict";
 
-    // Reveal the copy buttons now that JavaScript is available.
-    var buttons = document.querySelectorAll(".code-block .code-copy[hidden]");
-    for (var i = 0; i < buttons.length; i++) {
-      buttons[i].hidden = false;
+    // Reveal the copy buttons once the DOM is ready. This script is included in
+    // the <head>, so the code blocks may not exist yet when it first runs.
+    function revealButtons() {
+      var buttons = document.querySelectorAll(".code-block .code-copy[hidden]");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].hidden = false;
+      }
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", revealButtons);
+    } else {
+      revealButtons();
     }
 
     function flash(button) {
