@@ -62,6 +62,7 @@
 		"server": "hugo server --environment documentation",
 		"test": "node scripts/test-hugo-quickstart.ts",
 		"test:quickstart": "node scripts/test-hugo-quickstart.ts",
+		"test:quickstart:submodule": "node scripts/test-hugo-quickstart.ts --use-submodule",
 		"update:docs": "git add docs/ && (git diff --cached --quiet || git commit -m \"chore(git): update documentation submodule\")"
 	},
 	"cspell": {
