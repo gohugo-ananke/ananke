@@ -809,6 +809,109 @@ async function assertHeaderSectionClassConfigurable(
 }
 
 /**
+ * Markup only emitted by `summary-with-image.html` when a featured image is
+ * rendered, used to detect that list cards switched to the image template.
+ */
+const LIST_CARD_IMAGE_MARKER = 'class="img"';
+
+/**
+ * Markup emitted by the summary templates when a card date is rendered.
+ */
+const SUMMARY_CARD_DATE_MARKER = "datetime=";
+
+/**
+ * Create a content section whose list page exercises both the image and the
+ * date behaviour of summary cards: one page has a featured image, the other
+ * does not, and both carry an explicit date.
+ *
+ * @param contentDir Absolute path to the project `content` directory.
+ */
+async function writeListCardFixtures(contentDir: string): Promise<void> {
+	const sectionDir = join(contentDir, "cards");
+	await mkdir(sectionDir, { recursive: true });
+
+	const sectionIndex = ["+++", "title = 'Cards'", "+++", "", ""].join("\n");
+
+	const withImage = [
+		"+++",
+		"title = 'Card With Image'",
+		"date = 2024-01-15T00:00:00Z",
+		"featured_image = '/images/card-hero.jpg'",
+		"+++",
+		"",
+		"Card body.",
+		"",
+	].join("\n");
+
+	const withoutImage = [
+		"+++",
+		"title = 'Card Without Image'",
+		"date = 2024-02-20T00:00:00Z",
+		"+++",
+		"",
+		"Card body.",
+		"",
+	].join("\n");
+
+	await writeTextFile(join(sectionDir, "_index.md"), sectionIndex);
+	await writeTextFile(join(sectionDir, "with-image.md"), withImage);
+	await writeTextFile(join(sectionDir, "without-image.md"), withoutImage);
+}
+
+/**
+ * Assert that a list page renders summary cards with the expected image and
+ * date behaviour.
+ *
+ * @param listHtml HTML from the rendered list page.
+ * @param label Human-readable description of the configuration under test.
+ * @param expectations Whether image cards and dates are expected in the output.
+ * @throws Error when the rendered cards do not match the expectations.
+ */
+function assertListCardSummaries(
+	listHtml: string,
+	label: string,
+	expectations: { images: boolean; dates: boolean },
+): void {
+	const failures: string[] = [];
+	const hasImage = listHtml.includes(LIST_CARD_IMAGE_MARKER);
+	const hasDate = listHtml.includes(SUMMARY_CARD_DATE_MARKER);
+
+	if (expectations.images && !hasImage) {
+		failures.push(
+			"- expected image summary cards but the list rendered no card image",
+		);
+	}
+
+	if (!expectations.images && hasImage) {
+		failures.push(
+			"- image summary cards were rendered when 'ananke.pages.show_list_images' was not enabled",
+		);
+	}
+
+	if (expectations.dates && !hasDate) {
+		failures.push(
+			"- expected summary card dates but none were rendered by default",
+		);
+	}
+
+	if (!expectations.dates && hasDate) {
+		failures.push(
+			"- summary card dates were rendered when 'ananke.pages.show_date' was false",
+		);
+	}
+
+	if (failures.length > 0) {
+		throw new Error(
+			[
+				`Strict assertion failed: list card summaries (${label}) did not behave as expected.`,
+				"Failed assertions:",
+				...failures,
+			].join("\n"),
+		);
+	}
+}
+
+/**
  * Determine whether a directory is the work tree of a Git repository.
  *
  * @param path Absolute directory path.
@@ -1235,6 +1338,77 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
 
 		await assertHeaderSectionClassConfigurable(projectRoot);
 		console.log("[OK ] Configurable hero header section class (issue #504)");
+
+		console.log("\n[RUN] List page image cards and summary dates (issue #217)");
+		await writeListCardFixtures(join(projectRoot, "content"));
+		const cardsListPath = join(
+			projectRoot,
+			"public",
+			"cards",
+			"index.html",
+		);
+
+		// Default configuration: no image cards, but dates show by default.
+		await writeTextFile(
+			configPath,
+			[
+				"baseURL = 'https://example.com/'",
+				"title = 'Ananke Test Quickstart'",
+				`theme = '${options.themeName}'`,
+				"",
+			].join("\n"),
+		);
+		const cardsDefaultBuildStep: StepDefinition = {
+			name: "Build site with default summary cards",
+			command: "hugo",
+			args: [],
+			cwd: projectRoot,
+			expectedFiles: ["public/cards/index.html"],
+		};
+		const cardsDefaultBuildReport = await executeHugoBuildStep(
+			cardsDefaultBuildStep,
+			projectRoot,
+		);
+		reports.push(cardsDefaultBuildReport);
+		assertListCardSummaries(
+			await readTextFile(cardsListPath),
+			"defaults",
+			{ images: false, dates: true },
+		);
+
+		// Opt in to image cards and disable summary dates: images appear and the
+		// dates disappear, proving the two settings are independent.
+		await writeTextFile(
+			configPath,
+			[
+				"baseURL = 'https://example.com/'",
+				"title = 'Ananke Test Quickstart'",
+				`theme = '${options.themeName}'`,
+				"[params.ananke.pages]",
+				"show_list_images = true",
+				"show_date = false",
+				"",
+			].join("\n"),
+		);
+		const cardsImagesBuildStep: StepDefinition = {
+			name: "Build site with image cards and dates disabled",
+			command: "hugo",
+			args: [],
+			cwd: projectRoot,
+			expectedFiles: ["public/cards/index.html"],
+		};
+		const cardsImagesBuildReport = await executeHugoBuildStep(
+			cardsImagesBuildStep,
+			projectRoot,
+		);
+		reports.push(cardsImagesBuildReport);
+		assertListCardSummaries(
+			await readTextFile(cardsListPath),
+			"image cards with dates disabled",
+			{ images: true, dates: false },
+		);
+
+		console.log("[OK ] List page image cards and summary dates (issue #217)");
 
 		console.log("\nResult: PASS");
 
