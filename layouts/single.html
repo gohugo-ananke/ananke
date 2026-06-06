@@ -75,6 +75,7 @@
       {{- partials.Include "hook.html" (dict "hook" "content-before" "context" .) -}}
       {{- .Content -}}
       {{- partials.Include "hook.html" (dict "hook" "content-after" "context" .) -}}
+      {{- partials.Include "categories.html" . -}}
       {{- partials.Include "tags.html" . -}}
       {{ if .Site.Config.Services.Disqus.Shortname }}
       <div class="mt6 instapaper_ignoref">
