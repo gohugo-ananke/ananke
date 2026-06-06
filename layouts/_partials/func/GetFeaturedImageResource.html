@@ -1,0 +1,45 @@
+{{/*
+	GetFeaturedImageResource
+
+	This partial gets the featured image resource for a given page.
+
+	If a featured_image was set in the page's front matter and it matches a page
+	resource, then that resource will be used.
+
+	If no featured_image was set, this will use the first matching page resource from
+	the page's images front matter array.
+
+	If not set, this will search page resources to find an image that contains the word
+	"cover" or "feature", and if found, returns that resource.
+
+	If no matching page resource can be found, this partial returns false.
+
+	@return Featured image resource, or false if not found.
+
+*/}}
+
+{{ $resource := false }}
+{{ $matches := "feature,cover" }}
+{{ with .Params.featured_image }}
+  {{ with $.Resources.GetMatch . }}
+    {{ $resource = . }}
+  {{ end }}
+{{ else }}
+  {{ with .Params.images }}
+    {{ range first 1 . }}
+      {{ with . }}
+        {{ with $.Resources.GetMatch . }}
+          {{ $resource = . }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{ with .Resources.ByType "image" }}
+      {{ with .GetMatch (fmt.Printf "**{%s}*" $matches) }}
+        {{ $resource = . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ return $resource }}
