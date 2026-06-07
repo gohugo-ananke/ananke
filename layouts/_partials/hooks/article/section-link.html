@@ -1,3 +1,30 @@
-<aside class="instapaper_ignoref b helvetica tracked ttu">
-    {{ .CurrentSection.Title }}
-</aside>
+{{- /*
+  Renders the section label above the article title, linked to a page within
+  the section. The link target is controlled by the `ananke.section_link`
+  parameter (page front matter, or site params for a site-wide default):
+
+    - unset (default): the section index page (its `_index.md`)
+    - "first":         the first page of the section, honouring its sort order
+    - "<path>":        a specific page, resolved relative to the section
+                       (e.g. "introduction" or "/about")
+
+  The visible label is always the section title; only the destination changes.
+*/ -}}
+{{- with .CurrentSection -}}
+  {{- $section := . -}}
+  {{- $target := $section -}}
+  {{- with $.Param "ananke.section_link" -}}
+    {{- if eq . "first" -}}
+      {{- with first 1 $section.RegularPages -}}
+        {{- $target = index . 0 -}}
+      {{- end -}}
+    {{- else -}}
+      {{- with $section.GetPage . -}}
+        {{- $target = . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  <aside class="instapaper_ignoref b helvetica tracked ttu">
+    <a class="link dim" href="{{ $target.Permalink }}">{{ $section.Title }}</a>
+  </aside>
+{{- end -}}
