@@ -16,7 +16,13 @@
         Link target. Defaults to "_blank". Set to a custom value (e.g. "_top")
         or to false to open in the same window.
 */ -}}
-{{- $version := or (.Get 0) (.Get "version") .Page.Params.since -}}
+{{- $version := "" -}}
+{{- with .Page.Params.since }}{{ $version = . }}{{ end -}}
+{{- if .IsNamedParams -}}
+  {{- with .Get "version" }}{{ $version = . }}{{ end -}}
+{{- else -}}
+  {{- with .Get 0 }}{{ $version = . }}{{ end -}}
+{{- end -}}
 {{- with $version -}}
   {{- $repoURL := "" -}}
   {{- $target := "_blank" -}}
