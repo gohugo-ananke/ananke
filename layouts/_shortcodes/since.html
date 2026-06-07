@@ -1,0 +1,46 @@
+{{- /*
+  since shortcode
+
+  Renders a small badge marking the release a feature was introduced in.
+
+  The version is taken from, in order of precedence:
+    - the first positional argument:  since "2.17.0"
+    - the named "version" argument:   since version="2.17.0"
+    - the page's "since" front matter: since = "2.17.0"
+
+  Configuration (all optional, not set by default):
+    - params.ananke.shortcodes.since.repo_url
+        A printf format string receiving the version (e.g. ".../tag/v%s").
+        When unset the badge renders as plain text with no link.
+    - params.ananke.shortcodes.since.target
+        Link target. Defaults to "_blank". Set to a custom value (e.g. "_top")
+        or to false to open in the same window.
+*/ -}}
+{{- $version := or (.Get 0) (.Get "version") .Page.Params.since -}}
+{{- with $version -}}
+  {{- $repoURL := "" -}}
+  {{- $target := "_blank" -}}
+  {{- with site.Params.ananke -}}
+    {{- with .shortcodes -}}
+      {{- with .since -}}
+        {{- with .repo_url }}{{ $repoURL = . }}{{ end -}}
+        {{- if isset . "target" }}{{ $target = .target }}{{ end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $label := printf "%s %s" (T "since") . -}}
+  {{- if $repoURL -}}
+    {{- $url := printf $repoURL . -}}
+    {{- $rel := "" -}}
+    {{- if and $target (ne $target "_self") }}{{ $rel = "noopener" }}{{ end -}}
+    <a class="f6 link dim br2 ba bw1 ph3 pv2 mb2 dib navy" href="{{ $url }}"
+      {{- with $target }} target="{{ . }}"{{ end -}}
+      {{- with $rel }} rel="{{ . }}"{{ end }}>
+      {{ $label }}
+    </a>
+  {{- else -}}
+    <span class="f6 br2 ba bw1 ph3 pv2 mb2 dib navy">{{ $label }}</span>
+  {{- end -}}
+{{- else -}}
+  {{- warnf "[ananke] the 'since' shortcode in %q needs a version argument or a 'since' front matter value" .Page.File.Path -}}
+{{- end -}}
