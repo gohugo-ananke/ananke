@@ -34,6 +34,9 @@ other = "An email address is required."
 [send]
 other = "Send"
 
+[editPage]
+other = "Improve this page on GitHub"
+
 [since]
 other = "since"
 

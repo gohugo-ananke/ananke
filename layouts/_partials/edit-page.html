@@ -1,0 +1,61 @@
+{{- /*
+  edit-page partial
+
+  Renders a link to edit the current page's source file on GitHub. Visitors
+  without write access are offered GitHub's standard "fork and propose changes"
+  flow automatically when they follow an /edit/ link, so no extra handling is
+  needed here.
+
+  This partial is the single source of truth shared by the `edit-page`
+  shortcode and by any hook (for example `content-after`) that wants to render
+  the link automatically.
+
+  Accepts either a Page directly, or a map:
+    - page    (required) the Page whose source file should be edited.
+    - branch  (optional) overrides the configured branch for this call.
+
+  Configuration (under params.ananke.shortcodes.edit_page):
+    - repo_url     (required) Base URL of the GitHub repository, e.g.
+                   "https://github.com/owner/repo". When unset nothing renders.
+    - branch       The branch to edit. Defaults to "main".
+    - content_dir  The directory the content lives in inside the repository.
+                   Defaults to "content".
+    - target       Link target. Defaults to "_blank". Set to false to open in
+                   the same window.
+*/ -}}
+{{- $page := . -}}
+{{- $branch := "" -}}
+{{- if reflect.IsMap . -}}
+  {{- $page = .page -}}
+  {{- with .branch }}{{ $branch = . }}{{ end -}}
+{{- end -}}
+{{- $repoURL := "" -}}
+{{- $contentDir := "content" -}}
+{{- $target := "_blank" -}}
+{{- with site.Params.ananke -}}
+  {{- with .shortcodes -}}
+    {{- with .edit_page -}}
+      {{- with .repo_url }}{{ $repoURL = . }}{{ end -}}
+      {{- if not $branch }}{{ $branch = .branch | compare.Default "main" }}{{ end -}}
+      {{- with .content_dir }}{{ $contentDir = . }}{{ end -}}
+      {{- if isset . "target" }}{{ $target = .target }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if not $branch }}{{ $branch = "main" }}{{ end -}}
+{{- with $page.File -}}
+  {{- if $repoURL -}}
+    {{- $filePath := strings.Replace .Path "\\" "/" -}}
+    {{- $path := path.Join $contentDir $filePath -}}
+    {{- $url := printf "%s/edit/%s/%s" (strings.TrimSuffix "/" $repoURL) $branch $path -}}
+    {{- $rel := "" -}}
+    {{- if and $target (ne $target "_self") }}{{ $rel = "noopener" }}{{ end -}}
+    <a class="f6 link dim br2 ba bw1 ph3 pv2 mb2 dib navy" href="{{ $url }}"
+      {{- with $target }} target="{{ . }}"{{ end -}}
+      {{- with $rel }} rel="{{ . }}"{{ end }}>
+      {{ T "editPage" }}
+    </a>
+  {{- else -}}
+    {{- warnf "[ananke] the 'edit-page' partial in %q needs params.ananke.shortcodes.edit_page.repo_url to be set" .Path -}}
+  {{- end -}}
+{{- end -}}

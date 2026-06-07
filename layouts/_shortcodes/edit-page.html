@@ -1,0 +1,26 @@
+{{- /*
+  edit-page shortcode
+
+  Renders a link to edit the current page's source file on GitHub. Visitors
+  without write access to the repository are automatically offered GitHub's
+  standard "fork and propose changes" flow when they follow the link.
+
+  The branch can be overridden per call:
+    - positional:  {{< edit-page "development" >}}
+    - named:       {{< edit-page branch="development" >}}
+
+  All other settings are read from site configuration. See the shared
+  `edit-page.html` partial for the full list of configuration options under
+  params.ananke.shortcodes.edit_page.
+*/ -}}
+{{- $branch := "" -}}
+{{- if .IsNamedParams -}}
+  {{- with .Get "branch" }}{{ $branch = . }}{{ end -}}
+{{- else -}}
+  {{- with .Get 0 }}{{ $branch = . }}{{ end -}}
+{{- end -}}
+{{- with .Page.File -}}
+  {{- partials.Include "edit-page.html" (dict "page" $.Page "branch" $branch) -}}
+{{- else -}}
+  {{- warnf "[ananke] the 'edit-page' shortcode was used on a page without a source file (%q)" $.Page.Title -}}
+{{- end -}}
