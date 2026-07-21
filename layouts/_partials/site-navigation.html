@@ -1,26 +1,43 @@
 <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l center items-center justify-between">
-    <a href="{{ .Site.Home.RelPermalink }}" class="f3 fw2 hover-white white-90 dib no-underline">
+  <div class="flex flex-wrap items-center justify-between center nav-bar">
+    <a href="{{ .Site.Home.RelPermalink }}" class="f3 fw2 hover-white white-90 dib no-underline nav-logo">
       {{ with .Site.Params.site_logo }}
-        <img src="{{ urls.RelURL . }}" class="w100 mw5-ns" alt="{{ $.Site.Title }}" />
+        {{/* Two logos, one per theme, shown/hidden the same way the theme
+             toggle's sun/moon icons already are (see custom.css). Falls back
+             to a single logo if site_logo_dark isn't configured. */}}
+        {{ with $.Site.Params.site_logo_dark }}
+          <img src="{{ urls.RelURL . }}" class="w100 mw5-ns logo-for-dark-theme" alt="{{ $.Site.Title }}" />
+          <img src="{{ urls.RelURL $.Site.Params.site_logo }}" class="w100 mw5-ns logo-for-light-theme" alt="{{ $.Site.Title }}" />
+        {{ else }}
+          <img src="{{ urls.RelURL . }}" class="w100 mw5-ns" alt="{{ $.Site.Title }}" />
+        {{ end }}
       {{ else }}
         {{ .Site.Title }}
       {{ end }}
     </a>
-    <div class="flex-l items-center">
+
+    {{/* Checkbox + label rather than <details> or JS: the collapse is driven
+         entirely by our own CSS, so it does not depend on user-agent <details>
+         behaviour and still works with JavaScript disabled. The checkbox stays
+         focusable (clipped, not display:none) so it remains keyboard operable.
+         Above 60em both are hidden and the menu is always shown. */}}
+    <input type="checkbox" id="nav-toggle" class="nav-toggle-cb" aria-label="{{ lang.Translate "menu" }}">
+    <label for="nav-toggle" class="nav-toggle" title="{{ lang.Translate "menu" }}">
+      <svg class="nav-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" />
+      </svg>
+    </label>
+
+    <div class="nav-collapse-content items-center">
       {{ partial "theme-switcher.html" . }}
       {{ partials.Include "i18nlist.html" . }}
       {{ if .Site.Menus.main }}
-        <ul class="{{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pr0 ml3" "pl0 mr3" }}">
+        <ul class="nav-menu {{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pr0 ml3" "pl0 mr3" }}">
           {{ range .Site.Menus.main }}
           <li class="list f5 f4-ns fw4 dib {{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pl3" "pr3" }}">
-            {{/* Menu entries whose name is just an emoji (the social links) set
-                 "label" so they get a real accessible name; without it a screen
-                 reader announces the useless "📸 page". */}}
             <a class="hover-white white-90 no-underline" href="{{ .URL }}"
               {{- with .Params.newtab }} target="_blank" rel="noopener noreferrer"{{ end }}
-              {{- with .Params.label }} aria-label="{{ . }}" title="{{ . }}"
-              {{- else }} title="{{ lang.Translate "pageTitle" . }}"{{ end }}>
+              title="{{ lang.Translate "pageTitle" . }}">
               {{ .Name }}
             </a>
           </li>

@@ -1,0 +1,53 @@
+{{/*
+  Events listing.
+
+  Splits the section into three groups rather than one reverse-chronological
+  list, because two of the events are ongoing rather than one-off (the weekly
+  board games evening and the monthly reading club). Those carry
+  `recurring: true` in front matter and are always shown first — a pure
+  date-based split would file them under "past", which misrepresents them.
+
+  Driven by [params.events] in config.toml:
+    showUpcoming - render the upcoming group at all
+    maxDisplay   - cap on the number of upcoming events shown
+    dateFormat   - date format used throughout this page
+*/}}
+{{ define "main" }}
+  {{ $cfg := site.Params.events }}
+  {{ $dateFormat := $cfg.dateFormat | default "2 January, 2006" }}
+  {{ $now := now }}
+
+  {{ $all := where site.RegularPages "Section" "events" }}
+  {{ $recurring := where $all "Params.recurring" true }}
+  {{ $oneOff := where $all "Params.recurring" "!=" true }}
+  {{ $upcoming := where $oneOff "Date" "ge" $now }}
+  {{ $past := where $oneOff "Date" "lt" $now }}
+
+  <article class="pa3 pa4-ns nested-copy-line-height">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy nested-links {{ $.Param "text_color" | compare.Default "mid-gray" }}">
+      {{- .Content -}}
+    </section>
+
+    {{ with $recurring }}
+      {{ partial "events-group.html" (dict "title" (lang.Translate "eventsRegular") "pages" . "dateFormat" $dateFormat "showDate" false) }}
+    {{ end }}
+
+    {{ if $cfg.showUpcoming | default true }}
+      {{ $shown := $upcoming.ByDate }}
+      {{ with $cfg.maxDisplay }}
+        {{ $shown = first . $shown }}
+      {{ end }}
+      {{ with $shown }}
+        {{ partial "events-group.html" (dict "title" (lang.Translate "eventsUpcoming") "pages" . "dateFormat" $dateFormat "showDate" true) }}
+      {{ end }}
+    {{ end }}
+
+    {{ with $past.ByDate.Reverse }}
+      {{ partial "events-group.html" (dict "title" (lang.Translate "eventsPast") "pages" . "dateFormat" $dateFormat "showDate" true) }}
+    {{ end }}
+
+    {{ if not $all }}
+      <p class="tc f4 {{ $.Param "text_color" | compare.Default "mid-gray" }}">{{ lang.Translate "eventsNone" }}</p>
+    {{ end }}
+  </article>
+{{ end }}

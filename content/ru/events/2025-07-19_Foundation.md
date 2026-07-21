@@ -1,6 +1,6 @@
 ---
 date: 2025-07-19T00:00:00-04:00
-description: ""
+description: "Учредительное собрание ассоциации РуКАВ 19 июля 2025 года, на котором были приняты статуты."
 featured_image: "images/2025-07-19_Foundation-papers.jpg"
 tags: []
 title: "Основание Ассоциации"

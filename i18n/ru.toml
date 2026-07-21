@@ -50,3 +50,18 @@ one = "1 слово"
 few = "{{ .Count }} слова"
 many = "{{ .Count }} слов"
 other = "{{ .Count }} слова"
+
+[menu]
+other = "Меню"
+
+[eventsRegular]
+other = "Регулярные мероприятия"
+
+[eventsUpcoming]
+other = "Предстоящие мероприятия"
+
+[eventsPast]
+other = "Прошедшие мероприятия"
+
+[eventsNone]
+other = "Пока нет мероприятий."

@@ -1,6 +1,7 @@
 ---
 date: 2026-02-27T00:00:00-04:00
-description: ""
+description: "Наш ежемесячный книжный клуб: одна книга в месяц и совместное обсуждение. Расписание ближайших книг внутри."
+recurring: true
 featured_image: "images/book-club-generic.png"
 tags: []
 title: "Читательский клуб"

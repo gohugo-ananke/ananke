@@ -1,6 +1,7 @@
 ---
 date: 2026-02-27T00:00:00-04:00
-description: ""
+description: "Our monthly reading club: one book a month, discussed together. See the schedule of upcoming titles."
+recurring: true
 featured_image: "images/book-club-generic.png"
 tags: []
 title: "Reading club"

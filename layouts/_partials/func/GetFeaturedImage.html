@@ -37,7 +37,10 @@
       {{ else }}
         {{ $img = .Resize (printf "%dx webp q82" .Width) }}
       {{ end }}
-      {{ $linkToCover = $img.Permalink }}
+      {{/* Relative, matching this partial's documented contract: an absolute
+           URL would point at the production domain and 404 in local preview.
+           og:image needs a full URL, but that is GetSocialImage's job. */}}
+      {{ $linkToCover = $img.RelPermalink }}
     {{ end }}
   {{ end }}
   {{/* If we find a Page Resource matching the exact value, we use it instead. */}}

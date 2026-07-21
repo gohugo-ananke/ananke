@@ -47,3 +47,18 @@ other = "{{ .Count }} words"
 
 [pageTitle]
 other = "{{ .Name }} page"
+
+[menu]
+other = "Menu"
+
+[eventsRegular]
+other = "Regular events"
+
+[eventsUpcoming]
+other = "Upcoming events"
+
+[eventsPast]
+other = "Past events"
+
+[eventsNone]
+other = "No events to show yet."

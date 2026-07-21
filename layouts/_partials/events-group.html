@@ -1,0 +1,53 @@
+{{/*
+  One titled group of events on the events listing.
+
+  @param title       heading for the group
+  @param pages       page collection to render
+  @param dateFormat  Go date layout for the event date
+  @param showDate    whether to print the date (false for recurring events,
+                     whose front matter date is a start date, not an occurrence)
+*/}}
+{{ $showDate := .showDate }}
+{{ $dateFormat := .dateFormat }}
+
+<section class="mt4 mt5-ns">
+  <h2 class="f3 fw2 ph3 ph5-l {{ site.Params.text_color | default "mid-gray" }}">{{ .title }}</h2>
+
+  <div class="flex-ns flex-wrap justify-around">
+    {{ range .pages }}
+      <div class="w-100 w-30-l mb4 relative bg-white">
+        <article class="bb b--black-10">
+          <div class="db pv4 ph3 ph0-l no-underline dark-gray">
+            {{ $img := partials.Include "func/GetFeaturedImage.html" . }}
+            {{ with $img }}
+              <a href="{{ $.RelPermalink }}" class="db grow">
+                <img src="{{ . }}" class="img" alt="{{ $.Title }}" loading="lazy" decoding="async">
+              </a>
+            {{ end }}
+
+            <h3 class="f4 fw1 athelas mt3 mb1 lh-title">
+              <a href="{{ .RelPermalink }}" class="color-inherit dim link">{{ .Title }}</a>
+            </h3>
+
+            {{ if $showDate }}
+              {{/* time.Format localises month names to the site language;
+                   .Date.Format would print English months on the Russian site. */}}
+              <time class="f6 db mb2 mid-gray" datetime="{{ .Date.Format "2006-01-02" }}">
+                {{ time.Format $dateFormat .Date }}
+              </time>
+            {{ end }}
+
+            <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+              {{ with .Description }}{{ . }}{{ else }}{{ .Summary }}{{ end }}
+            </div>
+
+            <a href="{{ .RelPermalink }}"
+               class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">
+              {{ site.Params.read_more_copy | default (lang.Translate "readMore") }}
+            </a>
+          </div>
+        </article>
+      </div>
+    {{ end }}
+  </div>
+</section>

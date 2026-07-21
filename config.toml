@@ -4,6 +4,11 @@ locale = "en-us"
 theme = ["ananke"]
 resourceDir = "../resources"
 
+# Publish events dated in the future. Hugo omits future-dated content by
+# default, which would make an event invisible until the day it happened —
+# the opposite of what the "Upcoming events" listing needs.
+buildFuture = true
+
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir = true
 # sectionPagesMenu = "main" # for automatic section creation
@@ -24,54 +29,46 @@ enableRobotsTXT = true
       weight = 1
 
     [[languages.en.menu.main]]
+      name = "About"
+      url = "/en/about/"
+      weight = 2
+
+    [[languages.en.menu.main]]
       name = "Events"
       url = "/en/events/"
-      weight = 2
+      weight = 3
 
     [[languages.en.menu.main]]
       name = "Join us"
       url = "/en/join-us/"
-      weight = 3
+      weight = 4
 
     [[languages.en.menu.main]]
       name = "Board"
       url = "/en/board/"
-      weight = 4
+      weight = 5
 
     [[languages.en.menu.main]]
       name = "Documents"
       url = "/en/documents/"
-      weight = 5
+      weight = 6
 
     [[languages.en.menu.main]]
       name = "Links"
       url = "/en/links/"
-      weight = 6
+      weight = 7
 
     [[languages.en.menu.main]]
       name = "Support us"
       url = "/en/donate/"
-      weight = 7
+      weight = 8
 
     [[languages.en.menu.main]]
       name = "Contact"
       url = "/en/contact/"
-      weight = 8
+      weight = 9
 
-     [[languages.en.menu.main]]
-          name = "📸"
-          params.label = "Instagram"
-          url = "https://instagram.com/rukav.swiss"
-          weight = 90
-          #pre = "<i class=\"fab fa-instagram\"></i>"   # optional Font Awesome icon
-          params.newtab = true                         # custom param – we’ll use it later
 
-    [[languages.en.menu.main]]
-          name = "▶️"
-          params.label = "YouTube"
-          url = "https://www.youtube.com/@Rukav-Swiss"
-          weight = 91
-          params.newtab = true                         # custom param – we’ll use it later
 
 
   [languages.ru]
@@ -85,54 +82,46 @@ enableRobotsTXT = true
       weight = 1
 
     [[languages.ru.menu.main]]
+      name = "Об ассоциации"
+      url = "/ru/about/"
+      weight = 2
+
+    [[languages.ru.menu.main]]
       name = "Мероприятия"
       url = "/ru/events/"
-      weight = 2
+      weight = 3
 
     [[languages.ru.menu.main]]
       name = "Присоединиться"
       url = "/ru/join-us/"
-      weight = 3
+      weight = 4
 
     [[languages.ru.menu.main]]
       name = "Правление"
       url = "/ru/board/"
-      weight = 4
+      weight = 5
 
     [[languages.ru.menu.main]]
       name = "Документы"
       url = "/ru/documents/"
-      weight = 5
+      weight = 6
 
   [[languages.ru.menu.main]]
       name = "Ссылки"
       url = "/ru/links/"
-      weight = 6
+      weight = 7
 
     [[languages.ru.menu.main]]
       name = "Поддержать"
       url = "/ru/donate/"
-      weight = 7
+      weight = 8
 
    [[languages.ru.menu.main]]
       name = "Контакты"
       url = "/ru/contact/"
-      weight = 8
+      weight = 9
 
-    [[languages.ru.menu.main]]
-      name = "📸"
-      params.label = "Instagram"
-      url = "https://instagram.com/rukav.swiss"
-      weight = 90
-      #pre = "<i class=\"fab fa-instagram\"></i>"  # optional Font Awesome icon
-      params.newtab = true                         # custom param – we’ll use it later
 
-    [[languages.ru.menu.main]]
-      name = "▶️"
-      params.label = "YouTube"
-      url = "https://www.youtube.com/@Rukav-Swiss"
-      weight = 91
-      params.newtab = true                         # custom param – we’ll use it later
 
 
 [sitemap]
@@ -144,7 +133,12 @@ filename = "sitemap.xml"
 text_color = "black" #"white"
 author = ""
 favicon = "images/rukav_logo_square-transparent.png"
+# site_logo is black text: right for a light background (browser tab chrome,
+# and the light theme's white header), wrong for the default dark theme's navy
+# header, where it is nearly invisible. site_logo_dark is the white variant
+# used there instead; see the swap in site-navigation.html.
 site_logo = "images/rukav_logo_square-transparent.png"
+site_logo_dark = "images/rukav_logo_square-transparent-white.png"
 # Link-preview image for pages that have no featured_image of their own
 # (home, donate, contact, ...). Resolved from assets/ by func/GetSocialImage.html.
 social_image = "images/2025-07-19_Foundation-group-with-smiles.png"
@@ -162,10 +156,22 @@ recent_posts_number = 3
 [params.ananke]
 custom_css = ["css/custom.css"]
 
-# NOT YET IMPLEMENTED: no layout reads these values, so changing them has no
-# effect. Kept as a placeholder for the planned events-listing work (upcoming vs
-# past split, date formatting). Wire these into the events list layout before
-# relying on them.
+# Social links in the header, rendered as SVG icons by the theme's
+# social/follow.html partial. The URLs are built from the profile templates in
+# the theme's own params.toml, so only the usernames belong here.
+[params.ananke.social.follow]
+  networks = ["instagram", "youtube"]
+
+[params.ananke.social.instagram]
+  username = "rukav.swiss"
+
+[params.ananke.social.youtube]
+  username = "Rukav-Swiss"
+
+# Read by layouts/events/list.html.
+#   showUpcoming - render the "Upcoming events" group at all
+#   maxDisplay   - cap on how many upcoming events are listed
+#   dateFormat   - Go date layout used on the events page
 [params.events]
   showUpcoming = true
   maxDisplay = 5

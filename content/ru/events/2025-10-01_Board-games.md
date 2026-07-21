@@ -1,6 +1,7 @@
 ---
 date: 2025-10-01T00:00:00-04:00
-description: ""
+description: "Еженедельные пятничные вечера настольных игр и общения в Цюрихе, открытые для всех."
+recurring: true
 featured_image: "images/board-games-generic.png"
 tags: []
 title: "Настольные игры"

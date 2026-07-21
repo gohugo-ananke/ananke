@@ -1,0 +1,17 @@
+{{- /*
+  Call-to-action button.
+
+  Raw HTML in content is stripped (goldmark unsafe is off), so buttons need to
+  come from a shortcode rather than inline markup.
+
+  href is relative to the language root, so the same call works in both
+  languages: href="events/" resolves to /en/events/ or /ru/events/.
+
+    {{< cta href="events/" >}}See our events{{< /cta >}}
+    {{< cta href="join-us/" primary="true" >}}Join us{{< /cta >}}
+*/ -}}
+{{- $href := .Get "href" | default (.Get 0) -}}
+{{- $primary := eq (.Get "primary") "true" -}}
+<a class="cta-button{{ if $primary }} cta-button--primary{{ end }}" href="{{ $href | relLangURL }}">
+  {{- trim .Inner " \n" -}}
+</a>
