@@ -4,7 +4,7 @@
 {{ end }}
 
 {{ define "main" }}
-  {{- $related_content := .RegularPages.Related . -}}
+  {{- $related_content := .Site.RegularPages.Related . -}}
   {{- $needs_aside := or .Params.toc $related_content -}}
   {{ $page := .}}
   {{ $section := .Site.GetPage "section" .Section }}
