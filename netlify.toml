@@ -1,8 +1,0 @@
-[build]
-publish = "public"
-command = "hugo --environment documentation --gc --minify"
-[build.environment]
-HUGO_VERSION = "0.160.0"
-HUGO_ENV = "documentation"
-GO_VERSION = "1.23"
-NODE_ENV = "development"

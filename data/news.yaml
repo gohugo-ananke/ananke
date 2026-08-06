@@ -1,0 +1,34 @@
+items:
+  - date: "May 2026"
+    detail: "🔥🚀🎉 Released ==Celadon v2.0==, adding configurable profile layouts, selectable portrait styles, keyword badge sections, bullet-list highlights, and homepage update limits."
+    badges: ["Release", "Theme"]
+
+  - date: "Nov 2025"
+    detail: "Our paper on ~~'Neural Radiance Fields for Pottery'~~ was accepted to CVPR 2025! 🏺"
+    badges: ["New", "Paper"]
+  
+  - date: "Oct 2025"
+    detail: "Awarded the **National Digital Heritage Grant** ($50k) to expand our open-source pottery dataset."
+    badges: ["Award"]
+  
+  - date: "Sep 2025"
+    detail: "Released **Shard-Net v2.0**, featuring 3D voxel support and improved texture classification."
+    badges: ["Open Source", "Code"]
+  
+  - date: "Aug 2025"
+    detail: "Returning from fieldwork in Kyoto. We scanned over 500 Kiln site fragments using LiDAR."
+    badges: ["Fieldwork", "Data"]
+  
+  - date: "July 2025"
+    detail: "Invited Keynote Speaker at **Arch-Tech 2025** in Berlin: 'The Ethics of Digital Reconstruction'."
+    badges: ["Talk"]
+  
+  # --- Hidden initially ---
+  
+  - date: "June 2025"
+    detail: "Joined the Institute of Digital Heritage as a Postdoctoral Fellow."
+    badges: ["Career"]
+  
+  - date: "May 2025"
+    detail: "Defended my PhD Thesis: *'Algorithmic Stratigraphy: Machine Learning in the Trenches'.*"
+    badges: ["Milestone"]

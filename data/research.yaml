@@ -1,0 +1,47 @@
+papers:
+  - title: "Reconstructing the Void: Inpainting Ancient Ceramics with GANs"
+    summary: "A novel approach to predicting missing geometry in broken artifacts using Generative Adversarial Networks trained on 10,000 museum samples."
+    image: "/images/ShanShui.png"
+    date: "2025-05-01"
+    links:
+      - label: "PDF"
+        url: "#"
+      - label: "Code"
+        url: "#"
+
+  - title: "Stratigraphic Analysis via Unsupervised Clustering"
+    summary: "Using K-Means clustering to identify soil layers in high-resolution excavation photography, reducing manual classification time by 40%."
+    image: "/images/Morandi.png"
+    date: "2024-11-15"
+    links:
+      - label: "PDF"
+        url: "#"
+
+  - title: "Automated Typology of Ming Dynasty Blue-and-White Porcelain"
+    summary: "A comparative study using Convolutional Neural Networks (CNNs) to distinguish between authentic imperial kilns and provincial imitations."
+    image: "/images/CeramicVases.png"
+    date: "2024-06-10"
+    links:
+      - label: "PDF"
+        url: "#"
+      - label: "Dataset"
+        url: "#"
+
+  # --- Hidden initially ---
+
+  - title: "The Digital Trowel: IoT Sensors in Active Excavation"
+    summary: "Deploying low-cost humidity and pressure sensors in excavation trenches to monitor environmental degradation in real-time."
+    image: "/images/ZenBrushstroke.png"
+    date: "2023-10-14"
+    links:
+      - label: "PDF"
+        url: "#"
+
+  - title: "Spectral Glaze: Analyzing Chemical Composition with Computer Vision"
+    summary: "Can RGB values predict chemical makeup? We correlate spectrometer data with high-res photography to estimate glaze recipes non-invasively."
+    image: "/images/Landscape.png"
+    date: "2023-09-01"
+    links:
+      - label: "PDF"
+        url: "#"
+

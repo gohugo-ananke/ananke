@@ -1,9 +1,0 @@
-{{ with partials.IncludeCached "func/style/GetMainCSS.html" "style/GetMainCSS" }}
-<link rel="stylesheet" href="{{ .RelPermalink }}" >
-{{ end }}
-
-{{ range site.Params.custom_css }}
-  {{ with partials.IncludeCached "func/style/GetResource.html" . . }}{{ else }}
-    <link rel="stylesheet" href="{{ urls.RelURL (.) }}">
-  {{ end }}
-{{ end }}

@@ -1,0 +1,17 @@
+name: "Sandra Larriega Cruz"
+title: "Sitio Web Personal"
+summary: >
+  Bienvenido a mi sitio web personal. Aquí encontrarás información sobre mis proyectos, investigaciones y publicaciones.
+affiliation: ""
+profile_image: "images/profile.png"
+profile_layout: "classic"
+profile_image_style: "circle"
+
+list:
+  - "Proyectos"
+  - "Publicaciones"
+  - "Blog"
+
+links:
+  - label: "GitHub"
+    url: "https://github.com/sandralarriegacruz"

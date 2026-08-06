@@ -1,0 +1,35 @@
+name: "Dr. Celadon"
+title: "Digital Heritage Researcher<br>Human-Centered AI Designer"
+summary: >
+  I study how ==cultural memory== can be preserved, interpreted, and shared with
+  responsible computational tools. My work combines ~~machine learning~~,
+  participatory design, and archival practice to help museums transform fragile
+  collections into searchable, teachable, and ethically documented knowledge.
+
+  Across projects, I build systems that support curators rather than replace
+  them: image models for ceramic fragments, interfaces for uncertain annotations,
+  and public-facing datasets that make provenance, context, and community voice
+  visible.
+affiliation: "Associate Research Fellow at the Institute of Digital Heritage<br>Celadon Lab for Historical Data"
+profile_image: "images/profile_square.png"
+profile_layout: "modern" # Options: "modern" or "classic"
+profile_image_style: "circle" # Options: "circle" or "rectangle"
+
+keyword_sections:
+  - title: "Research Areas & Interests"
+    rows:
+      - ["Digital Heritage", "Museum AI", "Computational Archaeology"]
+      - ["Human-Centered Design", "Ethical Data Stewardship"]
+
+list:
+  - "Develops curator-in-the-loop tools for artifact classification"
+  - "Builds open datasets for ceramic fragments and excavation records"
+  - "Studies uncertainty, provenance, and ethics in AI-assisted heritage work"
+
+links:
+  - label: "Github"
+    url: "https://github.com/Yajie-Xu/hugo-celadon"
+  - label: "Google Scholar"
+    url: "#"
+  - label: "Lab"
+    url: "#"

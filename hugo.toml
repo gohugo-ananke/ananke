@@ -1,0 +1,60 @@
+baseURL = 'https://sandralarriegacruz.github.io/'
+locale = 'es-ES'
+title = 'Sandra Larriega Cruz'
+theme = 'hugo-celadon'
+enableRobotsTXT = true
+
+[params]
+  description = 'Sitio web personal y portafolio'
+
+[params.homepage]
+  sections = ["hero", "news", "research", "writing"]
+
+  [params.homepage.hero]
+    enable = true
+    layout = "hero"
+    title = "About"
+
+  [params.homepage.news]
+    enable = true
+    layout = "news"
+    title = "News"
+
+  [params.homepage.research]
+    enable = true
+    layout = "cards"
+    title = "Research"
+
+  [params.homepage.writing]
+    enable = true
+    layout = "grid"
+    title = "Writing"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+    [markup.goldmark.extensions]
+      [markup.goldmark.extensions.passthrough]
+        enable = true
+        enableInShortcodes = true
+        [markup.goldmark.extensions.passthrough.delimiters]
+          block = [
+            ["\\[", "\\]"],
+            ["$$", "$$"]
+          ]
+          inline = [
+            ["\\(", "\\)"],
+            ["$", "$"]
+          ]
+  [markup.highlight]
+    style = "friendly"
+    noClasses = false
+    lineNos = true
+    guessSyntax = true
+
+[[cascade]]
+  layout = "single"
+  [cascade.target]
+    path = "/**"
+    kind = "page"

@@ -1,0 +1,3 @@
+[submodule "themes/hugo-celadon"]
+	path = themes/hugo-celadon
+	url = https://github.com/Yajie-Xu/hugo-celadon.git
