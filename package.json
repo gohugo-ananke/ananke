@@ -49,7 +49,7 @@
     "markdownlint-rule-title-case-style": "0.4.3",
     "release-it": "20.2.0",
     "simple-git-hooks": "2.13.1",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "yaml": "2.7.0"
   },
   "scripts": {
