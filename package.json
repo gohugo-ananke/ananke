@@ -44,7 +44,7 @@
     "markdownlint-cli2": "0.22.1",
     "markdownlint-rule-extended-ascii": "0.2.1",
     "markdownlint-rule-list-duplicates": "0.0.1",
-    "markdownlint-rule-relative-links": "5.1.0",
+    "markdownlint-rule-relative-links": "5.1.2",
     "markdownlint-rule-search-replace": "1.2.0",
     "markdownlint-rule-title-case-style": "0.4.3",
     "release-it": "20.2.0",
