@@ -25,7 +25,7 @@
     "hugo-module"
   ],
   "dependencies": {
-    "cssnano": "8.0.1",
+    "cssnano": "8.0.10",
     "postcss": "8.5.15",
     "postcss-preset-env": "11.3.0",
     "tachyons": "4.12.0"
