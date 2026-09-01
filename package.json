@@ -35,7 +35,7 @@
     "@biomejs/biome": "2.4.16",
     "@github/markdownlint-github": "0.8.0",
     "@playwright/test": "1.60.0",
-    "@release-it/conventional-changelog": "11.0.0",
+    "@release-it/conventional-changelog": "12.0.0",
     "@types/node": "25.9.1",
     "dotenv": "17.4.2",
     "lint-staged": "17.0.7",
