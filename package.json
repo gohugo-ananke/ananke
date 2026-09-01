@@ -39,7 +39,7 @@
     "@types/node": "25.9.1",
     "dotenv": "17.4.2",
     "lint-staged": "17.0.7",
-    "lockfile-lint": "5.0.0",
+    "lockfile-lint": "5.0.1",
     "markdownlint": "0.40.0",
     "markdownlint-cli2": "0.22.1",
     "markdownlint-rule-extended-ascii": "0.2.1",
