@@ -6,3 +6,7 @@ todo*.md
 
 # wireit
 .wireit
+
+# Local project-management working files
+/PROJECT.md
+/TODO.md
