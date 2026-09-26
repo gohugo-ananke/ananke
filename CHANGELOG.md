@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.19.1](https://github.com/gohugo-ananke/ananke/compare/v2.19.0...v2.19.1) (2026-09-26)
+
+### Bug Fixes
+
+* use site regular pages for related content lookup ([#1073](https://github.com/gohugo-ananke/ananke/issues/1073)) ([0eb90b3](https://github.com/gohugo-ananke/ananke/commit/0eb90b32e2b1d995478365b95e7b4b2456215f81)), closes [#1072](https://github.com/gohugo-ananke/ananke/issues/1072)
+
+### Build
+
+* **deps:** update dependencies and fix migration issues ([3d7b462](https://github.com/gohugo-ananke/ananke/commit/3d7b46278db46d25cfa086478df22dbfb3ae8cf9))
+
 ## [2.19.0](https://github.com/gohugo-ananke/ananke/compare/v2.18.0...v2.19.0) (2026-06-07)
 
 ### Features

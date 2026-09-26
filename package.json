@@ -1,7 +1,7 @@
 {
 	"name": "@gohugo-ananke/ananke",
 	"description": "Ananke: A theme for Hugo Sites",
-	"version": "2.19.0",
+	"version": "2.19.1",
 	"license": "MIT",
 	"repository": "gohugo-ananke/ananke",
 	"author": "Bud Parr (https://github.com/budparr)",
