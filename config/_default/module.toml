@@ -2,10 +2,6 @@
 min = "0.160.0"
 
 [[mounts]]
-source = 'node_modules'
-target = 'assets'
-
-[[mounts]]
 source = 'assets'
 target = 'assets'
 
