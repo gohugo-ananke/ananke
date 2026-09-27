@@ -1,14 +1,14 @@
-import { readFile, writeFile, access, mkdir } from 'node:fs/promises';
-import path from 'node:path';
-import fs from 'node:fs';
-import dotenv from 'dotenv';
-import { homedir } from 'node:os';
+import fs from "node:fs";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import path from "node:path";
+import dotenv from "dotenv";
 
 const userHomeDir = homedir();
 
 // Load .env files
-const GLOBAL_ENV_PATH = path.join(userHomeDir, '.env');
-const LOCAL_ENV_PATH = path.resolve('.env');
+const GLOBAL_ENV_PATH = path.join(userHomeDir, ".env");
+const LOCAL_ENV_PATH = path.resolve(".env");
 
 /**
  * Load environment variables from a file if it exists.
@@ -28,13 +28,14 @@ const localEnv = loadEnvFile(LOCAL_ENV_PATH);
 process.env = { ...globalEnv, ...process.env, ...localEnv };
 
 // Configurable values
-const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK || '';
-const GITHUB_DEV_TOKEN = process.env.GITHUB_DEV_TOKEN || '';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'gohugo-ananke/ananke';
-const DEFAULT_MESSAGE_TEMPLATE = 'New release: {{tag_name}} - {{html_url}}';
-const MESSAGE_TEMPLATE = process.env.MESSAGE_TEMPLATE || DEFAULT_MESSAGE_TEMPLATE;
-const CACHE_DIR = './cache';
-const CACHE_FILE = 'github-releases.json';
+const DISCORD_WEBHOOK = process.env.DISCORD_WEBHOOK || "";
+const GITHUB_DEV_TOKEN = process.env.GITHUB_DEV_TOKEN || "";
+const GITHUB_REPO = process.env.GITHUB_REPO || "gohugo-ananke/ananke";
+const DEFAULT_MESSAGE_TEMPLATE = "New release: {{tag_name}} - {{html_url}}";
+const MESSAGE_TEMPLATE =
+  process.env.MESSAGE_TEMPLATE || DEFAULT_MESSAGE_TEMPLATE;
+const CACHE_DIR = "./cache";
+const CACHE_FILE = "github-releases.json";
 const CACHE_FILE_PATH = path.join(CACHE_DIR, CACHE_FILE);
 
 /**
@@ -60,7 +61,7 @@ async function ensureCacheDirectory() {
  */
 async function readCache() {
   try {
-    const data = await readFile(CACHE_FILE_PATH, 'utf8');
+    const data = await readFile(CACHE_FILE_PATH, "utf8");
     return JSON.parse(data) || [];
   } catch {
     return [];
@@ -81,11 +82,14 @@ async function writeCache(data) {
  */
 async function fetchLatestRelease() {
   try {
-    const response = await fetch('https://api.github.com/repos/' + GITHUB_REPO + '/releases', {
-      headers: {
-        Authorization: `token ${GITHUB_DEV_TOKEN}`,
+    const response = await fetch(
+      "https://api.github.com/repos/" + GITHUB_REPO + "/releases",
+      {
+        headers: {
+          Authorization: `token ${GITHUB_DEV_TOKEN}`,
+        },
       },
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`GitHub API request failed: ${response.statusText}`);
@@ -93,13 +97,13 @@ async function fetchLatestRelease() {
 
     const releases = await response.json();
     if (!Array.isArray(releases) || releases.length === 0) {
-      console.log('No releases found.');
+      console.log("No releases found.");
       return null;
     }
 
     return releases[0];
   } catch (err) {
-    console.error('Failed to fetch releases:', err.message);
+    console.error("Failed to fetch releases:", err.message);
     return null;
   }
 }
@@ -111,8 +115,8 @@ async function fetchLatestRelease() {
 async function postToDiscord(message) {
   try {
     const response = await fetch(DISCORD_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content: message }),
     });
 
@@ -120,9 +124,9 @@ async function postToDiscord(message) {
       throw new Error(`Failed to post to Discord: ${response.statusText}`);
     }
 
-    console.log('Posted to Discord successfully.');
+    console.log("Posted to Discord successfully.");
   } catch (err) {
-    console.error('Failed to post to Discord:', err.message);
+    console.error("Failed to post to Discord:", err.message);
   }
 }
 
@@ -132,7 +136,10 @@ async function postToDiscord(message) {
  * @returns {string}
  */
 function formatMessage(releaseData) {
-  return MESSAGE_TEMPLATE.replace(/{{\s*(\w+)\s*}}/g, (_, key) => releaseData[key] || '');
+  return MESSAGE_TEMPLATE.replace(
+    /{{\s*(\w+)\s*}}/g,
+    (_, key) => releaseData[key] || "",
+  );
 }
 
 /**
@@ -152,10 +159,10 @@ async function main() {
       cachedIds.push(latestRelease.tag_name);
       await writeCache(cachedIds);
     } else {
-      console.log('No new releases to post.');
+      console.log("No new releases to post.");
     }
   } catch (err) {
-    console.error('Error:', err.message);
+    console.error("Error:", err.message);
   }
 }
 

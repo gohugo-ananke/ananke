@@ -12,26 +12,26 @@ const isCI = !!process.env["CI"];
  * branch. See tests/support/dev-server.mjs.
  */
 export default defineConfig({
-	testDir: "./tests/e2e",
-	outputDir: "./tests/.playwright/results",
-	fullyParallel: true,
-	forbidOnly: isCI,
-	retries: isCI ? 2 : 0,
-	reporter: isCI ? [["github"], ["list"]] : "list",
-	use: {
-		baseURL,
-		trace: "on-first-retry",
-	},
-	projects: [
-		{
-			name: "chromium",
-			use: { ...devices["Desktop Chrome"] },
-		},
-	],
-	webServer: {
-		command: "node tests/support/dev-server.mjs",
-		url: baseURL,
-		reuseExistingServer: !isCI,
-		timeout: 120_000,
-	},
+  testDir: "./tests/e2e",
+  outputDir: "./tests/.playwright/results",
+  fullyParallel: true,
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 0,
+  reporter: isCI ? [["github"], ["list"]] : "list",
+  use: {
+    baseURL,
+    trace: "on-first-retry",
+  },
+  projects: [
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+    },
+  ],
+  webServer: {
+    command: "node tests/support/dev-server.mjs",
+    url: baseURL,
+    reuseExistingServer: !isCI,
+    timeout: 120_000,
+  },
 });

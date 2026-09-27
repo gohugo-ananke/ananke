@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["./node_modules/@dnbhq/biome-config/config.json"],
+  "files": {
+    "includes": [
+      "!!**/*.html",
+      "!!assets/ananke/css/_tachyons.css",
+      "!!assets/ananke/dist"
+    ]
+  }
+}

@@ -1,35 +1,33 @@
 {
-	"editor.formatOnSave": true,
-	"files.autoSave": "afterDelay",
-	"files.autoSaveWhenNoErrors": true,
-	"files.autoSaveWorkspaceFilesOnly": true,
-	"cSpell.language": "en-GB",
-	"cSpell.dictionaryDefinitions": [
-		{
-			"name": "workspace",
-			"path": "./.vscode/custom-dictionary.txt",
-			"addWords": true
-		}
-	],
-	"cSpell.dictionaries": [
-		"workspace"
-	],
-	"cSpell.enabledFileTypes": {
-		"markdown": true,
-		"plaintext": true,
-		"json": true,
-		"yaml": true,
-		"yml": true,
-		"typescript": true,
-		"javascript": true
-	},
-	"explorer.fileNesting.enabled": true,
-	"explorer.fileNesting.patterns": {
-		"package.json": "package-lock.json, netlify.toml, .lintstagedrc.js, .release-it.ts, .markdownlint*, .nvmrc, lychee.toml, tsconfig.json, .coderabbit.yaml",
-		"theme.toml": "go.mod, go.sum",
-		"README.md": "CHANGELOG.md, LICENSE.md, CONTRIBUTING.md, RELEASES.md, DESIGN.md",
-		"*.ts": "$(capture).md, $(capture).test.ts, $(capture).spec.ts, $(capture).d.ts, $(capture).map, $(capture).js, $(capture).jsx, $(capture).tsx"
-	},
-	"window.autoDetectColorScheme": false,
-	"markdown.extension.tableFormatter.enabled": false
+  "editor.formatOnSave": true,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveWhenNoErrors": true,
+  "files.autoSaveWorkspaceFilesOnly": true,
+  "cSpell.language": "en-GB",
+  "cSpell.dictionaryDefinitions": [
+    {
+      "name": "workspace",
+      "path": "./.vscode/custom-dictionary.txt",
+      "addWords": true
+    }
+  ],
+  "cSpell.dictionaries": ["workspace"],
+  "cSpell.enabledFileTypes": {
+    "markdown": true,
+    "plaintext": true,
+    "json": true,
+    "yaml": true,
+    "yml": true,
+    "typescript": true,
+    "javascript": true
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "package.json": "package-lock.json, netlify.toml, lint-staged.config.ts, .release-it.ts, biome.json, renovate.json5, .nvmrc, lychee.toml, tsconfig.json, .coderabbit.yaml",
+    "theme.toml": "go.mod, go.sum",
+    "README.md": "CHANGELOG.md, LICENSE.md, CONTRIBUTING.md, RELEASES.md, DESIGN.md",
+    "*.ts": "$(capture).md, $(capture).test.ts, $(capture).spec.ts, $(capture).d.ts, $(capture).map, $(capture).js, $(capture).jsx, $(capture).tsx"
+  },
+  "window.autoDetectColorScheme": false,
+  "markdown.extension.tableFormatter.enabled": false
 }

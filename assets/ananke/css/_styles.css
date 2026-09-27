@@ -6,15 +6,14 @@
 
 .lh-copy blockquote {
   display: block;
-  font-size: .875em;
+  font-size: 0.875em;
   margin-left: 2rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
   border-left: 4px solid #ccc;
   padding-left: 1rem;
-
 }
 
-.nested-links a{
+.nested-links a {
   overflow-wrap: break-word;
 }

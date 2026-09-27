@@ -1,10 +1,10 @@
-.ananke-socials a{
+.ananke-socials a {
   display: inline-block;
   vertical-align: middle;
-  color: #BABABA;
+  color: #bababa;
   fill: currentColor;
 }
-.ananke-socials a .icon svg{
+.ananke-socials a .icon svg {
   width: 32px;
   height: 32px;
 }

@@ -1,52 +1,52 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../documentation"
-		},
-		{
-			"path": "../template-git-submod"
-		},
-		{
-			"path": "../template-hugo-mod"
-		}
-	],
-	"settings": {
-		"window.autoDetectColorScheme": false,
-		"markdown.extension.tableFormatter.enabled": false,
-		"chat.tools.terminal.autoApprove": {
-			"git fetch": true,
-			"git worktree": true,
-			"git add": true,
-			"git push": true
-		},
-		"markdown.extension.toc.unorderedList.marker": "*",
-		"markdown.extension.toc.levels": "2..6"
-	},
-	"extensions": {
-		"recommendations": [
-			"ms-vscode.vscode-github-issue-notebooks",
-			"github.vscode-pull-request-github",
-			"pkief.material-icon-theme",
-			"yzhang.markdown-all-in-one",
-			"davidanson.vscode-markdownlint",
-			"zizmor.zizmor-vscode",
-			"streetsidesoftware.code-spell-checker-cspell-bundled-dictionaries",
-			"budparr.language-hugo-vscode",
-			"jinliming2.vscode-go-template",
-			"gohugoio.gotmplfmt",
-			"casualjim.gotemplate",
-			"streetsidesoftware.code-spell-checker",
-			"streetsidesoftware.code-spell-checker-british-english",
-			"gohugoio.gotmplfmt",
-			"anthropic.claude-code",
-			"aaron-bond.better-comments",
-			"redhat.vscode-xml",
-			"redhat.vscode-yaml",
-			"google.wireit",
-			"dunstontc.vscode-go-syntax"
-		]
-	}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../documentation"
+    },
+    {
+      "path": "../template-git-submod"
+    },
+    {
+      "path": "../template-hugo-mod"
+    }
+  ],
+  "settings": {
+    "window.autoDetectColorScheme": false,
+    "markdown.extension.tableFormatter.enabled": false,
+    "chat.tools.terminal.autoApprove": {
+      "git fetch": true,
+      "git worktree": true,
+      "git add": true,
+      "git push": true
+    },
+    "markdown.extension.toc.unorderedList.marker": "*",
+    "markdown.extension.toc.levels": "2..6"
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-github-issue-notebooks",
+      "github.vscode-pull-request-github",
+      "pkief.material-icon-theme",
+      "yzhang.markdown-all-in-one",
+      "davidanson.vscode-markdownlint",
+      "zizmor.zizmor-vscode",
+      "streetsidesoftware.code-spell-checker-cspell-bundled-dictionaries",
+      "budparr.language-hugo-vscode",
+      "jinliming2.vscode-go-template",
+      "gohugoio.gotmplfmt",
+      "casualjim.gotemplate",
+      "streetsidesoftware.code-spell-checker",
+      "streetsidesoftware.code-spell-checker-british-english",
+      "gohugoio.gotmplfmt",
+      "anthropic.claude-code",
+      "aaron-bond.better-comments",
+      "redhat.vscode-xml",
+      "redhat.vscode-yaml",
+      "google.wireit",
+      "dunstontc.vscode-go-syntax"
+    ]
+  }
 }
