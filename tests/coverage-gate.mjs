@@ -25,43 +25,43 @@ const repoRoot = resolve(here, "..");
 
 /** Direct `key = value` entries under the top-level [ananke] table. */
 function collectAnankeParams() {
-	const toml = readFileSync(
-		join(repoRoot, "config", "_default", "params.toml"),
-		"utf8",
-	);
-	const keys = new Set();
-	let inAnanke = false;
-	for (const raw of toml.split("\n")) {
-		const line = raw.trim();
-		if (line.startsWith("[")) {
-			inAnanke = line === "[ananke]";
-			continue;
-		}
-		if (!inAnanke || line === "" || line.startsWith("#")) continue;
-		const eq = line.indexOf("=");
-		if (eq > 0) keys.add(`ananke.${line.slice(0, eq).trim()}`);
-	}
-	return keys;
+  const toml = readFileSync(
+    join(repoRoot, "config", "_default", "params.toml"),
+    "utf8",
+  );
+  const keys = new Set();
+  let inAnanke = false;
+  for (const raw of toml.split("\n")) {
+    const line = raw.trim();
+    if (line.startsWith("[")) {
+      inAnanke = line === "[ananke]";
+      continue;
+    }
+    if (!inAnanke || line === "" || line.startsWith("#")) continue;
+    const eq = line.indexOf("=");
+    if (eq > 0) keys.add(`ananke.${line.slice(0, eq).trim()}`);
+  }
+  return keys;
 }
 
 /** Shortcode names from layouts/_shortcodes/*.html. */
 function collectShortcodes() {
-	const dir = join(repoRoot, "layouts", "_shortcodes");
-	return new Set(
-		readdirSync(dir)
-			.filter((f) => f.endsWith(".html"))
-			.map((f) => f.replace(/\.html$/, "")),
-	);
+  const dir = join(repoRoot, "layouts", "_shortcodes");
+  return new Set(
+    readdirSync(dir)
+      .filter((f) => f.endsWith(".html"))
+      .map((f) => f.replace(/\.html$/, "")),
+  );
 }
 
 function catalogued(section) {
-	const out = new Set();
-	for (const [name, value] of Object.entries(section || {})) {
-		if (value && Array.isArray(value.tests) && value.tests.length > 0) {
-			out.add(name);
-		}
-	}
-	return out;
+  const out = new Set();
+  for (const [name, value] of Object.entries(section || {})) {
+    if (value && Array.isArray(value.tests) && value.tests.length > 0) {
+      out.add(name);
+    }
+  }
+  return out;
 }
 
 const catalog = parse(readFileSync(join(here, "catalog.yaml"), "utf8")) || {};
@@ -72,32 +72,32 @@ const catShortcodes = catalogued(catalog.shortcodes);
 
 const errors = [];
 for (const p of params) {
-	if (!catParams.has(p))
-		errors.push(`param '${p}' has no test in tests/catalog.yaml`);
+  if (!catParams.has(p))
+    errors.push(`param '${p}' has no test in tests/catalog.yaml`);
 }
 for (const s of shortcodes) {
-	if (!catShortcodes.has(s))
-		errors.push(`shortcode '${s}' has no test in tests/catalog.yaml`);
+  if (!catShortcodes.has(s))
+    errors.push(`shortcode '${s}' has no test in tests/catalog.yaml`);
 }
 // Stale catalog entries (kept as warnings so renames are noticed promptly).
 const warnings = [];
 for (const p of Object.keys(catalog.params || {})) {
-	if (!params.has(p)) warnings.push(`catalog param '${p}' no longer exists`);
+  if (!params.has(p)) warnings.push(`catalog param '${p}' no longer exists`);
 }
 for (const s of Object.keys(catalog.shortcodes || {})) {
-	if (!shortcodes.has(s))
-		warnings.push(`catalog shortcode '${s}' no longer exists`);
+  if (!shortcodes.has(s))
+    warnings.push(`catalog shortcode '${s}' no longer exists`);
 }
 
 for (const w of warnings) console.warn(`warning: ${w}`);
 if (errors.length > 0) {
-	console.error("\nCoverage gate failed:");
-	for (const e of errors) console.error(`  - ${e}`);
-	console.error(
-		"\nAdd the feature and at least one test reference to tests/catalog.yaml.",
-	);
-	process.exit(1);
+  console.error("\nCoverage gate failed:");
+  for (const e of errors) console.error(`  - ${e}`);
+  console.error(
+    "\nAdd the feature and at least one test reference to tests/catalog.yaml.",
+  );
+  process.exit(1);
 }
 console.log(
-	`Coverage gate passed: ${params.size} ananke param(s), ${shortcodes.size} shortcode(s) all have tests.`,
+  `Coverage gate passed: ${params.size} ananke param(s), ${shortcodes.size} shortcode(s) all have tests.`,
 );

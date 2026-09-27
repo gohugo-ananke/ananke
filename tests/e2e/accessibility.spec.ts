@@ -9,13 +9,13 @@ import { expect, test } from "@playwright/test";
  * accessibility sub-issue under the testing epic).
  */
 const PAGES: Record<string, string> = {
-	homepage: "/",
-	"section list": "/posts/",
-	"single page": "/posts/hello/",
-	"standalone page": "/about/",
-	"taxonomy terms": "/tags/",
-	"taxonomy term": "/tags/alpha/",
-	"404": "/404.html",
+  homepage: "/",
+  "section list": "/posts/",
+  "single page": "/posts/hello/",
+  "standalone page": "/about/",
+  "taxonomy terms": "/tags/",
+  "taxonomy term": "/tags/alpha/",
+  "404": "/404.html",
 };
 
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
@@ -27,21 +27,21 @@ const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
  * start passing and Playwright will flag the stale annotation for removal.
  */
 const KNOWN_FAILURES = new Set([
-	"section list",
-	"single page",
-	"taxonomy terms",
-	"taxonomy term",
+  "section list",
+  "single page",
+  "taxonomy terms",
+  "taxonomy term",
 ]);
 
 for (const [name, path] of Object.entries(PAGES)) {
-	test(`${name} has no automatically detectable a11y violations`, async ({
-		page,
-	}) => {
-		if (KNOWN_FAILURES.has(name)) {
-			test.fail(true, "Known WCAG AA contrast issue, tracked in #1015");
-		}
-		await page.goto(path);
-		const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
-		expect(results.violations).toEqual([]);
-	});
+  test(`${name} has no automatically detectable a11y violations`, async ({
+    page,
+  }) => {
+    if (KNOWN_FAILURES.has(name)) {
+      test.fail(true, "Known WCAG AA contrast issue, tracked in #1015");
+    }
+    await page.goto(path);
+    const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
+    expect(results.violations).toEqual([]);
+  });
 }

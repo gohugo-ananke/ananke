@@ -1,4 +1,5 @@
-pre, .pre  {
+pre,
+.pre {
   overflow-x: auto;
   overflow-y: hidden;
 }
@@ -47,7 +48,9 @@ p code {
   border-radius: 4px;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.15s ease-in-out, background-color 0.15s ease-in-out;
+  transition:
+    opacity 0.15s ease-in-out,
+    background-color 0.15s ease-in-out;
 }
 
 /* Reveal on hover and when focused for keyboard users. */

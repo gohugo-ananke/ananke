@@ -20,36 +20,36 @@ const siteDir = resolve(here, "..", "fixtures", "site");
 const publicDir = join(siteDir, "public");
 
 export function buildFixtureSite() {
-	const themesDir = mkdtempSync(join(tmpdir(), "ananke-test-themes-"));
-	try {
-		symlinkSync(repoRoot, join(themesDir, "ananke"), "dir");
-		rmSync(publicDir, { recursive: true, force: true });
-		const result = spawnSync(
-			"hugo",
-			[
-				"--source",
-				siteDir,
-				"--themesDir",
-				themesDir,
-				"--destination",
-				publicDir,
-				"--environment",
-				"production",
-				"--logLevel",
-				"warn",
-			],
-			{ stdio: "inherit" },
-		);
-		if (result.status !== 0) {
-			throw new Error(`hugo build failed with code ${result.status}`);
-		}
-	} finally {
-		rmSync(themesDir, { recursive: true, force: true });
-	}
-	return publicDir;
+  const themesDir = mkdtempSync(join(tmpdir(), "ananke-test-themes-"));
+  try {
+    symlinkSync(repoRoot, join(themesDir, "ananke"), "dir");
+    rmSync(publicDir, { recursive: true, force: true });
+    const result = spawnSync(
+      "hugo",
+      [
+        "--source",
+        siteDir,
+        "--themesDir",
+        themesDir,
+        "--destination",
+        publicDir,
+        "--environment",
+        "production",
+        "--logLevel",
+        "warn",
+      ],
+      { stdio: "inherit" },
+    );
+    if (result.status !== 0) {
+      throw new Error(`hugo build failed with code ${result.status}`);
+    }
+  } finally {
+    rmSync(themesDir, { recursive: true, force: true });
+  }
+  return publicDir;
 }
 
 // Allow running directly: `node tests/support/prepare-site.mjs`
 if (import.meta.url === `file://${process.argv[1]}`) {
-	buildFixtureSite();
+  buildFixtureSite();
 }

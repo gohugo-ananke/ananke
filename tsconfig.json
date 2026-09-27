@@ -1,29 +1,11 @@
 {
-    "compilerOptions": {
-        "module": "nodenext",
-        "target": "esnext",
-        "types": [
-            "node"
-        ],
-        "sourceMap": true,
-        "declaration": true,
-        "declarationMap": true,
-        "noUncheckedIndexedAccess": true,
-        "exactOptionalPropertyTypes": true,
-        "strict": true,
-        "jsx": "react-jsx",
-        "verbatimModuleSyntax": true,
-        "isolatedModules": true,
-        "noUncheckedSideEffectImports": true,
-        "moduleDetection": "force",
-        "skipLibCheck": true,
-        "noImplicitOverride": true,
-        "noPropertyAccessFromIndexSignature": true,
-        "useUnknownInCatchVariables": true,
-        "noFallthroughCasesInSwitch": true,
-    },
-    "include": [
-        "**/*.ts",
-        "scripts/**/*"
-    ]
+  "extends": "@dnbhq/tsconfig/cli",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "jsx": "react-jsx"
+  },
+  "include": ["**/*.ts", "scripts/**/*"]
 }
