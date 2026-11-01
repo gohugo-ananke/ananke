@@ -24,7 +24,7 @@
     "hugo-module"
   ],
   "devDependencies": {
-    "@axe-core/playwright": "4.13.0",
+    "@axe-core/playwright": "4.14.0",
     "@biomejs/biome": "2.5.14",
     "@dnbhq/biome-config": "0.3.1",
     "@dnbhq/lintstaged-config": "0.2.1",
