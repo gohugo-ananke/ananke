@@ -33,7 +33,7 @@
     "@dnbhq/tsconfig": "0.1.6",
     "@playwright/test": "1.63.0",
     "@release-it/conventional-changelog": "12.0.2",
-    "@types/node": "26.6.3",
+    "@types/node": "26.6.5",
     "dotenv": "18.0.4",
     "lint-staged": "17.6.0",
     "lockfile-lint": "5.0.1",
