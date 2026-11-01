@@ -36,7 +36,7 @@
     "@types/node": "26.6.3",
     "dotenv": "18.0.4",
     "lint-staged": "17.6.0",
-    "lockfile-lint": "5.0.1",
+    "lockfile-lint": "5.1.0",
     "release-it": "21.1.0",
     "simple-git-hooks": "2.14.0",
     "typescript": "7.0.2",
