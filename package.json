@@ -25,7 +25,7 @@
   ],
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
-    "@biomejs/biome": "2.5.14",
+    "@biomejs/biome": "2.6.3",
     "@dnbhq/biome-config": "0.3.1",
     "@dnbhq/lintstaged-config": "0.2.1",
     "@dnbhq/markdownlint-config": "0.2.11",
