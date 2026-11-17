@@ -18,14 +18,5 @@
 */}}
 {{ return and
 	(not .Date.IsZero)
-	(or
-		(and
-			(not (eq false site.Params.ananke.pages.show_date))
-			(not (eq false .Params.ananke.show_date))
-		)
-		(and
-			(eq false site.Params.ananke.pages.show_date)
-			(eq true .Params.ananke.show_date)
-		)
-	)
+	(partials.Include "func/IsShown.html" (dict "page" . "key" "show_date"))
 }}
