@@ -17,14 +17,8 @@ params:
 
 shortcodes:
   form-contact:
-    tests: [
-      "scripts/test-hugo-quickstart.ts",
-    ] # TODO: add a dedicated form-contact test
+    tests: ["scripts/test-hugo-quickstart.ts"] # TODO: add a dedicated form-contact test
   page-index:
-    tests: [
-      "scripts/test-hugo-quickstart.ts",
-    ] # TODO: add a dedicated page-index test
+    tests: ["scripts/test-hugo-quickstart.ts"] # TODO: add a dedicated page-index test
   since:
-    tests: [
-      "scripts/test-hugo-quickstart.ts",
-    ] # TODO: add a dedicated since test
+    tests: ["scripts/test-hugo-quickstart.ts"] # TODO: add a dedicated since test
