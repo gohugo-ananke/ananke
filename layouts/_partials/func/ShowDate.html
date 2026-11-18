@@ -1,22 +1,19 @@
 {{/*
 	ShowDate
 
-	Decides whether a page's date should be rendered.
+	Returns false for pages without a date. Otherwise, resolves the requested
+	date setting with show_date as its shared fallback.
 
-	Dates are shown by default. They are hidden when the site sets
-	`ananke.pages.show_date = false`, unless a page opts back in with
-	`ananke.show_date = true` in its front matter. A page can also hide its
-	own date with `ananke.show_date = false`. Pages without a date
-	(`.Date.IsZero`) never render one.
-
-	This mirrors the date logic used in `single.html` so that single pages and
-	summary cards stay consistent.
-
-	@param . The page context.
+	@param . A page, or a dictionary with page and key (show_single_date or show_summary_date).
 	@return boolean True when the date should be displayed.
-
 */}}
-{{ return and
-	(not .Date.IsZero)
-	(partials.Include "func/IsShown.html" (dict "page" . "key" "show_date"))
-}}
+{{- $page := . -}}
+{{- $key := "show_date" -}}
+{{- if reflect.IsMap . -}}
+	{{- $page = .page -}}
+	{{- $key = .key -}}
+{{- end -}}
+{{- return and
+	(not $page.Date.IsZero)
+	(partials.Include "func/IsShown.html" (dict "page" $page "key" $key "fallback" "show_date"))
+-}}

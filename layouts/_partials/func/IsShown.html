@@ -9,25 +9,31 @@
 	element with `ananke.<key> = false`. Sections can set the page value for
 	all of their pages with `cascade`.
 
+	The page key, page fallback, site key, and site fallback are checked in that order.
+
 	@param page The page context.
 	@param key The name of the setting, for example `show_date`.
+
+	@param fallback Optional shared setting to use when the specific key is unset.
 	@return boolean True when the element should be displayed.
 
 */}}
-{{- $site_value := "" -}}
-{{- with site.Params.ananke -}}
-	{{- with .pages -}}
-		{{- $site_value = index . $.key -}}
+{{- $keys := slice .key -}}
+{{- with .fallback -}}
+	{{- $keys = $keys | append . -}}
+{{- end -}}
+{{- $show := true -}}
+{{- $found := false -}}
+{{- $page_values := .page.Params.ananke | default dict -}}
+{{- $site_values := site.Params.ananke.pages | default dict -}}
+{{- range slice $page_values $site_values -}}
+	{{- $values := . -}}
+	{{- range $keys -}}
+		{{- $value := index $values . -}}
+		{{- if and (not $found) (or (eq true $value) (eq false $value)) -}}
+			{{- $show = $value -}}
+			{{- $found = true -}}
+		{{- end -}}
 	{{- end -}}
-{{- end -}}
-{{- $page_value := "" -}}
-{{- with .page.Params.ananke -}}
-	{{- $page_value = index . $.key -}}
-{{- end -}}
-{{- $show := not (eq false $site_value) -}}
-{{- if eq true $page_value -}}
-	{{- $show = true -}}
-{{- else if eq false $page_value -}}
-	{{- $show = false -}}
 {{- end -}}
 {{- return $show -}}
