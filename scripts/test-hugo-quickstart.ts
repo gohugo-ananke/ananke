@@ -820,6 +820,12 @@ const LIST_CARD_IMAGE_MARKER = 'class="img"';
 const SUMMARY_CARD_DATE_MARKER = "datetime=";
 
 /**
+ * Markup emitted by `summary.html` when the section title of a card is
+ * rendered for the `cards` fixture section.
+ */
+const SUMMARY_CARD_SECTION_MARKER = '<span class="f6 db">Cards</span>';
+
+/**
  * Create a content section whose list page exercises both the image and the
  * date behaviour of summary cards: one page has a featured image, the other
  * does not, and both carry an explicit date.
@@ -870,11 +876,12 @@ async function writeListCardFixtures(contentDir: string): Promise<void> {
 function assertListCardSummaries(
   listHtml: string,
   label: string,
-  expectations: { images: boolean; dates: boolean },
+  expectations: { images: boolean; dates: boolean; sectionTitles?: boolean },
 ): void {
   const failures: string[] = [];
   const hasImage = listHtml.includes(LIST_CARD_IMAGE_MARKER);
   const hasDate = listHtml.includes(SUMMARY_CARD_DATE_MARKER);
+  const hasSectionTitle = listHtml.includes(SUMMARY_CARD_SECTION_MARKER);
 
   if (expectations.images && !hasImage) {
     failures.push(
@@ -897,6 +904,18 @@ function assertListCardSummaries(
   if (!expectations.dates && hasDate) {
     failures.push(
       "- summary card dates were rendered when 'ananke.pages.show_date' was false",
+    );
+  }
+
+  if (expectations.sectionTitles === true && !hasSectionTitle) {
+    failures.push(
+      "- expected summary card section titles but none were rendered by default",
+    );
+  }
+
+  if (expectations.sectionTitles === false && hasSectionTitle) {
+    failures.push(
+      "- summary card section titles were rendered when 'ananke.pages.show_section_title' was false",
     );
   }
 
@@ -1368,6 +1387,7 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
     assertListCardSummaries(await readTextFile(cardsListPath), "defaults", {
       images: false,
       dates: true,
+      sectionTitles: true,
     });
 
     // Opt in to image cards and disable summary dates: images appear and the
@@ -1403,6 +1423,43 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
     );
 
     console.log("[OK ] List page image cards and summary dates (issue #217)");
+
+    console.log(
+      "\n[RUN] Hide summary card dates and section titles (issue #1109)",
+    );
+    await writeTextFile(
+      configPath,
+      [
+        "baseURL = 'https://example.com/'",
+        "title = 'Ananke Test Quickstart'",
+        `theme = '${options.themeName}'`,
+        "[params.ananke.pages]",
+        "show_date = false",
+        "show_section_title = false",
+        "",
+      ].join("\n"),
+    );
+    const cardsPlainBuildStep: StepDefinition = {
+      name: "Build site with summary dates and section titles disabled",
+      command: "hugo",
+      args: [],
+      cwd: projectRoot,
+      expectedFiles: ["public/cards/index.html"],
+    };
+    const cardsPlainBuildReport = await executeHugoBuildStep(
+      cardsPlainBuildStep,
+      projectRoot,
+    );
+    reports.push(cardsPlainBuildReport);
+    assertListCardSummaries(
+      await readTextFile(cardsListPath),
+      "dates and section titles disabled",
+      { images: false, dates: false, sectionTitles: false },
+    );
+
+    console.log(
+      "[OK ] Hide summary card dates and section titles (issue #1109)",
+    );
 
     console.log("\nResult: PASS");
 
