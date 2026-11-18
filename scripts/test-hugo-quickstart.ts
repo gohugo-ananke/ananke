@@ -864,6 +864,175 @@ async function writeListCardFixtures(contentDir: string): Promise<void> {
   await writeTextFile(join(sectionDir, "without-image.md"), withoutImage);
 }
 
+/** Exercise date precedence through the actual single and summary templates. */
+async function assertDateSettings(
+  projectRoot: string,
+  themeName: string,
+): Promise<void> {
+  type Settings = Record<string, boolean>;
+  const cases: {
+    label: string;
+    site?: Settings;
+    page?: Settings;
+    cascade?: Settings;
+    undated?: boolean;
+    single: boolean;
+    summary: boolean;
+  }[] = [
+    { label: "defaults", single: true, summary: true },
+    {
+      label: "shared site fallback",
+      site: { show_date: false },
+      single: false,
+      summary: false,
+    },
+    {
+      label: "specific site over shared site",
+      site: { show_date: false, show_single_date: true },
+      single: true,
+      summary: false,
+    },
+    {
+      label: "summary site override",
+      site: { show_date: true, show_summary_date: false },
+      single: true,
+      summary: false,
+    },
+    {
+      label: "page shared over specific site",
+      site: { show_single_date: false, show_summary_date: false },
+      page: { show_date: true },
+      single: true,
+      summary: true,
+    },
+    {
+      label: "page shared false over site true",
+      site: { show_single_date: true, show_summary_date: true },
+      page: { show_date: false },
+      single: false,
+      summary: false,
+    },
+    {
+      label: "specific page over shared page",
+      page: { show_date: false, show_single_date: true },
+      single: true,
+      summary: false,
+    },
+    {
+      label: "summary page over shared page",
+      page: { show_date: true, show_summary_date: false },
+      single: true,
+      summary: false,
+    },
+    {
+      label: "opposite independent settings",
+      page: { show_single_date: false, show_summary_date: true },
+      single: false,
+      summary: true,
+    },
+    {
+      label: "cascade over site",
+      site: { show_summary_date: true },
+      cascade: { show_summary_date: false },
+      single: true,
+      summary: false,
+    },
+    {
+      label: "page over cascade",
+      cascade: { show_single_date: false, show_summary_date: false },
+      page: { show_single_date: true, show_summary_date: true },
+      single: true,
+      summary: true,
+    },
+    {
+      label: "page map over cascade map",
+      cascade: { show_summary_date: false },
+      page: { show_date: true },
+      single: true,
+      summary: true,
+    },
+    {
+      label: "undated page",
+      page: { show_single_date: true, show_summary_date: true },
+      undated: true,
+      single: false,
+      summary: false,
+    },
+  ];
+  const settings = (values: Settings = {}): string[] =>
+    Object.entries(values).map(([key, value]) => `${key} = ${String(value)}`);
+  for (const variant of ["compact", "image", "post"]) {
+    for (const test of cases) {
+      const label = `${variant}: ${test.label}`;
+      await writeTextFile(
+        join(projectRoot, "hugo.toml"),
+        [
+          "baseURL = 'https://example.com/'",
+          `theme = '${themeName}'`,
+          "[params]",
+          "mainSections = ['cards']",
+          "[params.ananke.pages]",
+          `show_list_images = ${String(variant === "image")}`,
+          ...settings(test.site),
+          "",
+        ].join("\n"),
+      );
+      await writeTextFile(
+        join(projectRoot, "content/cards/_index.md"),
+        [
+          "+++",
+          "title = 'Cards'",
+          ...(variant === "post" ? ["type = 'post'"] : []),
+          ...(test.cascade
+            ? ["[cascade.params.ananke]", ...settings(test.cascade)]
+            : []),
+          "+++",
+          "",
+        ].join("\n"),
+      );
+      for (const name of ["with-image", "without-image"]) {
+        await writeTextFile(
+          join(projectRoot, `content/cards/${name}.md`),
+          [
+            "+++",
+            `title = '${name}'`,
+            ...(test.undated ? [] : ["date = 2024-01-15T00:00:00Z"]),
+            ...(variant === "post" ? ["type = 'post'"] : []),
+            ...(name === "with-image"
+              ? ["featured_image = '/images/card-hero.jpg'"]
+              : []),
+            ...(test.page ? ["[params.ananke]", ...settings(test.page)] : []),
+            "+++",
+            "",
+            "Date setting fixture.",
+            "",
+          ].join("\n"),
+        );
+      }
+      await executeHugoBuildStep(
+        { name: label, command: "hugo", args: [], cwd: projectRoot },
+        projectRoot,
+      );
+      const single = await readTextFile(
+        join(projectRoot, "public/cards/with-image/index.html"),
+      );
+      if (single.includes('class="f6 mv4 dib tracked"') !== test.single) {
+        throw new Error(`Single date assertion failed: ${label}`);
+      }
+      for (const path of ["cards/index.html", "index.html"]) {
+        const html = await readTextFile(join(projectRoot, "public", path));
+        const count = (html.match(/datetime="2024-01-15T00:00:00Z"/g) ?? [])
+          .length;
+        if (count !== (test.summary ? 2 : 0)) {
+          throw new Error(
+            `Summary date assertion failed: ${label}, ${path}, found ${count}`,
+          );
+        }
+      }
+    }
+  }
+}
+
 /**
  * Assert that a list page renders summary cards with the expected image and
  * date behaviour.
@@ -1460,6 +1629,10 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
     console.log(
       "[OK ] Hide summary card dates and section titles (issue #1109)",
     );
+
+    console.log("\n[RUN] Independent single and summary dates (issue #1112)");
+    await assertDateSettings(projectRoot, options.themeName);
+    console.log("[OK ] Independent single and summary dates (issue #1112)");
 
     console.log("\nResult: PASS");
 
