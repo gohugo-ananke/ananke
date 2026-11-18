@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.19.2](https://github.com/gohugo-ananke/ananke/compare/v2.19.1...v2.19.2) (2026-11-18)
+
+### Fix
+
+* **layouts:** allow hiding the section title on summary cards ([#1111](https://github.com/gohugo-ananke/ananke/issues/1111)) ([7905108](https://github.com/gohugo-ananke/ananke/commit/79051088e59097cda81f9c797abc279575952827)), closes [#1109](https://github.com/gohugo-ananke/ananke/issues/1109)
+
+### Build
+
+* **deps-dev:** bump @axe-core/playwright from 4.13.0 to 4.14.0 ([8aad64d](https://github.com/gohugo-ananke/ananke/commit/8aad64dba219908a486c71130dd3e329dde7bc0b))
+* **deps-dev:** bump @biomejs/biome from 2.5.14 to 2.6.3 ([4de9c19](https://github.com/gohugo-ananke/ananke/commit/4de9c1902e15486898808b057afa181e1a6409a8))
+* **deps-dev:** bump @dnbhq/markdownlint-config from 0.2.11 to 2.0.0 ([610f001](https://github.com/gohugo-ananke/ananke/commit/610f0019f2b43fbfe31bdf8e8ab3479fca6dd48f))
+* **deps-dev:** bump @dnbhq/release-config from 1.1.3 to 2.0.0 ([a61efe2](https://github.com/gohugo-ananke/ananke/commit/a61efe2c9eceadc819bd210f071e68ff626ee3a0))
+* **deps-dev:** bump @playwright/test from 1.63.0 to 1.64.1 ([bd935e4](https://github.com/gohugo-ananke/ananke/commit/bd935e43e666748e60f036b0497ccf05d320b560))
+* **deps-dev:** bump @types/node from 26.6.3 to 26.6.5 ([4bf5469](https://github.com/gohugo-ananke/ananke/commit/4bf5469c1b237e042e072af953663dbccb35dd43))
+* **deps-dev:** bump dotenv from 18.0.4 to 18.0.9 ([9d48947](https://github.com/gohugo-ananke/ananke/commit/9d4894768079e45c5e5029f6d597efe342a06e26))
+* **deps-dev:** bump lockfile-lint from 5.0.1 to 5.1.0 ([490cb6c](https://github.com/gohugo-ananke/ananke/commit/490cb6c1fa7eb895b5188848b0b49dc3878adb7b))
+* **deps-dev:** bump release-it from 21.1.0 to 21.1.1 ([5599786](https://github.com/gohugo-ananke/ananke/commit/55997860c951be8bfed11b0cab1413999c6d9f6c))
+* **deps:** bump actions/setup-node from 7.0.0 to 7.1.0 ([45a7a29](https://github.com/gohugo-ananke/ananke/commit/45a7a2918e948f3978f2a1514665923881ed2173))
+* **deps:** onboard dnbhq configurations and linting fixes ([6c252a8](https://github.com/gohugo-ananke/ananke/commit/6c252a81ff29942965c8449b1b393344da3aa382))
+* **deps:** update @dnbhq/biome-config to 1.1.3 for Biome 2.6 ([e5ad724](https://github.com/gohugo-ananke/ananke/commit/e5ad724c120e5d9f97cb7a7e2d1c18f57c7b571d))
+* **fix:** remove scss dependencies ([a24259e](https://github.com/gohugo-ananke/ananke/commit/a24259e3d36b12a1a18609080da80440a66036bf))
+
 ## [2.19.1](https://github.com/gohugo-ananke/ananke/compare/v2.19.0...v2.19.1) (2026-09-26)
 
 ### Bug Fixes
