@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.20.0](https://github.com/gohugo-ananke/ananke/compare/v2.19.2...v2.20.0) (2026-11-18)
+
+### Feat
+
+* **layouts:** separate single and summary dates ([98f9ced](https://github.com/gohugo-ananke/ananke/commit/98f9cedfae4fe8aa6db8f697bf973faf0a4d22d4)), closes [#1112](https://github.com/gohugo-ananke/ananke/issues/1112)
+
 ## [2.19.2](https://github.com/gohugo-ananke/ananke/compare/v2.19.1...v2.19.2) (2026-11-18)
 
 ### Fix
