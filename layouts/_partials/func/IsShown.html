@@ -1,0 +1,33 @@
+{{/*
+	IsShown
+
+	Decides whether an optional page element should be rendered.
+
+	The element is shown by default. It is hidden when the site sets
+	`ananke.pages.<key> = false`, unless a page opts back in with
+	`ananke.<key> = true` in its front matter. A page can also hide the
+	element with `ananke.<key> = false`. Sections can set the page value for
+	all of their pages with `cascade`.
+
+	@param page The page context.
+	@param key The name of the setting, for example `show_date`.
+	@return boolean True when the element should be displayed.
+
+*/}}
+{{- $site_value := "" -}}
+{{- with site.Params.ananke -}}
+	{{- with .pages -}}
+		{{- $site_value = index . $.key -}}
+	{{- end -}}
+{{- end -}}
+{{- $page_value := "" -}}
+{{- with .page.Params.ananke -}}
+	{{- $page_value = index . $.key -}}
+{{- end -}}
+{{- $show := not (eq false $site_value) -}}
+{{- if eq true $page_value -}}
+	{{- $show = true -}}
+{{- else if eq false $page_value -}}
+	{{- $show = false -}}
+{{- end -}}
+{{- return $show -}}

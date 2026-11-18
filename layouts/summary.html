@@ -1,7 +1,10 @@
 {{ $show_date := partials.Include "func/ShowDate.html" . }}
+{{ $show_section_title := partials.Include "func/IsShown.html" (dict "page" . "key" "show_section_title") }}
 <div class="w-100 mb4 nested-copy-line-height relative bg-white">
   <div class="mb3 pa4 gray overflow-hidden bg-white">
-    {{with .CurrentSection.Title }}<span class="f6 db">{{ . }}</span>{{end}}
+    {{ if $show_section_title }}
+      {{ with .CurrentSection.Title }}<span class="f6 db">{{ . }}</span>{{ end }}
+    {{ end }}
     {{ if $show_date }}
       <time class="f6 db" {{ fmt.Printf `datetime="%s"` (.Date.Format "2006-01-02T15:04:05Z07:00") | safe.HTMLAttr }}>
         {{- .Date | time.Format (compare.Default "January 2, 2006" .Site.Params.date_format) -}}
