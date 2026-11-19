@@ -14,6 +14,20 @@ verbosity = "warning" # debug, info, warning, error
 */}}
 
 {{/*
+Parameters:
+
+@param message   string  The message.
+@param severity  string  debug, info, warning, error, or deprecated.
+@param id        string  Optional. Log id. With an id, the message is logged
+                         with fmt.Warnidf or fmt.Erroridf, so a site can
+                         suppress it with `ignoreLogs = ['<id>']`.
+
+The `deprecated` severity is for deprecation notices. It is always printed,
+whatever the verbosity is, in the warning colour with the label DEPR. Hugo
+prints an identical message only once per build.
+*/}}
+
+{{/*
 | Primary | `#AA99FF` | `170, 153, 255` |
 | Ananke  | `#FF80BF` | `255, 128, 191` |
 | Comment | `#708CA9` | `112, 140, 169` |
@@ -39,6 +53,8 @@ verbosity = "warning" # debug, info, warning, error
   {{- $severity = "error" -}}
 {{- else if compare.Eq $severity "infos" -}}
   {{- $severity = "info" -}}
+{{- else if or (compare.Eq $severity "deprecation") (compare.Eq $severity "depr") -}}
+  {{- $severity = "deprecated" -}}
 {{- end -}}
 
 {{- $verbosity := $config.verbosity | compare.Default "error" -}}
@@ -54,7 +70,9 @@ verbosity = "warning" # debug, info, warning, error
 {{- end -}}
 
 {{- $shouldOutput := false -}}
-{{- if compare.Eq $verbosity "debug" -}}
+{{- if compare.Eq $severity "deprecated" -}}
+  {{- $shouldOutput = true -}}
+{{- else if compare.Eq $verbosity "debug" -}}
   {{- $shouldOutput = true -}}
 {{- else if and (compare.Eq $verbosity "info") (not (compare.Eq $severity "debug")) -}}
   {{- $shouldOutput = true -}}
@@ -76,12 +94,27 @@ verbosity = "warning" # debug, info, warning, error
 {{- else if compare.Eq $severity "debug" -}}
   {{- $colourLevel = $colourComment -}}
   {{- $severityLabel = "DEBG" -}}
+{{- else if compare.Eq $severity "deprecated" -}}
+  {{- $colourLevel = $colourWarning -}}
+  {{- $severityLabel = "DEPR" -}}
 {{- end -}}
 
+{{/* Deprecation notices show the whole message in the warning colour. */}}
+{{- $colourMessage := compare.Conditional (compare.Eq $severity "deprecated") $colourWarning $colourComment -}}
+
 {{- if $shouldOutput -}}
+  {{- $line := fmt.Printf "%s%s%s/%s%s %s%s%s" $colourAnanke $namespace $colourComment $colourLevel $severityLabel $colourMessage .message $colourReset -}}
   {{- if compare.Eq $severity "error" -}}
-    {{- fmt.Errorf (fmt.Printf "%s%s%s/%s%s %s%s%s" $colourAnanke $namespace $colourComment $colourLevel $severityLabel $colourComment .message $colourReset) -}}
+    {{- with .id -}}
+      {{- fmt.Erroridf . "%s" $line -}}
+    {{- else -}}
+      {{- fmt.Errorf "%s" $line -}}
+    {{- end -}}
   {{- else -}}
-    {{- fmt.Warnf (fmt.Printf "%s%s%s/%s%s %s%s%s" $colourAnanke $namespace $colourComment $colourLevel $severityLabel $colourComment .message $colourReset) -}}
+    {{- with .id -}}
+      {{- fmt.Warnidf . "%s" $line -}}
+    {{- else -}}
+      {{- fmt.Warnf "%s" $line -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
