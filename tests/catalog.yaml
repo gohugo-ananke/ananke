@@ -14,6 +14,28 @@ params:
     tests: ["scripts/test-hugo-quickstart.ts"]
   ananke.copy_code:
     tests: ["tests/e2e/copy-button.spec.ts"]
+  ananke.navigation.classes.nav:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.inner:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.brand:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.toggle:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.panel:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.menu:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.item:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.link:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.submenu_toggle:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.submenu:
+    tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.submenu_link:
+    tests: ["tests/e2e/navigation.spec.ts"]
 
 shortcodes:
   form-contact:
