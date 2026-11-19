@@ -1,13 +1,17 @@
 {{- /*
-  Copy-to-clipboard behaviour for code blocks rendered by
-  layouts/_markup/render-codeblock.html.
+  Site scripts. Each block is progressive enhancement: its buttons are hidden
+  in the markup and only revealed here, so a site with JavaScript disabled
+  never shows an inert button.
 
-  Progressive enhancement: the buttons are hidden in the markup and only
-  revealed here, so a site with JavaScript disabled never shows an inert
-  button. A single delegated listener handles every code block on the page.
+  1. Copy-to-clipboard behaviour for code blocks rendered by
+     layouts/_markup/render-codeblock.html. A single delegated listener
+     handles every code block on the page. Disable the copy buttons entirely
+     with `[ananke] copy_code = false`.
+  2. Submenu toggles for the main menu rendered by
+     layouts/_partials/site-navigation.html. Only included if a `main` menu
+     entry has children.
 
-  Override this partial in your own project to add or replace site scripts;
-  disable the copy buttons entirely with `[ananke] copy_code = false`.
+  Override this partial in your own project to add or replace site scripts.
 */ -}}
 {{- if ne false site.Params.ananke.copy_code -}}
 <script>
@@ -78,6 +82,94 @@
     document.addEventListener("click", function (event) {
       var button = event.target.closest(".code-copy");
       if (button) copyFrom(button);
+    });
+  })();
+</script>
+{{- end -}}
+
+{{- $has_submenus := false -}}
+{{- range site.Menus.main -}}
+  {{- if .HasChildren -}}{{- $has_submenus = true -}}{{- end -}}
+{{- end -}}
+{{- if $has_submenus -}}
+<script>
+  (function () {
+    "use strict";
+
+    // The toggle button of the open submenu. Only one submenu is open at a time.
+    var openButton = null;
+
+    function submenuOf(button) {
+      return document.getElementById(button.getAttribute("aria-controls"));
+    }
+
+    function setExpanded(button, expanded) {
+      var submenu = submenuOf(button);
+      if (!submenu) return;
+      button.setAttribute("aria-expanded", expanded ? "true" : "false");
+      submenu.hidden = !expanded;
+      submenu.classList.remove("ananke-submenu-flip");
+      if (expanded) {
+        // Align the dropdown to the other edge of its parent if it would
+        // leave the viewport.
+        var rect = submenu.getBoundingClientRect();
+        if (rect.right > document.documentElement.clientWidth || rect.left < 0) {
+          submenu.classList.add("ananke-submenu-flip");
+        }
+      }
+      openButton = expanded ? button : null;
+    }
+
+    function closeOpen(returnFocus) {
+      var button = openButton;
+      if (!button) return;
+      setExpanded(button, false);
+      if (returnFocus) button.focus();
+    }
+
+    // Reveal the toggle buttons and collapse the submenus once the DOM is
+    // ready. Without JavaScript the submenus stay visible as nested lists.
+    function enhance() {
+      var buttons = document.querySelectorAll(".ananke-submenu-toggle[hidden]");
+      for (var i = 0; i < buttons.length; i++) {
+        var submenu = submenuOf(buttons[i]);
+        if (!submenu) continue;
+        submenu.hidden = true;
+        buttons[i].hidden = false;
+        var label = buttons[i].parentNode.querySelector(".ananke-submenu-label");
+        if (label) label.hidden = true;
+      }
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", enhance);
+    } else {
+      enhance();
+    }
+
+    document.addEventListener("click", function (event) {
+      var button = event.target.closest(".ananke-submenu-toggle");
+      if (button) {
+        var expand = button.getAttribute("aria-expanded") !== "true";
+        if (openButton && openButton !== button) closeOpen(false);
+        setExpanded(button, expand);
+      } else if (openButton && !openButton.parentNode.contains(event.target)) {
+        closeOpen(false);
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape" || !openButton) return;
+      // Return focus to the button only if focus was inside the menu item.
+      closeOpen(openButton.parentNode.contains(document.activeElement));
+    });
+
+    // Close when keyboard focus leaves the menu item.
+    document.addEventListener("focusout", function (event) {
+      if (!openButton || !event.relatedTarget) return;
+      var item = openButton.parentNode;
+      if (item.contains(event.target) && !item.contains(event.relatedTarget)) {
+        closeOpen(false);
+      }
     });
   })();
 </script>
