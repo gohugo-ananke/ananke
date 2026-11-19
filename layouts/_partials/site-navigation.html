@@ -1,3 +1,40 @@
+{{- /*
+  Returns the aria-current value for a menu entry: "page" if it links to the
+  current page, "true" if the current page is below it (Hugo's HasMenuCurrent,
+  which includes pages inside the entry's section), or an empty string.
+*/ -}}
+{{- define "_partials/AnankeMenuCurrent.html" -}}
+  {{- $current := "" -}}
+  {{- if .page.IsMenuCurrent "main" .entry -}}
+    {{- $current = "page" -}}
+  {{- else if .page.HasMenuCurrent "main" .entry -}}
+    {{- $current = "true" -}}
+  {{- end -}}
+  {{- return $current -}}
+{{- end -}}
+
+{{- define "_partials/AnankeSubmenuIcon.html" -}}
+<svg class="ananke-submenu-icon" aria-hidden="true" focusable="false" width="12" height="12" viewBox="0 0 12 12"><path d="M2 4.5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+{{- end -}}
+
+{{- define "_partials/AnankeSubmenu.html" -}}
+{{- $page := .page }}
+<ul {{ with .id }}id="{{ . }}" class="ananke-submenu list pa0 ma0 {{ $page.Site.Params.background_color_class | compare.Default "bg-black" }}"{{ else }}class="ananke-submenu-nested list ma0"{{ end }}>
+  {{- range .entries }}
+  {{- $current := partials.Include "AnankeMenuCurrent.html" (dict "page" $page "entry" .) }}
+  <li class="ananke-submenu-item">
+    {{- if .URL }}
+    <a class="hover-white white-90 no-underline" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>{{ .Name }}</a>
+    {{- else }}
+    <span class="white-90">{{ .Name }}</span>
+    {{- end }}
+    {{- with .Children }}
+    {{ partials.Include "AnankeSubmenu.html" (dict "page" $page "entries" .) }}
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>
+{{- end -}}
 <nav class="pv3 ph3 ph4-ns" role="navigation">
   <div class="flex-l center items-center justify-between">
     <a href="{{ .Site.Home.RelPermalink }}" class="f3 fw2 hover-white white-90 dib no-underline">
@@ -11,12 +48,42 @@
       {{ partials.Include "i18nlist.html" . }}
       {{ if .Site.Menus.main }}
         <ul class="{{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pr0 ml3" "pl0 mr3" }}">
-          {{ range .Site.Menus.main }}
+          {{ range $index, $entry := .Site.Menus.main }}
+          {{- $current := partials.Include "AnankeMenuCurrent.html" (dict "page" $ "entry" $entry) -}}
+          {{- if not $entry.HasChildren }}
           <li class="list f5 f4-ns fw4 dib {{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pl3" "pr3" }}">
-            <a class="hover-white white-90 no-underline" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}">
+            <a class="hover-white white-90 no-underline" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>
               {{ .Name }}
             </a>
           </li>
+          {{- else }}
+          {{- /*
+            A parent entry with children. The child list is always in the
+            markup, so it stays reachable without JavaScript. The toggle button
+            is hidden until site-scripts.html reveals it and collapses the list.
+            Entries below the second level render as nested lists inside the
+            submenu, without their own toggle.
+          */}}
+          {{- $submenu_id := printf "ananke-submenu-%d" $index }}
+          <li class="list f5 f4-ns fw4 dib {{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pl3" "pr3" }} ananke-has-submenu">
+            {{- if .URL }}
+            <a class="hover-white white-90 no-underline" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>
+              {{ .Name }}
+            </a>
+            <button type="button" class="ananke-submenu-toggle hover-white white-90" aria-expanded="false" aria-controls="{{ $submenu_id }}" hidden>
+              <span class="clip">{{ lang.Translate "submenuToggle" . | compare.Default .Name }}</span>
+              {{- partials.Include "AnankeSubmenuIcon.html" }}
+            </button>
+            {{- else }}
+            <span class="white-90 ananke-submenu-label">{{ .Name }}</span>
+            <button type="button" class="ananke-submenu-toggle hover-white white-90" aria-expanded="false" aria-controls="{{ $submenu_id }}"{{ with $current }} aria-current="{{ . }}"{{ end }} hidden>
+              {{ .Name }}
+              {{- partials.Include "AnankeSubmenuIcon.html" }}
+            </button>
+            {{- end }}
+            {{ partials.Include "AnankeSubmenu.html" (dict "page" $ "entries" .Children "id" $submenu_id) }}
+          </li>
+          {{- end }}
           {{ end }}
         </ul>
       {{ end }}
