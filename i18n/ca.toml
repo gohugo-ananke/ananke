@@ -44,3 +44,6 @@ other = "Lectura en {{ .Count }} minuts"
 [wordCount]
 one = "Una paraula"
 other = "{{ .Count }} paraules"
+
+[menuToggle]
+other = "Menú"

@@ -39,3 +39,6 @@ other = "Di seguito troverai le pagine che utilizzano il termine “{{ .Title }}
 
 [pageTitle]
 other = "{{ .Name }} pagina"
+
+[menuToggle]
+other = "Menu"

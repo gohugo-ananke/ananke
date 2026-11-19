@@ -47,3 +47,6 @@ other = "{{ .Count }} Wörter"
 
 [pageTitle]
 other = "{{ .Name }} Seite"
+
+[menuToggle]
+other = "Menü"

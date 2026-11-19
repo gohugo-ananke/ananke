@@ -56,3 +56,6 @@ other = "{{ .Name }} page"
 
 [submenuToggle]
 other = "{{ .Name }} submenu"
+
+[menuToggle]
+other = "Menu"
