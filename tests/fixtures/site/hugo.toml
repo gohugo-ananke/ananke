@@ -15,6 +15,10 @@ show_recent_posts = true
 show_categories = true
 copy_code = true
 
+# Replace the default classes of one navigation element (tests/e2e/navigation.spec.ts).
+[params.ananke.navigation.classes]
+toggle = "f5 white-90 hover-white fixture-menu-button"
+
 # Main menu with submenus (tests/e2e/navigation.spec.ts):
 #   Posts  - parent with its own page; children from config and front matter
 #   Topics - parent without a URL; Tags has a third-level child
