@@ -7,9 +7,10 @@
      layouts/_markup/render-codeblock.html. A single delegated listener
      handles every code block on the page. Disable the copy buttons entirely
      with `[ananke] copy_code = false`.
-  2. Submenu toggles for the main menu rendered by
-     layouts/_partials/site-navigation.html. Only included if a `main` menu
-     entry has children.
+  2. Header navigation rendered by layouts/_partials/site-navigation.html:
+     the menu button that collapses the menu below the Tachyons `-l`
+     breakpoint, and the submenu toggles. Only included if the site has a
+     `main` menu.
 
   Override this partial in your own project to add or replace site scripts.
 */ -}}
@@ -87,11 +88,7 @@
 </script>
 {{- end -}}
 
-{{- $has_submenus := false -}}
-{{- range site.Menus.main -}}
-  {{- if .HasChildren -}}{{- $has_submenus = true -}}{{- end -}}
-{{- end -}}
-{{- if $has_submenus -}}
+{{- if site.Menus.main -}}
 <script>
   (function () {
     "use strict";
@@ -99,12 +96,12 @@
     // The toggle button of the open submenu. Only one submenu is open at a time.
     var openButton = null;
 
-    function submenuOf(button) {
+    function controlled(button) {
       return document.getElementById(button.getAttribute("aria-controls"));
     }
 
-    function setExpanded(button, expanded) {
-      var submenu = submenuOf(button);
+    function setSubmenu(button, expanded) {
+      var submenu = controlled(button);
       if (!submenu) return;
       button.setAttribute("aria-expanded", expanded ? "true" : "false");
       submenu.hidden = !expanded;
@@ -120,23 +117,36 @@
       openButton = expanded ? button : null;
     }
 
-    function closeOpen(returnFocus) {
+    function closeSubmenu(returnFocus) {
       var button = openButton;
       if (!button) return;
-      setExpanded(button, false);
+      setSubmenu(button, false);
       if (returnFocus) button.focus();
     }
 
-    // Reveal the toggle buttons and collapse the submenus once the DOM is
-    // ready. Without JavaScript the submenus stay visible as nested lists.
+    function setMenu(button, expanded) {
+      var nav = button.closest(".ananke-nav");
+      if (!nav) return;
+      button.setAttribute("aria-expanded", expanded ? "true" : "false");
+      nav.classList.toggle("ananke-nav-collapsed", !expanded);
+    }
+
+    // Reveal the buttons and collapse the menu and submenus once the DOM is
+    // ready. Without JavaScript everything stays visible.
     function enhance() {
+      var menuButtons = document.querySelectorAll(".ananke-nav-toggle[hidden]");
+      for (var i = 0; i < menuButtons.length; i++) {
+        if (!controlled(menuButtons[i])) continue;
+        setMenu(menuButtons[i], false);
+        menuButtons[i].hidden = false;
+      }
       var buttons = document.querySelectorAll(".ananke-submenu-toggle[hidden]");
-      for (var i = 0; i < buttons.length; i++) {
-        var submenu = submenuOf(buttons[i]);
+      for (var j = 0; j < buttons.length; j++) {
+        var submenu = controlled(buttons[j]);
         if (!submenu) continue;
         submenu.hidden = true;
-        buttons[i].hidden = false;
-        var label = buttons[i].parentNode.querySelector(".ananke-submenu-label");
+        buttons[j].hidden = false;
+        var label = buttons[j].parentNode.querySelector(".ananke-submenu-label");
         if (label) label.hidden = true;
       }
     }
@@ -147,28 +157,52 @@
     }
 
     document.addEventListener("click", function (event) {
+      var menuButton = event.target.closest(".ananke-nav-toggle");
+      if (menuButton) {
+        setMenu(menuButton, menuButton.getAttribute("aria-expanded") !== "true");
+        return;
+      }
       var button = event.target.closest(".ananke-submenu-toggle");
       if (button) {
         var expand = button.getAttribute("aria-expanded") !== "true";
-        if (openButton && openButton !== button) closeOpen(false);
-        setExpanded(button, expand);
+        if (openButton && openButton !== button) closeSubmenu(false);
+        setSubmenu(button, expand);
       } else if (openButton && !openButton.parentNode.contains(event.target)) {
-        closeOpen(false);
+        closeSubmenu(false);
       }
     });
 
     document.addEventListener("keydown", function (event) {
-      if (event.key !== "Escape" || !openButton) return;
-      // Return focus to the button only if focus was inside the menu item.
-      closeOpen(openButton.parentNode.contains(document.activeElement));
+      if (event.key !== "Escape") return;
+      if (openButton) {
+        // Return focus to the button only if focus was inside the menu item.
+        closeSubmenu(openButton.parentNode.contains(document.activeElement));
+        return;
+      }
+      var menuButton = document.querySelector('.ananke-nav-toggle[aria-expanded="true"]');
+      if (!menuButton) return;
+      var panel = controlled(menuButton);
+      var inside = panel && panel.contains(document.activeElement);
+      setMenu(menuButton, false);
+      if (inside) menuButton.focus();
     });
 
-    // Close when keyboard focus leaves the menu item.
+    // Close a submenu when keyboard focus leaves its menu item. Pointer users
+    // get the outside-click handler instead: on small screens submenus open
+    // inline, and closing one on pointer focus would move the target of the
+    // click that is still in progress.
+    var keyboardFocus = false;
+    document.addEventListener("keydown", function () {
+      keyboardFocus = true;
+    }, true);
+    document.addEventListener("pointerdown", function () {
+      keyboardFocus = false;
+    }, true);
     document.addEventListener("focusout", function (event) {
-      if (!openButton || !event.relatedTarget) return;
+      if (!keyboardFocus || !openButton || !event.relatedTarget) return;
       var item = openButton.parentNode;
       if (item.contains(event.target) && !item.contains(event.relatedTarget)) {
-        closeOpen(false);
+        closeSubmenu(false);
       }
     });
   })();
