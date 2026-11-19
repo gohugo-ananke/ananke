@@ -36,6 +36,10 @@ When using AI as part of a contribution:
 
 Automated and agent-submitted contributions are permitted. Each such contribution must have an identifiable person who assumes responsibility for it and satisfies this policy. Automation does not transfer responsibility from that person to the tool.
 
+## Scratch directory
+
+The `scratch` directory holds temporary files only. Linting, checks, and any other error checks MUST NOT be done on the `scratch` directory. For the full rules, see [`.agents/instructions/scratch.instructions.md`](.agents/instructions/scratch.instructions.md).
+
 ## Speak for yourself
 
 Communication must represent your own understanding and judgement.

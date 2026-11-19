@@ -11,7 +11,9 @@
       "addWords": true
     }
   ],
-  "cSpell.dictionaries": ["workspace"],
+  "cSpell.dictionaries": [
+    "workspace"
+  ],
   "cSpell.enabledFileTypes": {
     "markdown": true,
     "plaintext": true,
@@ -25,7 +27,7 @@
   "explorer.fileNesting.patterns": {
     "package.json": "package-lock.json, netlify.toml, lint-staged.config.ts, .release-it.ts, biome.json, renovate.json5, .nvmrc, lychee.toml, tsconfig.json, .coderabbit.yaml",
     "theme.toml": "go.mod, go.sum",
-    "README.md": "CHANGELOG.md, LICENSE.md, CONTRIBUTING.md, RELEASES.md, DESIGN.md",
+    "README.md": "CHANGELOG.md, LICENSE.md, CONTRIBUTING.md, RELEASES.md, DESIGN.md, AI_CONTRIBUTIONS.md",
     "*.ts": "$(capture).md, $(capture).test.ts, $(capture).spec.ts, $(capture).d.ts, $(capture).map, $(capture).js, $(capture).jsx, $(capture).tsx"
   },
   "window.autoDetectColorScheme": false,
