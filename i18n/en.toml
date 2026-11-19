@@ -53,3 +53,6 @@ other = "{{ .Count }} words"
 
 [pageTitle]
 other = "{{ .Name }} page"
+
+[submenuToggle]
+other = "{{ .Name }} submenu"
