@@ -17,3 +17,113 @@
 .nested-links a {
   overflow-wrap: break-word;
 }
+
+/* ------------------------------------------------------------------ *
+ * Header navigation submenus (see layouts/_partials/site-navigation.html)
+ * Without JavaScript the child list stays visible in the page flow.
+ * site-scripts.html reveals the toggle button and collapses the list;
+ * only then is the list positioned as a dropdown.
+ * ------------------------------------------------------------------ */
+
+.ananke-has-submenu {
+  position: relative;
+}
+
+/* Without JavaScript, align the item with the nested list to the top. */
+.ananke-has-submenu:has(> .ananke-submenu-toggle[hidden]) {
+  vertical-align: top;
+}
+
+.ananke-submenu-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  min-width: 24px;
+  min-height: 24px;
+  justify-content: center;
+  margin: 0;
+  padding: 0 0.25rem;
+  font: inherit;
+  vertical-align: middle;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.ananke-submenu-toggle[hidden],
+.ananke-submenu[hidden] {
+  display: none;
+}
+
+.ananke-submenu-icon {
+  flex: none;
+  transition: transform 0.15s ease-in-out;
+}
+
+.ananke-submenu-toggle[aria-expanded="true"] .ananke-submenu-icon {
+  transform: rotate(180deg);
+}
+
+.ananke-submenu-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.ananke-submenu {
+  font-size: 1rem;
+  text-align: start;
+}
+
+.ananke-submenu-nested {
+  padding-inline-start: 1rem;
+  padding-inline-end: 0;
+}
+
+.ananke-submenu-item > a,
+.ananke-submenu-item > span {
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
+.ananke-submenu a[aria-current="page"] {
+  text-decoration: underline;
+}
+
+/* Dropdown, only after the script has revealed the toggle button. */
+.ananke-submenu-toggle:not([hidden]) + .ananke-submenu {
+  position: absolute;
+  top: 100%;
+  inset-inline-start: 0;
+  z-index: 10;
+  min-width: 12rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.5rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Set by the script when the dropdown would leave the viewport. */
+.ananke-submenu-toggle:not([hidden]) + .ananke-submenu-flip {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+/* Narrow screens: the dropdown spans the viewport below its parent item. */
+@media screen and (max-width: 29.99em) {
+  .ananke-has-submenu {
+    position: static;
+  }
+
+  .ananke-submenu-toggle:not([hidden]) + .ananke-submenu {
+    top: auto;
+    inset-inline: 1rem;
+    min-width: 0;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ananke-submenu-icon {
+    transition: none;
+  }
+}
