@@ -13,3 +13,6 @@ todo*.md
 
 # Playwright MCP reports (console logs and page snapshots)
 .playwright-mcp/
+
+# Local posting credentials
+/.env
