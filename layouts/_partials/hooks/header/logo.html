@@ -1,0 +1,12 @@
+{{- /*
+  Header component: site logo or site title, linked to the home page.
+  Uses `site_logo` from the site parameters if it is set.
+*/ -}}
+{{- $site := .page.Site -}}
+<a href="{{ $site.Home.RelPermalink }}" class="ananke-nav-brand {{ .classes.brand }}">
+  {{ with $site.Params.site_logo }}
+    <img src="{{ urls.RelURL . }}" class="w100 mw5-ns" alt="{{ $site.Title }}" />
+  {{ else }}
+    {{ $site.Title }}
+  {{ end }}
+</a>

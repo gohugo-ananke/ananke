@@ -1,0 +1,27 @@
+{{- /*
+  Renders the child entries of a main menu entry. The top level gets the
+  `ananke-submenu` class and an id for its toggle button; deeper levels render
+  as nested lists without their own toggle.
+
+  @param page     page    The current page.
+  @param entries  menu    The child entries.
+  @param classes  map     Classes from func/header/GetNavigationClasses.html.
+  @param id       string  Optional. Id of the top-level list.
+*/ -}}
+{{- $page := .page }}
+{{- $classes := .classes }}
+<ul {{ with .id }}id="{{ . }}" class="ananke-submenu {{ $classes.submenu }}"{{ else }}class="ananke-submenu-nested list ma0 pa0"{{ end }}>
+  {{- range .entries }}
+  {{- $current := partials.Include "func/header/GetMenuCurrent.html" (dict "page" $page "entry" .) }}
+  <li class="ananke-submenu-item">
+    {{- if .URL }}
+    <a class="ananke-submenu-link {{ $classes.submenu_link }}" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>{{ .Name }}</a>
+    {{- else }}
+    <span class="ananke-submenu-link {{ $classes.submenu_link }}">{{ .Name }}</span>
+    {{- end }}
+    {{- with .Children }}
+    {{ partials.Include "header/submenu.html" (dict "page" $page "entries" . "classes" $classes) }}
+    {{- end }}
+  </li>
+  {{- end }}
+</ul>

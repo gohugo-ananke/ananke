@@ -11,12 +11,7 @@
       {{ partials.Include "site-navigation.html" . }}
       <div class="{{ $header_section_class }}">
         {{ if not .Params.omit_header_text }}
-          <div class="f2 f1-l fw2 white-90 mb0 lh-title">{{ .Title | compare.Default .Site.Title }}</div>
-          {{ with .Params.description  }}
-            <div class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
-              {{ . }}
-            </div>
-          {{ end }}
+          {{ partials.Include "header/content.html" (collections.Dictionary "page" . "variant" "page" "featured_image" $featured_image) }}
         {{ end }}
       </div>
     </div>

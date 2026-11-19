@@ -1,0 +1,49 @@
+{{- /*
+  Header component: the `main` menu of the site, with submenus for entries
+  that have children. Renders nothing if the site has no `main` menu.
+
+  The child lists are always in the markup, so they stay reachable without
+  JavaScript. site-scripts.html adds the submenu toggle behaviour.
+*/ -}}
+{{- $page := .page -}}
+{{- $classes := .classes -}}
+{{- if $page.Site.Menus.main -}}
+<ul class="ananke-nav-menu {{ $classes.menu }}">
+  {{ range $index, $entry := $page.Site.Menus.main }}
+  {{- $current := partials.Include "func/header/GetMenuCurrent.html" (dict "page" $page "entry" $entry) -}}
+  {{- if not $entry.HasChildren }}
+  <li class="ananke-nav-item {{ $classes.item }}">
+    <a class="ananke-nav-link {{ $classes.link }}" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>
+      {{ .Name }}
+    </a>
+  </li>
+  {{- else }}
+  {{- /*
+    A parent entry with children. The child list is always in the
+    markup, so it stays reachable without JavaScript. Entries below the
+    second level render as nested lists inside the submenu, without
+    their own toggle.
+  */}}
+  {{- $submenu_id := printf "ananke-submenu-%d" $index }}
+  <li class="ananke-nav-item ananke-has-submenu {{ $classes.item }}">
+    {{- if .URL }}
+    <a class="ananke-nav-link {{ $classes.link }}" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>
+      {{ .Name }}
+    </a>
+    <button type="button" class="ananke-submenu-toggle {{ $classes.submenu_toggle }}" aria-expanded="false" aria-controls="{{ $submenu_id }}" hidden>
+      <span class="clip">{{ lang.Translate "submenuToggle" . | compare.Default .Name }}</span>
+      {{- partials.Include "header/submenu-icon.html" }}
+    </button>
+    {{- else }}
+    <span class="ananke-submenu-label {{ $classes.link }}">{{ .Name }}</span>
+    <button type="button" class="ananke-submenu-toggle {{ $classes.submenu_toggle }}" aria-expanded="false" aria-controls="{{ $submenu_id }}"{{ with $current }} aria-current="{{ . }}"{{ end }} hidden>
+      {{ .Name }}
+      {{- partials.Include "header/submenu-icon.html" }}
+    </button>
+    {{- end }}
+    {{ partials.Include "header/submenu.html" (dict "page" $page "entries" .Children "id" $submenu_id "classes" $classes) }}
+  </li>
+  {{- end }}
+  {{ end }}
+</ul>
+{{- end -}}

@@ -1,0 +1,15 @@
+{{- /*
+  Header component: the page title, or the site title if the page has none.
+
+  The `site` variant (list pages) renders an `h1`. The `page` variant (single
+  pages) renders a `div`, because the article itself contains the `h1`.
+*/ -}}
+{{- $page := .page -}}
+{{- $title := $page.Title | compare.Default $page.Site.Title -}}
+{{- if compare.Eq .variant "page" -}}
+  <div class="f2 f1-l fw2 white-90 mb0 lh-title">{{ $title }}</div>
+{{- else -}}
+  <h1 class="f2 f-subheadline-l fw2 {{ compare.Conditional (compare.Ne .featured_image "") "white-90" "light-silver" }} mb0 lh-title">
+    {{ $title }}
+  </h1>
+{{- end -}}
