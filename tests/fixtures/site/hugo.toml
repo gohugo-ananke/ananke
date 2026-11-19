@@ -15,6 +15,12 @@ show_recent_posts = true
 show_categories = true
 copy_code = true
 
+# Header layout with a custom `search` component in its own group
+# (tests/e2e/header.spec.ts, tests/e2e/navigation.spec.ts). The component is
+# tests/fixtures/site/layouts/_partials/hooks/header/search.html.
+[params.ananke.header]
+navigation = [["logo"], ["search"], ["languages", "menu", "social"]]
+
 # Replace the default classes of one navigation element (tests/e2e/navigation.spec.ts).
 [params.ananke.navigation.classes]
 toggle = "f5 white-90 hover-white fixture-menu-button"

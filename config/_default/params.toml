@@ -7,6 +7,26 @@ copy_code = true # show a copy-to-clipboard button on code blocks (progressive e
 [ananke.home]
 content_alignment = "center" # options: left, center, right
 
+[ananke.header]
+# Layout of the navigation bar. Each entry is a group of components. Groups are
+# spread over the width of the bar: the first group at the start, the last group
+# at the end, and any other groups in between. A group is a list of component
+# names, or a single component name. Every component name `<name>` renders the
+# hook partial `layouts/_partials/hooks/header/<name>.html`. The theme ships
+# `logo`, `languages`, `menu`, and `social`. Add your own (for example `search`)
+# by creating the matching hook partial in your site.
+#
+# Below 60em, the group with `menu` collapses behind the menu button, the group
+# with `logo` shares the first row with that button, and every other group gets
+# its own row. Keep `logo` and `menu` in different groups.
+navigation = [
+  ["logo"],
+  ["languages", "menu", "social"],
+]
+# Components below the navigation bar, from top to bottom. The theme ships
+# `title` and `description`.
+content = ["title", "description"]
+
 # Tachyons classes for the header navigation (layouts/_partials/site-navigation.html).
 # An empty value uses the theme default shown in the comment. A value replaces the
 # default classes of that element; its `ananke-nav-*` hook class always stays.
@@ -15,7 +35,8 @@ nav = "" # <nav>: "pv3 ph3 ph4-ns"
 inner = "" # row inside <nav>: "flex flex-wrap items-center justify-between center"
 brand = "" # site title or logo link: "f3 fw2 hover-white white-90 dib no-underline"
 toggle = "" # menu button below the -l breakpoint: "f5 white-90 hover-white"
-panel = "" # collapsible panel with menu, languages, and social links: "flex-l items-center"
+group = "" # every group of [ananke.header] navigation except the panel: "flex-l items-center"
+panel = "" # collapsible group, the one with the `menu` component: "flex-l items-center"
 menu = "" # main menu <ul>: "pl0 mr3" ("pr0 ml3" for right-to-left)
 item = "" # main menu <li>: "list f5 f4-ns fw4 dib pr3" ("pl3" for right-to-left)
 link = "" # main menu link: "hover-white white-90 no-underline"

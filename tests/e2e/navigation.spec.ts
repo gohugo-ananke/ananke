@@ -302,7 +302,7 @@ test.describe("customisation", () => {
     await expect(page.locator(".ananke-nav-brand")).toHaveClass(/\bf3\b/);
   });
 
-  test("renders the navigation-start hook in the slot", async ({ page }) => {
+  test("renders a custom component in its own slot group", async ({ page }) => {
     await page.goto("/");
     await expect(
       page.locator(".ananke-nav-slot").getByRole("search"),

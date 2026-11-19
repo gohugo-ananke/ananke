@@ -1,6 +1,9 @@
 {{- /*
-  Header content below the navigation bar: the title and the description of
-  the page. Every part is rendered through the header hooks (see
+  Header content below the navigation bar.
+
+  The components and their order come from `ananke.header.content` (page front
+  matter or site parameters). The default is the title and the description of
+  the page. Every component is rendered through the header hooks (see
   `header/component.html`).
 
   @param page            page    The current page.
@@ -8,5 +11,7 @@
   @param featured_image  string  Featured image URL, or an empty string.
 */ -}}
 {{- $header := collections.Merge . (collections.Dictionary "region" "content") -}}
-{{ partials.Include "header/component.html" (collections.Dictionary "name" "title" "context" $header) }}
-{{ partials.Include "header/component.html" (collections.Dictionary "name" "description" "context" $header) }}
+{{- $components := .page.Param "ananke.header.content" | compare.Default (collections.Slice "title" "description") -}}
+{{- range $components }}
+{{ partials.Include "header/component.html" (collections.Dictionary "name" . "context" $header) }}
+{{- end }}

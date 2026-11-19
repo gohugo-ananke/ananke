@@ -109,11 +109,12 @@
   text-underline-offset: 0.25em;
 }
 
-/* Small and medium screens: brand and menu button in one row, an optional
-   slot (search) below, then the menu panel as a stacked list. */
+/* Small and medium screens: the lead group (brand) and the menu button in one
+   row, every slot group (for example search) in its own row below, then the
+   menu panel as a stacked list. */
 @media not all and (min-width: 60em) {
   /* A long site title wraps instead of pushing the menu button down. */
-  .ananke-nav-brand {
+  .ananke-nav-lead {
     flex: 1 1 0%;
     min-width: 0;
   }
@@ -196,11 +197,17 @@
     display: none;
   }
 
-  /* The slot shrinks before the row wraps. */
+  /* A slot group (for example search) shrinks before the row wraps. */
   .ananke-nav-slot {
     flex: 1 1 10rem;
     max-width: 28rem;
     margin-inline: 1.5rem;
+  }
+
+  /* Items in a slot group fill it, like a single search form. */
+  .ananke-nav-slot > * {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .ananke-submenu-toggle {

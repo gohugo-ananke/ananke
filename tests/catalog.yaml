@@ -24,6 +24,8 @@ params:
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.toggle:
     tests: ["tests/e2e/navigation.spec.ts"]
+  ananke.navigation.classes.group:
+    tests: ["tests/e2e/header.spec.ts"]
   ananke.navigation.classes.panel:
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.menu:

@@ -1,16 +1,24 @@
 {{- /*
   Site header navigation.
 
-  The brand link, languages, menu, and social links are header components:
-  each one renders through the header hooks (see `header/component.html`).
+  The layout comes from `ananke.header.navigation` (page front matter or site
+  parameters): a list of groups, and each group is a list of component names
+  (or one component name). Every component renders through the header hooks
+  (see `header/component.html`). Each group gets one role:
+
+    - panel (`ananke-nav-panel`): the first group with the `menu` component.
+      Below the Tachyons `-l` breakpoint it collapses behind the menu button,
+      which is rendered directly before it.
+    - lead (`ananke-nav-lead`): the first group with the `logo` component, or
+      else the first other group. Below `-l` it shares the first row with the
+      menu button.
+    - slot (`ananke-nav-slot`): every other group, for example a search box.
+      Below `-l` it gets its own row; from `-l` it can grow.
 
   Every element has a stable `ananke-nav-*` or `ananke-submenu*` hook class
   for custom CSS. The Tachyons classes next to it are defaults; replace them
-  per element with `[params.ananke.navigation.classes]`. Collapsing (below the
-  Tachyons `-l` breakpoint) and the dropdown position are in _styles.css.
-
-  Hooks: `navigation-start` renders after the brand link (for example a search
-  box), `navigation-end` renders at the end of the collapsible panel.
+  per element with `[params.ananke.navigation.classes]`. Collapsing and the
+  dropdown position are in _styles.css.
 
   Without JavaScript, the menu and all submenus are visible and the toggle
   buttons stay hidden. site-scripts.html enhances both.
@@ -22,25 +30,63 @@
   "featured_image" (partials.Include "func/GetFeaturedImage.html" .)
   "classes" $classes
 -}}
+
+{{- /* Normalise the layout to a list of non-empty groups. Each group is a
+       dictionary, because Hugo cannot append a slice to a slice of slices. */ -}}
+{{- $layout := .Param "ananke.header.navigation" | compare.Default (collections.Slice
+  (collections.Slice "logo")
+  (collections.Slice "languages" "menu" "social")
+) -}}
+{{- $groups := collections.Slice -}}
+{{- range $layout -}}
+  {{- $group := . -}}
+  {{- if not (reflect.IsSlice $group) -}}
+    {{- $group = collections.Slice $group -}}
+  {{- end -}}
+  {{- with $group -}}
+    {{- $groups = $groups | collections.Append (collections.Dictionary "components" .) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Find the panel group and the lead group (see above). */ -}}
+{{- $panel := -1 -}}
+{{- range $index, $group := $groups -}}
+  {{- if and (compare.Lt $panel 0) (collections.In $group.components "menu") -}}
+    {{- $panel = $index -}}
+  {{- end -}}
+{{- end -}}
+{{- $lead := -1 -}}
+{{- range $index, $group := $groups -}}
+  {{- if and (compare.Lt $lead 0) (compare.Ne $index $panel) (collections.In $group.components "logo") -}}
+    {{- $lead = $index -}}
+  {{- end -}}
+{{- end -}}
+{{- if compare.Lt $lead 0 -}}
+  {{- range $index, $group := $groups -}}
+    {{- if and (compare.Lt $lead 0) (compare.Ne $index $panel) -}}
+      {{- $lead = $index -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
 <nav class="ananke-nav {{ $classes.nav }}" role="navigation">
   <div class="ananke-nav-inner {{ $classes.inner }}">
-    {{ partials.Include "header/component.html" (collections.Dictionary "name" "logo" "context" $header) }}
-    {{- with partials.Include "hook.html" (dict "hook" "navigation-start" "context" .) | strings.TrimSpace }}
-    <div class="ananke-nav-slot">{{ . | safeHTML }}</div>
-    {{- end }}
-    {{- if .Site.Menus.main }}
+    {{- range $index, $group := $groups }}
+    {{- if compare.Eq $index $panel }}
+    {{- if $.Site.Menus.main }}
     <button type="button" class="ananke-nav-toggle {{ $classes.toggle }}" aria-expanded="false" aria-controls="ananke-nav-panel" hidden>
       {{- partials.Include "header/menu-toggle-icon.html" -}}
       <span class="ananke-nav-toggle-label">{{ lang.Translate "menuToggle" }}</span>
     </button>
     {{- end }}
-    <div id="ananke-nav-panel" class="ananke-nav-panel {{ $classes.panel }}">
-      {{ partials.Include "header/component.html" (collections.Dictionary "name" "languages" "context" $header) }}
-      {{ partials.Include "header/component.html" (collections.Dictionary "name" "menu" "context" $header) }}
-      {{ partials.Include "header/component.html" (collections.Dictionary "name" "social" "context" $header) }}
-      {{- with partials.Include "hook.html" (dict "hook" "navigation-end" "context" .) | strings.TrimSpace }}
-      <div class="ananke-nav-end">{{ . | safeHTML }}</div>
+    <div id="ananke-nav-panel" class="ananke-nav-group ananke-nav-panel {{ $classes.panel }}">
+    {{- else }}
+    <div class="ananke-nav-group {{ compare.Conditional (compare.Eq $index $lead) "ananke-nav-lead" "ananke-nav-slot" }} {{ $classes.group }}">
+    {{- end }}
+      {{- range $group.components }}
+      {{ partials.Include "header/component.html" (collections.Dictionary "name" . "context" $header) }}
       {{- end }}
     </div>
+    {{- end }}
   </div>
 </nav>

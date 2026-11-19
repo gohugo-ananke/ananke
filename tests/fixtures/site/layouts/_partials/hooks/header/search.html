@@ -1,0 +1,10 @@
+{{- /*
+  Test fixture: a custom `search` header component (tests/e2e/header.spec.ts,
+  tests/e2e/navigation.spec.ts). The id includes the region, because the
+  /header-layout/ page renders the component in both regions.
+*/ -}}
+{{- $id := printf "fixture-search-input-%s" .region -}}
+<form class="fixture-search" role="search" action="{{ "posts/" | relURL }}">
+  <label class="clip" for="{{ $id }}">Search</label>
+  <input id="{{ $id }}" class="input-reset w-100 f6 pv2 ph3 br2 ba b--white-30 bg-white-10 white" type="search" name="q" placeholder="Search">
+</form>

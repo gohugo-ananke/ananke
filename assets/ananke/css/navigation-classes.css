@@ -27,7 +27,8 @@
   /* */
 }
 
-/* Row inside <nav> that holds brand, slot, menu button, and panel. */
+/* Row inside <nav> that holds the groups of [ananke.header] navigation and
+   the menu button. */
 .ananke-nav-inner {
   /* */
 }
@@ -37,7 +38,19 @@
   /* */
 }
 
-/* Wrapper of the `navigation-start` hook, for example a search box. */
+/* Every group of [ananke.header] navigation. */
+.ananke-nav-group {
+  /* */
+}
+
+/* The group with the `logo` component (or the first other group). Shares the
+   first row with the menu button below the -l breakpoint. */
+.ananke-nav-lead {
+  /* */
+}
+
+/* Every other group that is not the lead or the panel, for example a search
+   box. Gets its own row below the -l breakpoint. */
 .ananke-nav-slot {
   /* */
 }
@@ -64,8 +77,8 @@
   /* */
 }
 
-/* Collapsible panel with languages, main menu, social links, and the
-   `navigation-end` hook. */
+/* Collapsible panel: the group with the `menu` component (by default with
+   languages, main menu, and social links). Also has .ananke-nav-group. */
 .ananke-nav-panel {
   /* */
 }
@@ -151,10 +164,5 @@
 
 /* Third and deeper levels: nested <ul> inside a submenu item. */
 .ananke-submenu-nested {
-  /* */
-}
-
-/* Wrapper of the `navigation-end` hook, at the end of the panel. */
-.ananke-nav-end {
   /* */
 }

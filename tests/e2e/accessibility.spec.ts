@@ -13,6 +13,7 @@ const PAGES: Record<string, string> = {
   "section list": "/posts/",
   "single page": "/posts/hello/",
   "standalone page": "/about/",
+  "custom header layout": "/header-layout/",
   "taxonomy terms": "/tags/",
   "taxonomy term": "/tags/alpha/",
   "404": "/404.html",
