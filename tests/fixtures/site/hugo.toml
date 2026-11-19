@@ -15,9 +15,44 @@ show_recent_posts = true
 show_categories = true
 copy_code = true
 
+# Main menu with submenus (tests/e2e/navigation.spec.ts):
+#   Posts  - parent with its own page; children from config and front matter
+#   Topics - parent without a URL; Tags has a third-level child
+#   About  - flat entry
 [[menus.main]]
 name = "Posts"
 pageRef = "/posts/"
+identifier = "posts"
+weight = 10
+
+[[menus.main]]
+name = "Second Post"
+pageRef = "/posts/second/"
+parent = "posts"
+weight = 20
+
+[[menus.main]]
+name = "Topics"
+identifier = "topics"
+weight = 15
+
+[[menus.main]]
+name = "Categories"
+pageRef = "/categories/"
+parent = "topics"
+weight = 10
+
+[[menus.main]]
+name = "Tags"
+pageRef = "/tags/"
+identifier = "tags"
+parent = "topics"
+weight = 20
+
+[[menus.main]]
+name = "Alpha"
+pageRef = "/tags/alpha/"
+parent = "tags"
 weight = 10
 
 [[menus.main]]
