@@ -10,3 +10,6 @@ todo*.md
 # Local project-management working files
 /PROJECT.md
 /TODO.md
+
+# Playwright MCP reports (console logs and page snapshots)
+.playwright-mcp/
