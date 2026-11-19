@@ -6,6 +6,22 @@ copy_code = true # show a copy-to-clipboard button on code blocks (progressive e
 [ananke.home]
 content_alignment = "center" # options: left, center, right
 
+# Tachyons classes for the header navigation (layouts/_partials/site-navigation.html).
+# An empty value uses the theme default shown in the comment. A value replaces the
+# default classes of that element; its `ananke-nav-*` hook class always stays.
+[ananke.navigation.classes]
+nav = "" # <nav>: "pv3 ph3 ph4-ns"
+inner = "" # row inside <nav>: "flex flex-wrap items-center justify-between center"
+brand = "" # site title or logo link: "f3 fw2 hover-white white-90 dib no-underline"
+toggle = "" # menu button below the -l breakpoint: "f5 white-90 hover-white"
+panel = "" # collapsible panel with menu, languages, and social links: "flex-l items-center"
+menu = "" # main menu <ul>: "pl0 mr3" ("pr0 ml3" for right-to-left)
+item = "" # main menu <li>: "list f5 f4-ns fw4 dib pr3" ("pl3" for right-to-left)
+link = "" # main menu link: "hover-white white-90 no-underline"
+submenu_toggle = "" # submenu button: "hover-white white-90"
+submenu = "" # submenu <ul>: "list ma0 pv2 ph0 br2 ba b--white-20" plus background_color_class
+submenu_link = "" # submenu link: "db pv2 ph3 f5 white-90 hover-white hover-bg-white-10 no-underline"
+
 [ananke.social]
 icon_path = "ananke/socials/%s.svg"
 
