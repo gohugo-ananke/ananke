@@ -1,16 +1,20 @@
 {
   "folders": [
     {
-      "path": "."
+      "path": ".",
+      "name": "Theme"
     },
     {
-      "path": "../documentation"
+      "path": "../documentation",
+      "name": "Documentation"
     },
     {
-      "path": "../template-git-submod"
+      "path": "../template-git-submod",
+      "name": "Git Submodule"
     },
     {
-      "path": "../template-hugo-mod"
+      "path": "../template-hugo-mod",
+      "name": "Hugo Module"
     }
   ],
   "settings": {
@@ -23,7 +27,37 @@
       "git push": true
     },
     "markdown.extension.toc.unorderedList.marker": "*",
-    "markdown.extension.toc.levels": "2..6"
+    "markdown.extension.toc.levels": "2..6",
+    "workbench.colorCustomizations": {
+      "activityBar.activeBackground": "#592408",
+      "activityBar.activeBorder": "#e7e7e7",
+      "activityBar.background": "#592408",
+      "activityBar.foreground": "#e7e7e7",
+      "activityBar.inactiveForeground": "#e7e7e799",
+      "activityBarBadge.background": "#0b752f",
+      "activityBarBadge.foreground": "#e7e7e7",
+      "activityBarTop.activeBackground": "#592408",
+      "activityBarTop.activeBorder": "#e7e7e7",
+      "activityBarTop.background": "#592408",
+      "activityBarTop.foreground": "#e7e7e7",
+      "activityBarTop.inactiveForeground": "#e7e7e799",
+      "commandCenter.border": "#e7e7e799",
+      "commandCenter.foreground": "#e7e7e7",
+      "sash.hoverBorder": "#592408",
+      "statusBar.background": "#2a1104",
+      "statusBar.debuggingBackground": "#2a1104",
+      "statusBar.debuggingForeground": "#e7e7e7",
+      "statusBar.foreground": "#e7e7e7",
+      "statusBar.inactiveBackground": "#2a1104",
+      "statusBarItem.hoverBackground": "#592408",
+      "statusBarItem.remoteBackground": "#085723",
+      "statusBarItem.remoteForeground": "#e7e7e7",
+      "titleBar.activeBackground": "#2a1104",
+      "titleBar.activeForeground": "#e7e7e7",
+      "titleBar.inactiveBackground": "#2a110499",
+      "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#2a1104"
   },
   "extensions": {
     "recommendations": [
