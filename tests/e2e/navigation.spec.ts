@@ -18,6 +18,9 @@ const topicsToggle = (page: Page) =>
   nav(page).getByRole("button", { name: "Topics" });
 const postsSubmenu = (page: Page) => page.locator("#ananke-submenu-0");
 const topicsSubmenu = (page: Page) => page.locator("#ananke-submenu-1");
+const menuButton = (page: Page) =>
+  nav(page).getByRole("button", { name: "Menu", exact: true });
+const panel = (page: Page) => page.locator("#ananke-nav-panel");
 
 test.describe("header submenus", () => {
   test("toggle buttons are revealed and submenus start closed", async ({
@@ -185,13 +188,15 @@ test.describe("current page markers", () => {
   });
 });
 
-for (const width of [320, 375, 768, 1280]) {
+for (const width of [320, 375, 768, 1024, 1280]) {
   for (const path of ["/", "/featured/"]) {
     test(`submenus stay in the viewport and above the header at ${width}px on ${path}`, async ({
       page,
     }) => {
       await page.setViewportSize({ width, height: 800 });
       await page.goto(path);
+      // Below 60em (960px) the menu is behind the menu button.
+      if (width < 960) await menuButton(page).click();
       for (const [toggle, submenu] of [
         [postsToggle(page), postsSubmenu(page)],
         [topicsToggle(page), topicsSubmenu(page)],
@@ -218,6 +223,93 @@ for (const width of [320, 375, 768, 1280]) {
   }
 }
 
+test.describe("menu button below the large breakpoint", () => {
+  test.use({ viewport: { width: 375, height: 800 } });
+
+  test("collapses the menu behind the button", async ({ page }) => {
+    await page.goto("/");
+    await expect(menuButton(page)).toBeVisible();
+    await expect(menuButton(page)).toHaveAttribute("aria-expanded", "false");
+    await expect(menuButton(page)).toHaveAttribute(
+      "aria-controls",
+      "ananke-nav-panel",
+    );
+    await expect(panel(page)).toBeHidden();
+    // The brand link and the search slot stay visible.
+    await expect(
+      nav(page).getByRole("link", { name: "Ananke Test Fixture" }),
+    ).toBeVisible();
+    await expect(page.getByRole("searchbox", { name: "Search" })).toBeVisible();
+  });
+
+  test("opens and closes the menu", async ({ page }) => {
+    await page.goto("/");
+    await menuButton(page).click();
+    await expect(menuButton(page)).toHaveAttribute("aria-expanded", "true");
+    await expect(panel(page)).toBeVisible();
+    await expect(nav(page).getByRole("link", { name: "About" })).toBeVisible();
+    // Submenus open inline inside the panel.
+    await topicsToggle(page).click();
+    await expect(
+      topicsSubmenu(page).getByRole("link", { name: "Categories" }),
+    ).toBeVisible();
+    await menuButton(page).click();
+    await expect(menuButton(page)).toHaveAttribute("aria-expanded", "false");
+    await expect(panel(page)).toBeHidden();
+  });
+
+  test("closes on Escape and returns focus to the button", async ({ page }) => {
+    await page.goto("/");
+    await menuButton(page).focus();
+    await page.keyboard.press("Enter");
+    await expect(panel(page)).toBeVisible();
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Escape");
+    await expect(panel(page)).toBeHidden();
+    await expect(menuButton(page)).toBeFocused();
+  });
+
+  test("gives touch targets of at least 44px to submenu buttons", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await menuButton(page).click();
+    for (const toggle of [postsToggle(page), topicsToggle(page)]) {
+      const box = await toggle.boundingBox();
+      expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+    }
+  });
+});
+
+test.describe("menu button on large screens", () => {
+  test("is hidden and the menu is visible", async ({ page }) => {
+    await page.goto("/");
+    await expect(menuButton(page)).toBeHidden();
+    await expect(panel(page)).toBeVisible();
+  });
+});
+
+test.describe("customisation", () => {
+  test("uses classes from [params.ananke.navigation.classes]", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    // The fixture replaces the classes of the menu button.
+    await expect(page.locator(".ananke-nav-toggle")).toHaveClass(
+      /\bfixture-menu-button\b/,
+    );
+    // Other elements keep their default Tachyons classes.
+    await expect(page.locator(".ananke-nav-brand")).toHaveClass(/\bf3\b/);
+  });
+
+  test("renders the navigation-start hook in the slot", async ({ page }) => {
+    await page.goto("/");
+    await expect(
+      page.locator(".ananke-nav-slot").getByRole("search"),
+    ).toBeVisible();
+  });
+});
+
 test.describe("without JavaScript (progressive enhancement)", () => {
   test.use({ javaScriptEnabled: false });
 
@@ -241,9 +333,13 @@ test.describe("without JavaScript (progressive enhancement)", () => {
     await expect(page.locator(".ananke-submenu-label")).toBeVisible();
   });
 
-  test("keeps child links reachable at a narrow width", async ({ page }) => {
+  test("keeps the menu and child links reachable at a narrow width", async ({
+    page,
+  }) => {
     await page.setViewportSize({ width: 320, height: 800 });
     await page.goto("/");
+    await expect(page.locator(".ananke-nav-toggle")).toBeHidden();
+    await expect(panel(page)).toBeVisible();
     const alpha = nav(page).getByRole("link", { name: "Alpha" });
     await expect(alpha).toBeVisible();
     const box = await alpha.boundingBox();

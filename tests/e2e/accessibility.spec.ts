@@ -80,3 +80,17 @@ for (const path of ["/", "/featured/"]) {
     });
   }
 }
+
+test("header with the open menu and an open submenu at 375px has no automatically detectable a11y violations", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Menu", exact: true }).click();
+  await page.getByRole("button", { name: "Topics" }).click();
+  const results = await new AxeBuilder({ page })
+    .include("header")
+    .withTags(TAGS)
+    .analyze();
+  expect(results.violations).toEqual([]);
+});
