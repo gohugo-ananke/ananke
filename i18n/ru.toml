@@ -36,3 +36,6 @@ other = "Ниже вы найдете страницы, на которых ис
 
 [pageTitle]
 other = "{{ .Name }} страница"
+
+[menuToggle]
+other = "Меню"

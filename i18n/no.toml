@@ -39,3 +39,6 @@ other = "Below you will find pages that utilize the taxonomy term “{{ .Title }
 
 [pageTitle]
 other = "{{ .Name }} side"
+
+[menuToggle]
+other = "Meny"

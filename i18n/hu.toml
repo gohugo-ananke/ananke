@@ -36,3 +36,6 @@ other = "Ezen a lapon a(z) {{ .Title }} kategóriába tartozó cikkeket találod
 
 [pageTitle]
 other = "{{ .Name }} oldal"
+
+[menuToggle]
+other = "Menü"
