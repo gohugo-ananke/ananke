@@ -1,6 +1,7 @@
 {{ define "header" }}
    {{/* We can override any block in the baseof file be defining it in the template */}}
-  {{ partials.Include "page-header.html" . }}
+  {{/* @deprecated 2.21.0 remove in 3.0.0: include page-header.html directly (see #1120) */ -}}
+  {{ partials.Include "func/header/IncludeChecked.html" (collections.Dictionary "name" "page-header.html" "page" .) }}
 {{ end }}
 
 {{ define "main" }}

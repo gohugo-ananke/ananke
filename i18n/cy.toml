@@ -67,3 +67,6 @@ other = "Sylwadau"
 
 [footerText]
 other = "Hawlfraint © {{ .Year }} {{ .Site.Title }}. Cedwir pob hawl."
+
+[menuToggle]
+other = "Dewislen"

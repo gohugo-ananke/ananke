@@ -1,0 +1,28 @@
+{{- /*
+  Returns the classes for each navigation element: the value from
+  page front matter, cascade, site parameters, or the theme default.
+
+  @return map  Element name -> class string.
+*/ -}}
+{{- $rtl := compare.Eq site.Language.Direction "rtl" -}}
+{{- $background := site.Params.background_color_class | compare.Default "bg-black" -}}
+{{- $defaults := collections.Dictionary
+  "nav" "pv3 ph3 ph4-ns"
+  "inner" "flex flex-wrap items-center justify-between center"
+  "brand" "f3 fw2 hover-white white-90 dib no-underline"
+  "toggle" "f5 white-90 hover-white"
+  "group" "flex-l items-center"
+  "panel" "flex-l items-center"
+  "menu" (compare.Conditional $rtl "pr0 ml3" "pl0 mr3")
+  "item" (printf "list f5 f4-ns fw4 dib %s" (compare.Conditional $rtl "pl3" "pr3"))
+  "link" "hover-white white-90 no-underline"
+  "submenu_toggle" "hover-white white-90"
+  "submenu" (printf "list ma0 pv2 ph0 br2 ba b--white-20 %s" $background)
+  "submenu_link" "db pv2 ph3 f5 white-90 hover-white hover-bg-white-10 no-underline"
+-}}
+{{- $classes := collections.Dictionary -}}
+{{- range $key, $default := $defaults -}}
+  {{- $value := $.Param (printf "ananke.navigation.classes.%s" $key) | compare.Default $default -}}
+  {{- $classes = collections.Merge $classes (collections.Dictionary $key $value) -}}
+{{- end -}}
+{{- return $classes -}}

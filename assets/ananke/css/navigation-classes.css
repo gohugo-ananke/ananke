@@ -1,0 +1,187 @@
+/*
+ * Header navigation: hook classes
+ *
+ * Every class and state that layouts/_partials/site-navigation.html renders,
+ * with empty rules. Ananke does not load this file. To style the navigation,
+ * copy it to `assets/ananke/css/navigation.css` in your site, fill in the rules
+ * you need, delete the rest, and add it to your configuration:
+ *
+ *   [params.ananke]
+ *   custom_css = ["navigation.css"]
+ *
+ * To change colours, type, or spacing with Tachyons classes instead, use
+ * [params.ananke.navigation.classes].
+ *
+ * Breakpoint: below 60em (Tachyons `-l`) the menu collapses behind the menu
+ * button and included child lists are always expanded and indented, without
+ * submenu controls. From 60em the navigation is one row and
+ * submenus open as dropdowns.
+ */
+
+/* <nav> element. */
+.ananke-nav {
+  /* */
+}
+
+/* Navigation mode from ananke.navigation.submenu_mode. */
+.ananke-nav-menu[data-submenu-mode="hover"] {
+  /* */
+}
+
+.ananke-nav-menu[data-submenu-mode="click"] {
+  /* */
+}
+
+.ananke-nav-menu[data-submenu-mode="toplevel"] {
+  /* */
+}
+
+/* Set on .ananke-nav by the script while the menu panel is closed. */
+.ananke-nav-collapsed {
+  /* */
+}
+
+/* Row inside <nav> that holds the groups of [ananke.header] navigation and
+   the menu button. */
+.ananke-nav-inner {
+  /* */
+}
+
+/* Site title or logo link. */
+.ananke-nav-brand {
+  /* */
+}
+
+/* Every group of [ananke.header] navigation. */
+.ananke-nav-group {
+  /* */
+}
+
+/* The group with the `logo` component (or the first other group). Shares the
+   first row with the menu button below the -l breakpoint. */
+.ananke-nav-lead {
+  /* */
+}
+
+/* Every other group that is not the lead or the panel, for example a search
+   box. Gets its own row below the -l breakpoint. */
+.ananke-nav-slot {
+  /* */
+}
+
+/* Menu button below the -l breakpoint. Only visible with JavaScript. */
+.ananke-nav-toggle {
+  /* */
+}
+
+.ananke-nav-toggle[aria-expanded="true"] {
+  /* */
+}
+
+.ananke-nav-toggle-icon {
+  /* */
+}
+
+/* The three lines of the menu icon. */
+.ananke-nav-toggle-line {
+  /* */
+}
+
+.ananke-nav-toggle-label {
+  /* */
+}
+
+/* Collapsible panel: the group with the `menu` component (by default with
+   languages, main menu, and social links). Also has .ananke-nav-group. */
+.ananke-nav-panel {
+  /* */
+}
+
+/* Main menu <ul>. */
+.ananke-nav-menu {
+  /* */
+}
+
+/* Main menu <li>. */
+.ananke-nav-item {
+  /* */
+}
+
+/* Main menu <li> with a submenu. */
+.ananke-has-submenu {
+  /* */
+}
+
+/* Main menu link. */
+.ananke-nav-link {
+  /* */
+}
+
+/* Link to the current page. */
+.ananke-nav-link[aria-current="page"] {
+  /* */
+}
+
+/* Link to a section or parent of the current page. */
+.ananke-nav-link[aria-current="true"] {
+  /* */
+}
+
+/* Name of a parent entry without a URL, shown when JavaScript is off. */
+.ananke-submenu-label {
+  /* */
+}
+
+/* Button that opens a submenu. Only visible with JavaScript. */
+.ananke-submenu-toggle {
+  /* */
+}
+
+.ananke-submenu-toggle[aria-expanded="true"] {
+  /* */
+}
+
+/* Parent entry without a URL that contains the current page. */
+.ananke-submenu-toggle[aria-current="true"] {
+  /* */
+}
+
+/* Chevron inside the submenu button. */
+.ananke-submenu-icon {
+  /* */
+}
+
+/* Submenu <ul> (second level). */
+.ananke-submenu {
+  /* */
+}
+
+/* Set by the script when the dropdown aligns to the other edge to stay in
+   the viewport. */
+.ananke-submenu-flip {
+  /* */
+}
+
+/* Submenu <li>. */
+.ananke-submenu-item {
+  /* */
+}
+
+/* First item linking to the parent page in click mode. */
+.ananke-submenu-overview {
+  /* */
+}
+
+/* Submenu link, or the name of an entry without a URL. */
+.ananke-submenu-link {
+  /* */
+}
+
+.ananke-submenu-link[aria-current="page"] {
+  /* */
+}
+
+/* Third and deeper levels: nested <ul> inside a submenu item. */
+.ananke-submenu-nested {
+  /* */
+}

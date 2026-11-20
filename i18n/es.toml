@@ -47,3 +47,6 @@ other = "{{ .Count }} palabras"
 
 [pageTitle]
 other = "{{ .Name }} pagina"
+
+[menuToggle]
+other = "Menú"

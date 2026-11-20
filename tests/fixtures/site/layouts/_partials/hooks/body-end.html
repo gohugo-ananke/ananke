@@ -1,0 +1,14 @@
+{{- if .Params.fixture_menu_instances }}
+{{- $page := . }}
+{{- range slice "split" "hover" "click" "toplevel" }}
+<nav aria-label="Local {{ . }}" class="ananke-nav pv3 ph3 bg-black">
+  {{ partials.Include "navigation/menu.html" (dict "page" $page "submenu_mode" . "id" (printf "fixture-%s" .)) }}
+</nav>
+{{- end }}
+<nav aria-label="Inherited mode" class="ananke-nav pv3 ph3 bg-black">
+  {{ partials.Include "navigation/menu.html" (dict "page" .) }}
+</nav>
+<nav aria-label="Invalid local mode" class="ananke-nav pv3 ph3 bg-black">
+  {{ partials.Include "navigation/menu.html" (dict "page" . "submenu_mode" "invalid") }}
+</nav>
+{{- end }}

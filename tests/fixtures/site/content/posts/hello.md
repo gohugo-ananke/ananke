@@ -4,6 +4,10 @@ date: 2026-01-01
 description: "A post with a fenced code block for the copy-button tests."
 categories: ["News"]
 tags: ["alpha", "beta"]
+menus:
+  main:
+    parent: posts
+    weight: 10
 ---
 
 A post body with a fenced code block, used by the copy-button E2E tests.

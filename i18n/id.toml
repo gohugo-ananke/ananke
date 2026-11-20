@@ -47,3 +47,6 @@ other = "{{ .Count }} kata"
 
 [pageTitle]
 other = "{{ .Name }} halaman"
+
+[menuToggle]
+other = "Menu"

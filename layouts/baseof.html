@@ -74,7 +74,8 @@
   <body class="{{ delimit $body_classes " " }}">
     {{- partials.Include "hook.html" (dict "hook" "body-start" "context" .) -}}
     {{- partials.Include "hook.html" (dict "hook" "header-before" "context" .) -}}
-    {{ block "header" . }}{{ partials.Include "site-header.html" .}}{{ end }}
+    {{/* @deprecated 2.21.0 remove in 3.0.0: include site-header.html directly (see #1120) */ -}}
+    {{ block "header" . }}{{ partials.Include "func/header/IncludeChecked.html" (collections.Dictionary "name" "site-header.html" "page" .) }}{{ end }}
     {{- partials.Include "hook.html" (dict "hook" "header-after" "context" .) -}}
     <main class="pb7" role="main">
       {{- partials.Include "hook.html" (dict "hook" "main-before" "context" .) -}}

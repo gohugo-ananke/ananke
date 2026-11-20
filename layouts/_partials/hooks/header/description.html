@@ -1,0 +1,23 @@
+{{- /*
+  Header component: the `description` from the front matter of the page.
+  Renders nothing if the page has no description.
+
+  The `site` variant (list pages) renders an `h2`. The `page` variant (single
+  pages) renders a `div`.
+*/ -}}
+{{- $context := . -}}
+{{- with .page.Params.description -}}
+  {{- if compare.Eq $context.variant "page" -}}
+    <div class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+      {{ . }}
+    </div>
+  {{- else if $context.featured_image -}}
+    <h2 class="fw1 f5 f3-l white-80 measure-wide-l center mt3">
+      {{ . }}
+    </h2>
+  {{- else -}}
+    <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+      {{ . }}
+    </h2>
+  {{- end -}}
+{{- end -}}

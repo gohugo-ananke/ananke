@@ -44,3 +44,6 @@ other = "{{ .Count }} 文字"
 
 [pageTitle]
 other = "{{ .Name }} ページ"
+
+[menuToggle]
+other = "メニュー"

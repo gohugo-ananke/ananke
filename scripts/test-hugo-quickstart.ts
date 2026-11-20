@@ -1634,6 +1634,10 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
     await assertDateSettings(projectRoot, options.themeName);
     console.log("[OK ] Independent single and summary dates (issue #1112)");
 
+    console.log("\n[RUN] Deprecated header partial overrides (issue #1120)");
+    await assertHeaderDeprecations(projectRoot, options.themeName);
+    console.log("[OK ] Deprecated header partial overrides (issue #1120)");
+
     console.log("\nResult: PASS");
 
     if (options.keepOnSuccess) {
@@ -1667,6 +1671,102 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
     }
 
     return 1;
+  }
+}
+
+/**
+ * Assert the deprecation notice for overridden header partials (issue #1120).
+ *
+ * Builds the project three times: without an override (no notice), with a
+ * project override of `site-navigation.html` (exactly one notice, and the
+ * override renders), and with that notice in `ignoreLogs` (no notice).
+ *
+ * @param projectRoot Absolute path to the temporary quickstart project.
+ * @param themeName Theme name used in the project configuration.
+ * @throws Error when a notice is missing, repeated, or not suppressible.
+ */
+async function assertHeaderDeprecations(
+  projectRoot: string,
+  themeName: string,
+): Promise<void> {
+  const configPath = join(projectRoot, "hugo.toml");
+  const overrideDir = join(projectRoot, "layouts", "_partials");
+  const overridePath = join(overrideDir, "site-navigation.html");
+  const notice = "ananke/DEPR";
+  const marker = "deprecated-nav-override";
+  const baseConfig = [
+    "baseURL = 'https://example.com/'",
+    "title = 'Ananke Test Quickstart'",
+    `theme = '${themeName}'`,
+  ];
+
+  const build = async (label: string): Promise<string> => {
+    await removePublicDir(projectRoot);
+    const result = await runCommand("hugo", [], projectRoot);
+    if (result.code !== 0) {
+      throw new Error(`Build failed (${label}):\n${result.combined}`);
+    }
+    return result.combined;
+  };
+  const count = (output: string): number => output.split(notice).length - 1;
+  const failures: string[] = [];
+
+  await writeTextFile(configPath, [...baseConfig, ""].join("\n"));
+  const plain = await build("no override");
+  if (count(plain) !== 0) {
+    failures.push("- a build without overrides printed a deprecation notice");
+  }
+
+  await mkdir(overrideDir, { recursive: true });
+  await writeTextFile(overridePath, `<nav class="${marker}">custom</nav>\n`);
+  try {
+    const overridden = await build("site-navigation.html override");
+    if (count(overridden) !== 1) {
+      failures.push(
+        `- expected exactly 1 deprecation notice for the override, got ${count(overridden)}`,
+      );
+    }
+    if (
+      !overridden.includes("overrides layouts/_partials/site-navigation.html")
+    ) {
+      failures.push("- the notice did not name site-navigation.html");
+    }
+    if (!overridden.includes("ananke-deprecated-site-navigation")) {
+      failures.push("- the notice did not show its ignoreLogs id");
+    }
+    const homepage = await readTextFile(
+      join(projectRoot, "public", "index.html"),
+    );
+    if (!homepage.includes(marker)) {
+      failures.push(
+        "- the project override of site-navigation.html did not render",
+      );
+    }
+
+    await writeTextFile(
+      configPath,
+      [
+        "ignoreLogs = ['ananke-deprecated-site-navigation']",
+        ...baseConfig,
+        "",
+      ].join("\n"),
+    );
+    const suppressed = await build("override with ignoreLogs");
+    if (count(suppressed) !== 0) {
+      failures.push("- ignoreLogs did not suppress the deprecation notice");
+    }
+  } finally {
+    await rm(overridePath, { force: true });
+  }
+
+  if (failures.length > 0) {
+    throw new Error(
+      [
+        "Strict assertion failed: header deprecation notices did not behave as expected.",
+        "Failed assertions:",
+        ...failures,
+      ].join("\n"),
+    );
   }
 }
 

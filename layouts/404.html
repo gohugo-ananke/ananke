@@ -1,4 +1,7 @@
-{{ define "header" }}{{ partials.Include "page-header.html" . }}{{ end }}
+{{ define "header" }}
+  {{/* @deprecated 2.21.0 remove in 3.0.0: include page-header.html directly (see #1120) */ -}}
+  {{ partials.Include "func/header/IncludeChecked.html" (collections.Dictionary "name" "page-header.html" "page" .) }}
+{{ end }}
 {{ define "main" }}
     <article class="center cf pv5 measure-wide-l">
       <h1>

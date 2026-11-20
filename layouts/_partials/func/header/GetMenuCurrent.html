@@ -1,0 +1,15 @@
+{{- /*
+  Returns the aria-current value for a menu entry: "page" if it links to the
+  current page, "true" if the current page is below it (Hugo's HasMenuCurrent,
+  which includes pages inside the entry's section), or an empty string.
+
+  @param page   page        The current page.
+  @param entry  menu entry  The menu entry.
+*/ -}}
+{{- $current := "" -}}
+{{- if .page.IsMenuCurrent "main" .entry -}}
+  {{- $current = "page" -}}
+{{- else if .page.HasMenuCurrent "main" .entry -}}
+  {{- $current = "true" -}}
+{{- end -}}
+{{- return $current -}}

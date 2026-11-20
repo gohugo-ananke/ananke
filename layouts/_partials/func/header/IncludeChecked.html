@@ -1,0 +1,30 @@
+{{- /* @deprecated 2.21.0 remove in 3.0.0: remove this check and include the header partials directly (see #1120) */ -}}
+{{- /*
+  Includes a header partial and prints a deprecation notice if the site
+  project overrides it.
+
+  The theme versions of site-header.html, page-header.html, and
+  site-navigation.html set a marker in the page store. If the marker is
+  missing after the include, a site partial replaced the theme partial.
+  Overriding these partials is deprecated: sites should use the header hooks
+  and `[params.ananke.header]`. The notice prints once per build, and a site
+  can suppress it with `ignoreLogs = ['ananke-deprecated-<name>']`.
+
+  @param name  string  The partial: "site-header.html", "page-header.html", or
+                       "site-navigation.html".
+  @param page  page    The current page.
+  @return      HTML    The output of the partial.
+*/ -}}
+{{- $name := .name -}}
+{{- $page := .page -}}
+{{- $key := fmt.Printf "ananke.deprecated.theme-partial.%s" $name -}}
+{{- $page.Store.Delete $key -}}
+{{- $output := partials.Include $name $page -}}
+{{- if not ($page.Store.Get $key) -}}
+  {{- partials.Include "func/debug-cli.html" (collections.Dictionary
+      "severity" "deprecated"
+      "id" (fmt.Printf "ananke-deprecated-%s" (strings.TrimSuffix ".html" $name))
+      "message" (fmt.Printf "Your project overrides layouts/_partials/%s. Overriding the header partials is deprecated and stops working in Ananke v3. Use the header hooks (layouts/_partials/hooks/header/) and [params.ananke.header] instead. See https://github.com/gohugo-ananke/ananke/issues/1120" $name)
+  ) -}}
+{{- end -}}
+{{- return $output -}}
