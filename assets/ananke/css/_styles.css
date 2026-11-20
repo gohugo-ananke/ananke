@@ -48,7 +48,8 @@
 
 .ananke-nav-toggle[hidden],
 .ananke-submenu-toggle[hidden],
-.ananke-submenu[hidden] {
+.ananke-submenu[hidden],
+.ananke-nav-link[hidden] {
   display: none;
 }
 
@@ -161,23 +162,12 @@
     padding: 0.5rem 0;
   }
 
-  .ananke-nav-item > .ananke-submenu-toggle {
-    min-width: 2.75rem;
-    min-height: 2.75rem;
+  .ananke-nav-item > .ananke-submenu-toggle,
+  .ananke-submenu-overview {
+    display: none;
   }
 
-  /* A parent without a URL: the button spans the row, and its chevron
-     lines up with the chevrons of the other parents. */
-  .ananke-nav-item
-    > .ananke-submenu-label
-    + .ananke-submenu-toggle:not([hidden]) {
-    flex: 1 1 auto;
-    justify-content: space-between;
-    padding: 0;
-    padding-inline-end: 1rem;
-  }
-
-  .ananke-submenu {
+  .ananke-nav-menu .ananke-submenu {
     flex-basis: 100%;
     margin: 0 0 0.5rem;
     padding: 0;
@@ -186,7 +176,14 @@
     border: 0;
   }
 
+  .ananke-nav-item > .ananke-nav-link,
+  .ananke-nav-item > .ananke-submenu-label,
   .ananke-submenu-link {
+    min-height: 2.75rem;
+  }
+
+  .ananke-submenu-link {
+    padding-block: 0.5rem;
     padding-inline: 0;
   }
 }
@@ -225,6 +222,15 @@
     z-index: 10;
     min-width: 11rem;
     max-width: calc(100vw - 2rem);
+  }
+
+  /* Bridge the visual gap so a slow pointer can enter the dropdown. */
+  [data-submenu-mode="hover"] > .ananke-has-submenu > .ananke-submenu-toggle:not([hidden]) + .ananke-submenu::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: -0.5rem;
+    height: 0.5rem;
   }
 
   /* Set by the script when the dropdown would leave the viewport. */

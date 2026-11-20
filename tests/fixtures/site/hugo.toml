@@ -21,6 +21,10 @@ copy_code = true
 [params.ananke.header]
 navigation = [["logo"], ["search"], ["languages", "menu", "social"]]
 
+# Explicit site value; navigation-modes fixtures override it via cascade and front matter.
+[params.ananke.navigation]
+submenu_mode = "split"
+
 # Replace the default classes of one navigation element (tests/e2e/navigation.spec.ts).
 [params.ananke.navigation.classes]
 toggle = "f5 white-90 hover-white fixture-menu-button"

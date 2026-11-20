@@ -25,7 +25,11 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..");
 
 /** Tables in config/_default/params.toml whose direct keys are gated. */
-const GATED_TABLES = ["ananke", "ananke.navigation.classes"];
+const GATED_TABLES = [
+  "ananke",
+  "ananke.navigation",
+  "ananke.navigation.classes",
+];
 
 /** Direct `key = value` entries under the gated tables. */
 function collectAnankeParams() {

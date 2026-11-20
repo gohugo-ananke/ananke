@@ -7,10 +7,23 @@
   @param entries  menu    The child entries.
   @param classes  map     Classes from func/header/GetNavigationClasses.html.
   @param id       string  Optional. Id of the top-level list.
+  @param overview menu.Entry Optional. Parent entry to link first in click mode.
 */ -}}
 {{- $page := .page }}
 {{- $classes := .classes }}
 <ul {{ with .id }}id="{{ . }}" class="ananke-submenu {{ $classes.submenu }}"{{ else }}class="ananke-submenu-nested list ma0 pa0"{{ end }}>
+  {{- with .overview }}
+  {{- if .URL }}
+  {{- $label := lang.Translate "menuOverview" . | compare.Default .Name }}
+  {{- with .Page }}
+    {{- with .Params.linktitle }}{{- $label = . }}{{- end }}
+  {{- end }}
+  {{- $current := partials.Include "func/header/GetMenuCurrent.html" (dict "page" $page "entry" .) }}
+  <li class="ananke-submenu-item ananke-submenu-overview">
+    <a class="ananke-submenu-link {{ $classes.submenu_link }}" href="{{ .URL }}"{{ if eq $current "page" }} aria-current="page"{{ end }}>{{ $label }}</a>
+  </li>
+  {{- end }}
+  {{- end }}
   {{- range .entries }}
   {{- $current := partials.Include "func/header/GetMenuCurrent.html" (dict "page" $page "entry" .) }}
   <li class="ananke-submenu-item">

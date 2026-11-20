@@ -9,7 +9,7 @@
      with `[ananke] copy_code = false`.
   2. Header navigation rendered by layouts/_partials/site-navigation.html:
      the menu button that collapses the menu below the Tachyons `-l`
-     breakpoint, and the submenu toggles. Only included if the site has a
+     breakpoint, and the desktop submenu toggles. Only included if the site has a
      `main` menu.
 
   Override this partial in your own project to add or replace site scripts.
@@ -95,6 +95,10 @@
 
     // The toggle button of the open submenu. Only one submenu is open at a time.
     var openButton = null;
+    var hoverCloseTimer = null;
+    var lastNavigationFocus = null;
+    var desktopMedia = window.matchMedia("(min-width: 60em)");
+    var hoverMedia = window.matchMedia("(min-width: 60em) and (hover: hover) and (pointer: fine)");
 
     function controlled(button) {
       return document.getElementById(button.getAttribute("aria-controls"));
@@ -102,7 +106,8 @@
 
     function setSubmenu(button, expanded) {
       var submenu = controlled(button);
-      if (!submenu) return;
+      if (!submenu || !desktopMedia.matches) return;
+      window.clearTimeout(hoverCloseTimer);
       button.setAttribute("aria-expanded", expanded ? "true" : "false");
       submenu.hidden = !expanded;
       submenu.classList.remove("ananke-submenu-flip");
@@ -131,8 +136,80 @@
       nav.classList.toggle("ananke-nav-collapsed", !expanded);
     }
 
-    // Reveal the buttons and collapse the menu and submenus once the DOM is
-    // ready. Without JavaScript everything stays visible.
+    function enhanceHover(button) {
+      var item = button.parentNode;
+      var menu = button.closest("[data-submenu-mode]");
+      if (!menu || menu.dataset.submenuMode !== "hover") return;
+      item.addEventListener("pointerenter", function (event) {
+        if (event.pointerType !== "mouse" || !hoverMedia.matches) return;
+        window.clearTimeout(hoverCloseTimer);
+        if (openButton === button) return;
+        // Hover must not hide a link that still has keyboard focus.
+        if (openButton && controlled(openButton).contains(document.activeElement)) return;
+        closeSubmenu(false);
+        setSubmenu(button, true);
+      });
+      item.addEventListener("pointerleave", function (event) {
+        if (event.pointerType !== "mouse" || !hoverMedia.matches) return;
+        // Keep the dropdown open while the keyboard focus is inside it.
+        hoverCloseTimer = window.setTimeout(function () {
+          if (openButton === button && !item.contains(document.activeElement)) {
+            closeSubmenu(false);
+          }
+        }, 200);
+      });
+    }
+
+    hoverMedia.addEventListener("change", function () {
+      if (openButton && openButton.closest("[data-submenu-mode]").dataset.submenuMode === "hover") {
+        closeSubmenu(false);
+      }
+    });
+
+    // Mobile has one disclosure: the hamburger. Every included child list
+    // stays expanded, and parent entries keep their normal links or labels.
+    function updateSubmenus() {
+      var desktop = desktopMedia.matches;
+      var active = document.activeElement;
+      // A breakpoint can hide the focused element before this event runs.
+      if (active === document.body && lastNavigationFocus) active = lastNavigationFocus;
+      var focusTarget = null;
+      window.clearTimeout(hoverCloseTimer);
+      openButton = null;
+      var buttons = document.querySelectorAll(".ananke-submenu-toggle");
+      for (var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+        var submenu = controlled(button);
+        if (!submenu) continue;
+        submenu.hidden = desktop;
+        submenu.classList.remove("ananke-submenu-flip");
+        button.hidden = !desktop;
+        button.setAttribute("aria-expanded", "false");
+        var label = button.parentNode.querySelector(".ananke-submenu-label");
+        if (label) label.hidden = desktop;
+        var parentLink = button.parentNode.querySelector("[data-submenu-parent]");
+        if (parentLink) parentLink.hidden = desktop;
+        if (desktop && submenu.contains(active)) focusTarget = button;
+        if (!desktop && active === button) {
+          focusTarget = parentLink || submenu.querySelector("a");
+        }
+      }
+      var nav = active.closest(".ananke-nav");
+      if (nav) {
+        var menuButton = nav.querySelector(".ananke-nav-toggle");
+        var panel = menuButton && controlled(menuButton);
+        if (!desktop && panel && panel.contains(active) && nav.classList.contains("ananke-nav-collapsed")) {
+          focusTarget = menuButton;
+        } else if (desktop && active === menuButton && panel) {
+          focusTarget = panel.querySelector('a:not([hidden]), button:not([hidden])');
+        }
+      }
+      if (focusTarget) focusTarget.focus();
+    }
+
+    desktopMedia.addEventListener("change", updateSubmenus);
+
+    // Without JavaScript, all links stay visible and controls stay hidden.
     function enhance() {
       var menuButtons = document.querySelectorAll(".ananke-nav-toggle[hidden]");
       for (var i = 0; i < menuButtons.length; i++) {
@@ -140,14 +217,10 @@
         setMenu(menuButtons[i], false);
         menuButtons[i].hidden = false;
       }
-      var buttons = document.querySelectorAll(".ananke-submenu-toggle[hidden]");
+      updateSubmenus();
+      var buttons = document.querySelectorAll(".ananke-submenu-toggle");
       for (var j = 0; j < buttons.length; j++) {
-        var submenu = controlled(buttons[j]);
-        if (!submenu) continue;
-        submenu.hidden = true;
-        buttons[j].hidden = false;
-        var label = buttons[j].parentNode.querySelector(".ananke-submenu-label");
-        if (label) label.hidden = true;
+        enhanceHover(buttons[j]);
       }
     }
     if (document.readyState === "loading") {
@@ -163,7 +236,7 @@
         return;
       }
       var button = event.target.closest(".ananke-submenu-toggle");
-      if (button) {
+      if (button && desktopMedia.matches) {
         var expand = button.getAttribute("aria-expanded") !== "true";
         if (openButton && openButton !== button) closeSubmenu(false);
         setSubmenu(button, expand);
@@ -188,14 +261,17 @@
     });
 
     // Close a submenu when keyboard focus leaves its menu item. Pointer users
-    // get the outside-click handler instead: on small screens submenus open
-    // inline, and closing one on pointer focus would move the target of the
-    // click that is still in progress.
+    // get the outside-click handler instead. Mobile child lists do not have
+    // their own disclosure state.
     var keyboardFocus = false;
     document.addEventListener("keydown", function () {
       keyboardFocus = true;
     }, true);
+    document.addEventListener("focusin", function (event) {
+      lastNavigationFocus = event.target.closest(".ananke-nav") ? event.target : null;
+    });
     document.addEventListener("pointerdown", function () {
+      lastNavigationFocus = null;
       keyboardFocus = false;
     }, true);
     document.addEventListener("focusout", function (event) {

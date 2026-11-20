@@ -27,6 +27,15 @@ navigation = [
 # `title` and `description`.
 content = ["title", "description"]
 
+[ananke.navigation]
+# Desktop behaviour (from 60em). Below 60em, the hamburger opens a list with
+# all included child levels expanded and indented, without submenu controls.
+# split: parent link and a separate submenu button (default).
+# hover: also open on hover with a mouse on large screens; parent stays a link.
+# click: parent becomes a button; its page is the first link in the submenu.
+# toplevel: render only the top-level entries, without submenus.
+submenu_mode = "split"
+
 # Tachyons classes for the header navigation (layouts/_partials/site-navigation.html).
 # An empty value uses the theme default shown in the comment. A value replaces the
 # default classes of that element; its `ananke-nav-*` hook class always stays.

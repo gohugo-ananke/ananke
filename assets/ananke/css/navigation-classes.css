@@ -13,12 +13,26 @@
  * [params.ananke.navigation.classes].
  *
  * Breakpoint: below 60em (Tachyons `-l`) the menu collapses behind the menu
- * button and submenus open inline. From 60em the navigation is one row and
+ * button and included child lists are always expanded and indented, without
+ * submenu controls. From 60em the navigation is one row and
  * submenus open as dropdowns.
  */
 
 /* <nav> element. */
 .ananke-nav {
+  /* */
+}
+
+/* Navigation mode from ananke.navigation.submenu_mode. */
+.ananke-nav-menu[data-submenu-mode="hover"] {
+  /* */
+}
+
+.ananke-nav-menu[data-submenu-mode="click"] {
+  /* */
+}
+
+.ananke-nav-menu[data-submenu-mode="toplevel"] {
   /* */
 }
 
@@ -150,6 +164,11 @@
 
 /* Submenu <li>. */
 .ananke-submenu-item {
+  /* */
+}
+
+/* First item linking to the parent page in click mode. */
+.ananke-submenu-overview {
   /* */
 }
 

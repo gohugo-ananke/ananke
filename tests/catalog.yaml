@@ -16,6 +16,8 @@ params:
     tests: ["scripts/test-hugo-quickstart.ts"]
   ananke.copy_code:
     tests: ["tests/e2e/copy-button.spec.ts"]
+  ananke.navigation.submenu_mode:
+    tests: ["tests/e2e/navigation-modes.spec.ts"]
   ananke.navigation.classes.nav:
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.inner:

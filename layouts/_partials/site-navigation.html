@@ -26,11 +26,13 @@
   buttons stay hidden. site-scripts.html enhances both.
 */ -}}
 {{- $classes := partials.Include "func/header/GetNavigationClasses.html" . -}}
+{{- $mode := partials.Include "func/header/GetSubmenuMode.html" (dict "page" .) -}}
 {{- $header := collections.Dictionary
   "page" .
   "region" "navigation"
   "featured_image" (partials.Include "func/GetFeaturedImage.html" .)
   "classes" $classes
+  "submenu_mode" $mode
 -}}
 
 {{- /* Normalise the layout to a list of non-empty groups. Each group is a
@@ -71,7 +73,7 @@
   {{- end -}}
 {{- end -}}
 
-<nav class="ananke-nav {{ $classes.nav }}" role="navigation">
+<nav class="ananke-nav {{ $classes.nav }}" role="navigation" data-submenu-mode="{{ $mode }}">
   <div class="ananke-nav-inner {{ $classes.inner }}">
     {{- range $index, $group := $groups }}
     {{- if compare.Eq $index $panel }}

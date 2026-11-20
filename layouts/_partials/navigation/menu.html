@@ -1,0 +1,68 @@
+{{- /*
+  Render the main menu. Use submenu_mode to override the configured mode for
+  this call. Classes and mode default to the page's navigation settings.
+  Optional id identifies the list and prefixes its submenu control IDs.
+  Without id, each call gets a unique ID within the current page.
+
+  In toplevel mode, child lists and submenu controls are omitted. All other
+  modes keep child links reachable without JavaScript.
+*/ -}}
+{{- $page := .page -}}
+{{- $classes := .classes | compare.Default (partials.Include "func/header/GetNavigationClasses.html" $page) -}}
+{{- $mode := partials.Include "func/header/GetSubmenuMode.html" . -}}
+{{- if $page.Site.Menus.main -}}
+{{- $page.Store.Add "ananke.navigation.menu-count" 1 -}}
+{{- $instance := $page.Store.Get "ananke.navigation.menu-count" -}}
+{{- $id := .id | compare.Default (printf "ananke-menu-%d" $instance) -}}
+{{- $prefix := printf "%s-submenu" $id -}}
+{{- if and (eq $instance 1) (not .id) -}}
+  {{- $id = "ananke-menu" -}}
+  {{- $prefix = "ananke-submenu" -}}
+{{- end -}}
+<ul id="{{ $id }}" class="ananke-nav-menu {{ $classes.menu }}" data-submenu-mode="{{ $mode }}">
+  {{ range $index, $entry := $page.Site.Menus.main }}
+  {{- $current := partials.Include "func/header/GetMenuCurrent.html" (dict "page" $page "entry" $entry) -}}
+  {{- if or (eq $mode "toplevel") (not $entry.HasChildren) }}
+  <li class="ananke-nav-item {{ $classes.item }}">
+    {{- if .URL }}
+    <a class="ananke-nav-link {{ $classes.link }}" href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>
+      {{ .Name }}
+    </a>
+    {{- else }}
+    <span class="ananke-nav-link {{ $classes.link }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>{{ .Name }}</span>
+    {{- end }}
+  </li>
+  {{- else }}
+  {{- /*
+    A parent entry with children. The child list is always in the
+    markup, so it stays reachable without JavaScript. Entries below the
+    second level render as nested lists inside the submenu, without
+    their own toggle.
+  */}}
+  {{- $submenu_id := printf "%s-%d" $prefix $index }}
+  <li class="ananke-nav-item ananke-has-submenu {{ $classes.item }}">
+    {{- if .URL }}
+    <a class="ananke-nav-link {{ $classes.link }}"{{ if eq $mode "click" }} data-submenu-parent{{ end }} href="{{ .URL }}" title="{{ lang.Translate "pageTitle" . }}"{{ with $current }} aria-current="{{ . }}"{{ end }}>
+      {{ .Name }}
+    </a>
+    <button type="button" class="ananke-submenu-toggle {{ $classes.submenu_toggle }}" aria-expanded="false" aria-controls="{{ $submenu_id }}"{{ if eq $mode "click" }}{{ with $current }} aria-current="{{ . }}"{{ end }}{{ end }} hidden>
+      {{- if eq $mode "click" }}
+      {{ .Name }}
+      {{- else }}
+      <span class="clip">{{ lang.Translate "submenuToggle" . | compare.Default .Name }}</span>
+      {{- end }}
+      {{- partials.Include "header/submenu-icon.html" }}
+    </button>
+    {{- else }}
+    <span class="ananke-submenu-label {{ $classes.link }}">{{ .Name }}</span>
+    <button type="button" class="ananke-submenu-toggle {{ $classes.submenu_toggle }}" aria-expanded="false" aria-controls="{{ $submenu_id }}"{{ with $current }} aria-current="{{ . }}"{{ end }} hidden>
+      {{ .Name }}
+      {{- partials.Include "header/submenu-icon.html" }}
+    </button>
+    {{- end }}
+    {{ partials.Include "header/submenu.html" (dict "page" $page "entries" .Children "id" $submenu_id "classes" $classes "overview" (compare.Conditional (eq $mode "click") $entry false)) }}
+  </li>
+  {{- end }}
+  {{ end }}
+</ul>
+{{- end -}}

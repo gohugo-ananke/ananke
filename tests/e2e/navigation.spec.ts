@@ -201,7 +201,7 @@ for (const width of [320, 375, 768, 1024, 1280]) {
         [postsToggle(page), postsSubmenu(page)],
         [topicsToggle(page), topicsSubmenu(page)],
       ] as const) {
-        await toggle.click();
+        if (width >= 960) await toggle.click();
         await expect(submenu).toBeVisible();
         const box = await submenu.boundingBox();
         expect(box).not.toBeNull();
@@ -248,8 +248,10 @@ test.describe("menu button below the large breakpoint", () => {
     await expect(menuButton(page)).toHaveAttribute("aria-expanded", "true");
     await expect(panel(page)).toBeVisible();
     await expect(nav(page).getByRole("link", { name: "About" })).toBeVisible();
-    // Submenus open inline inside the panel.
-    await topicsToggle(page).click();
+    // All child levels are already visible inside the panel.
+    await expect(
+      nav(page).locator(".ananke-submenu-toggle:visible"),
+    ).toHaveCount(0);
     await expect(
       topicsSubmenu(page).getByRole("link", { name: "Categories" }),
     ).toBeVisible();
@@ -269,13 +271,13 @@ test.describe("menu button below the large breakpoint", () => {
     await expect(menuButton(page)).toBeFocused();
   });
 
-  test("gives touch targets of at least 44px to submenu buttons", async ({
+  test("gives touch targets of at least 44px to navigation links", async ({
     page,
   }) => {
     await page.goto("/");
     await menuButton(page).click();
-    for (const toggle of [postsToggle(page), topicsToggle(page)]) {
-      const box = await toggle.boundingBox();
+    for (const link of await panel(page).getByRole("link").all()) {
+      const box = await link.boundingBox();
       expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
     }
   });
