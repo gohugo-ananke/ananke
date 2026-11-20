@@ -1,0 +1,5 @@
+# Offline fixture checks remap the site's absolute HTTP URLs to files.
+# External URLs are left to the separate site/documentation link audits.
+no_progress = true
+include_fragments = "anchor-only"
+index_files = ["index.html"]

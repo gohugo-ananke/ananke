@@ -1,0 +1,3 @@
+[params.ananke.pages]
+show_list_images = true
+show_date = false

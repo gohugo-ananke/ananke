@@ -9,6 +9,7 @@
 import { createReadStream, existsSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, normalize } from "node:path";
+import { createGzip } from "node:zlib";
 import { buildFixtureSite } from "./prepare-site.mjs";
 
 const PORT = Number(process.env.ANANKE_TEST_PORT || 4321);
@@ -22,6 +23,9 @@ const TYPES = {
   ".xml": "application/xml; charset=utf-8",
   ".txt": "text/plain; charset=utf-8",
   ".woff2": "font/woff2",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".ico": "image/x-icon",
 };
 
 const root = buildFixtureSite();
@@ -54,9 +58,28 @@ const server = createServer((req, res) => {
     "Content-Type",
     TYPES[extname(filePath)] || "application/octet-stream",
   );
-  createReadStream(filePath).pipe(res);
+  // Match normal static hosting: negotiate compression for text assets.
+  const compressible = /\.(?:html|css|js|json|svg|xml|txt)$/.test(filePath);
+  const encodings = (req.headers["accept-encoding"] || "").split(",");
+  const gzip = encodings.some((entry) => {
+    const [name, quality] = entry.trim().split(";");
+    return (
+      name === "gzip" &&
+      (!quality || Number(quality.trim().replace(/^q=/, "")) > 0)
+    );
+  });
+  if (compressible) res.setHeader("Vary", "Accept-Encoding");
+  const stream = createReadStream(filePath);
+  if (compressible && gzip) {
+    res.setHeader("Content-Encoding", "gzip");
+    stream.pipe(createGzip()).pipe(res);
+  } else {
+    stream.pipe(res);
+  }
 });
 
 server.listen(PORT, () => {
-  console.log(`Fixture site served at http://localhost:${PORT}/`);
+  console.log(
+    `Fixture site served at http://localhost:${server.address().port}/`,
+  );
 });

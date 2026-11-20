@@ -16,3 +16,7 @@ todo*.md
 
 # Local posting credentials
 /.env
+
+# Generated test reports (visual baselines are tracked separately).
+/tests/.playwright/
+/.lighthouseci/

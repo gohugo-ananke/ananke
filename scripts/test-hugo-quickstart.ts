@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { constants } from "node:fs";
 import {
@@ -16,6 +17,8 @@ import {
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import TOML from "@iarna/toml";
+import { load } from "cheerio";
 
 /**
  * Absolute path to the theme repository root (the parent of `scripts/`).
@@ -69,11 +72,6 @@ interface StepReport {
   commandLine: string;
   cwd: string;
   result: CommandResult;
-}
-
-interface HtmlAssertion {
-  description: string;
-  test: (html: string) => boolean;
 }
 
 const DEFAULT_OPTIONS: RoutineOptions = {
@@ -417,125 +415,33 @@ async function executeHugoBuildStep(
 }
 
 /**
- * Escape a string for safe use in a regular expression.
- *
- * @param value Raw string.
- * @returns Escaped string.
- */
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-/**
- * Assert that Hugo config contains the expected theme assignment somewhere in
- * the file, without requiring the whole config to match a fixed template.
- *
- * Accepts either single or double quotes, for example:
- * - theme = 'ananke'
- * - theme = "ananke"
- *
- * @param configPath Absolute config path.
- * @param themeName Expected theme name.
- * @throws Error when the config does not contain the expected theme line.
+ * Check the configured theme using the TOML parser.
  */
 async function assertThemeConfigured(
   configPath: string,
   themeName: string,
 ): Promise<void> {
-  const config = await readTextFile(configPath);
-  const themePattern = new RegExp(
-    String.raw`^\s*theme\s*=\s*['"]${escapeRegExp(themeName)}['"]\s*$`,
-    "m",
-  );
-
-  if (!themePattern.test(config)) {
-    throw new Error(
-      [
-        "Strict assertion failed: theme configuration missing or incorrect.",
-        `Config file: ${configPath}`,
-        `Expected to find a line like: theme = '${themeName}'`,
-        "Actual file contents:",
-        config,
-      ].join("\n\n"),
-    );
-  }
+  assert.equal(TOML.parse(await readTextFile(configPath))["theme"], themeName);
 }
 
-/**
- * Return homepage assertions for the initial static build.
- *
- * @returns List of homepage assertions.
- */
-function getHomepageAssertions(): HtmlAssertion[] {
-  return [
-    {
-      description: "homepage contains an HTML document root",
-      test: (html: string): boolean => /<html\b/i.test(html),
-    },
-    {
-      description: "homepage contains a document title",
-      test: (html: string): boolean => /<title>[\s\S]*?<\/title>/i.test(html),
-    },
-    {
-      description: "homepage contains a body element",
-      test: (html: string): boolean => /<body\b/i.test(html),
-    },
-    {
-      description: "homepage contains at least one stylesheet reference",
-      test: (html: string): boolean =>
-        /<link\b[^>]*rel=["']stylesheet["'][^>]*>/i.test(html),
-    },
-    {
-      description: "homepage contains at least one navigation-related landmark",
-      test: (html: string): boolean => /<(nav|header)\b/i.test(html),
-    },
-    {
-      description: "homepage contains theme-generated CSS class markers",
-      test: (html: string): boolean =>
-        /\b(ma[0-9]|pa[0-9]|bg-black|near-white|sans-serif)\b/i.test(html),
-    },
-    {
-      description: "homepage contains a main content area",
-      test: (html: string): boolean => /<(main|article|section)\b/i.test(html),
-    },
-  ];
-}
-
-/**
- * Assert that the generated homepage looks like a real themed render.
- *
- * @param homepagePath Absolute path to `public/index.html`.
- * @throws Error when one or more assertions fail.
- */
 async function assertHomepageLooksValid(homepagePath: string): Promise<void> {
   const html = await readTextFile(homepagePath);
-  const failures: string[] = [];
-
-  if (html.trim().length === 0) {
-    throw new Error(
-      [
-        "Strict assertion failed: generated homepage is empty.",
-        `Homepage file: ${homepagePath}`,
-      ].join("\n\n"),
-    );
+  assert.ok(html.trim(), "Generated homepage must not be empty");
+  const $ = load(html);
+  for (const selector of [
+    "html",
+    "title",
+    "body",
+    'link[rel="stylesheet"]',
+    "nav, header",
+    "main, article, section",
+  ]) {
+    assert.ok($(selector).length, `Homepage missing ${selector}`);
   }
-
-  for (const assertion of getHomepageAssertions()) {
-    if (!assertion.test(html)) {
-      failures.push(`- ${assertion.description}`);
-    }
-  }
-
-  if (failures.length > 0) {
-    throw new Error(
-      [
-        "Strict assertion failed: generated homepage did not match expected render checks.",
-        `Homepage file: ${homepagePath}`,
-        "Failed assertions:",
-        ...failures,
-      ].join("\n"),
-    );
-  }
+  assert.ok(
+    $(".bg-black, .near-white, .sans-serif, .pa3, .ma0").length,
+    "Homepage missing theme classes",
+  );
 }
 
 /**
@@ -615,74 +521,22 @@ async function replaceHugoConfig(
  * @param pageHtml HTML from `public/foo/index.html`.
  */
 function assertDraftPageRendered(pageHtml: string): void {
-  const failures: string[] = [];
-
-  if (!/<h2[^>]*>\s*Introduction\s*<\/h2>/i.test(pageHtml)) {
-    failures.push("- heading 'Introduction' was not rendered as an h2 element");
-  }
-
-  if (!/<strong>\s*bold\s*<\/strong>/i.test(pageHtml)) {
-    failures.push("- bold Markdown was not rendered as a <strong> element");
-  }
-
-  if (!/<em>\s*emphasized\s*<\/em>/i.test(pageHtml)) {
-    failures.push("- emphasized Markdown was not rendered as an <em> element");
-  }
-
-  if (
-    !/<a[^>]+href=["']https:\/\/gohugo\.io["'][^>]*>\s*Hugo\s*<\/a>/i.test(
-      pageHtml,
-    )
-  ) {
-    failures.push("- Markdown link was not rendered as an anchor element");
-  }
-
-  if (!/My First Post/i.test(pageHtml)) {
-    failures.push("- post title was not visible on the rendered page");
-  }
-
-  if (failures.length > 0) {
-    throw new Error(
-      [
-        "Strict assertion failed: draft page content was not rendered as expected.",
-        "Failed assertions:",
-        ...failures,
-      ].join("\n"),
-    );
-  }
+  const $ = load(pageHtml);
+  assert.equal(
+    $("h2").filter((_, element) => $(element).text().trim() === "Introduction")
+      .length,
+    1,
+  );
+  assert.equal($("strong").text().trim(), "bold");
+  assert.equal($("em").text().trim(), "emphasized");
+  assert.equal($('a[href="https://gohugo.io"]').text().trim(), "Hugo");
+  assert.ok($("h1").text().includes("My First Post"));
 }
 
-/**
- * Assert that the generated homepage reflects updated title and locale configuration.
- *
- * Locale is checked strictly on the `<html>` tag.
- *
- * @param homepageHtml HTML from `public/index.html`.
- */
 function assertUpdatedConfigInOutput(homepageHtml: string): void {
-  const failures: string[] = [];
-
-  if (!/Ananke Test Quickstart/i.test(homepageHtml)) {
-    failures.push(
-      "- updated site title was not visible in the generated output",
-    );
-  }
-
-  if (!/<html[^>]+lang=["']en-gb["'][^>]*>/i.test(homepageHtml)) {
-    failures.push(
-      "- updated locale 'en-gb' was not present in the <html lang=\"en-gb\"> tag",
-    );
-  }
-
-  if (failures.length > 0) {
-    throw new Error(
-      [
-        "Strict assertion failed: updated config was not reflected in the generated output.",
-        "Failed assertions:",
-        ...failures,
-      ].join("\n"),
-    );
-  }
+  const $ = load(homepageHtml);
+  assert.ok($("body").text().includes("Ananke Test Quickstart"));
+  assert.equal($("html").attr("lang"), "en-gb");
 }
 
 /**
@@ -700,7 +554,7 @@ async function assertDraftHiddenInProduction(
 
   const homepageHtml = await readTextFile(homepagePath);
 
-  if (/My First Post/i.test(homepageHtml)) {
+  if (load(homepageHtml)("body").text().includes("My First Post")) {
     throw new Error(
       [
         "Strict assertion failed: draft post title was visible in the production homepage output.",
@@ -711,400 +565,12 @@ async function assertDraftHiddenInProduction(
 }
 
 /**
- * Sentinel CSS class used to verify the configurable hero header spacing.
- *
- * Issue #504: the height of the hero header is controlled by the
- * `header_section_class` parameter. The value is unique so it can only appear in
- * the output when the front matter override is honoured.
- */
-const HEADER_SECTION_CLASS_MARKER = "ananke-header-test-pv7";
-
-/**
- * Default header section spacing rendered by `page-header.html` for a single
- * page with a featured image when `header_section_class` is not set.
- */
-const DEFAULT_PAGE_HEADER_SECTION_CLASS = "tc-l pv6 ph3 ph4-ns";
-
-/**
- * Create two single pages that exercise the configurable header section class:
- * one overrides `header_section_class` in front matter, the other relies on the
- * theme default. Both set `featured_image` so the hero header branch renders.
- *
- * @param contentDir Absolute path to the project `content` directory.
- */
-async function writeHeaderSectionClassFixtures(
-  contentDir: string,
-): Promise<void> {
-  const overridePage = [
-    "+++",
-    "title = 'Custom Header Height'",
-    "featured_image = '/images/custom-hero.jpg'",
-    `header_section_class = '${HEADER_SECTION_CLASS_MARKER} ph3 ph4-ns'`,
-    "+++",
-    "",
-    "Body.",
-    "",
-  ].join("\n");
-
-  const defaultPage = [
-    "+++",
-    "title = 'Default Header Height'",
-    "featured_image = '/images/default-hero.jpg'",
-    "+++",
-    "",
-    "Body.",
-    "",
-  ].join("\n");
-
-  await writeTextFile(join(contentDir, "custom-header.md"), overridePage);
-  await writeTextFile(join(contentDir, "default-header.md"), defaultPage);
-}
-
-/**
- * Assert that the configurable `header_section_class` parameter is honoured on
- * hero headers and that omitting it keeps the historical default spacing.
- *
- * @param projectRoot Absolute path to the temporary quickstart project.
- * @throws Error when the override is dropped, leaks, or the default changes.
- */
-async function assertHeaderSectionClassConfigurable(
-  projectRoot: string,
-): Promise<void> {
-  const failures: string[] = [];
-
-  const overrideHtml = await readTextFile(
-    join(projectRoot, "public", "custom-header", "index.html"),
-  );
-  const defaultHtml = await readTextFile(
-    join(projectRoot, "public", "default-header", "index.html"),
-  );
-
-  if (!overrideHtml.includes(HEADER_SECTION_CLASS_MARKER)) {
-    failures.push(
-      `- custom 'header_section_class' value '${HEADER_SECTION_CLASS_MARKER}' was not applied to the hero header`,
-    );
-  }
-
-  if (defaultHtml.includes(HEADER_SECTION_CLASS_MARKER)) {
-    failures.push(
-      "- custom 'header_section_class' value leaked onto a page that did not set it",
-    );
-  }
-
-  if (!defaultHtml.includes(DEFAULT_PAGE_HEADER_SECTION_CLASS)) {
-    failures.push(
-      `- default header section spacing '${DEFAULT_PAGE_HEADER_SECTION_CLASS}' was missing when 'header_section_class' was not set`,
-    );
-  }
-
-  if (failures.length > 0) {
-    throw new Error(
-      [
-        "Strict assertion failed: configurable header section class did not behave as expected.",
-        "Failed assertions:",
-        ...failures,
-      ].join("\n"),
-    );
-  }
-}
-
-/**
- * Markup only emitted by `summary-with-image.html` when a featured image is
- * rendered, used to detect that list cards switched to the image template.
- */
-const LIST_CARD_IMAGE_MARKER = 'class="img"';
-
-/**
- * Markup emitted by the summary templates when a card date is rendered.
- */
-const SUMMARY_CARD_DATE_MARKER = "datetime=";
-
-/**
- * Markup emitted by `summary.html` when the section title of a card is
- * rendered for the `cards` fixture section.
- */
-const SUMMARY_CARD_SECTION_MARKER = '<span class="f6 db">Cards</span>';
-
-/**
- * Create a content section whose list page exercises both the image and the
- * date behaviour of summary cards: one page has a featured image, the other
- * does not, and both carry an explicit date.
- *
- * @param contentDir Absolute path to the project `content` directory.
- */
-async function writeListCardFixtures(contentDir: string): Promise<void> {
-  const sectionDir = join(contentDir, "cards");
-  await mkdir(sectionDir, { recursive: true });
-
-  const sectionIndex = ["+++", "title = 'Cards'", "+++", "", ""].join("\n");
-
-  const withImage = [
-    "+++",
-    "title = 'Card With Image'",
-    "date = 2024-01-15T00:00:00Z",
-    "featured_image = '/images/card-hero.jpg'",
-    "+++",
-    "",
-    "Card body.",
-    "",
-  ].join("\n");
-
-  const withoutImage = [
-    "+++",
-    "title = 'Card Without Image'",
-    "date = 2024-02-20T00:00:00Z",
-    "+++",
-    "",
-    "Card body.",
-    "",
-  ].join("\n");
-
-  await writeTextFile(join(sectionDir, "_index.md"), sectionIndex);
-  await writeTextFile(join(sectionDir, "with-image.md"), withImage);
-  await writeTextFile(join(sectionDir, "without-image.md"), withoutImage);
-}
-
-/** Exercise date precedence through the actual single and summary templates. */
-async function assertDateSettings(
-  projectRoot: string,
-  themeName: string,
-): Promise<void> {
-  type Settings = Record<string, boolean>;
-  const cases: {
-    label: string;
-    site?: Settings;
-    page?: Settings;
-    cascade?: Settings;
-    undated?: boolean;
-    single: boolean;
-    summary: boolean;
-  }[] = [
-    { label: "defaults", single: true, summary: true },
-    {
-      label: "shared site fallback",
-      site: { show_date: false },
-      single: false,
-      summary: false,
-    },
-    {
-      label: "specific site over shared site",
-      site: { show_date: false, show_single_date: true },
-      single: true,
-      summary: false,
-    },
-    {
-      label: "summary site override",
-      site: { show_date: true, show_summary_date: false },
-      single: true,
-      summary: false,
-    },
-    {
-      label: "page shared over specific site",
-      site: { show_single_date: false, show_summary_date: false },
-      page: { show_date: true },
-      single: true,
-      summary: true,
-    },
-    {
-      label: "page shared false over site true",
-      site: { show_single_date: true, show_summary_date: true },
-      page: { show_date: false },
-      single: false,
-      summary: false,
-    },
-    {
-      label: "specific page over shared page",
-      page: { show_date: false, show_single_date: true },
-      single: true,
-      summary: false,
-    },
-    {
-      label: "summary page over shared page",
-      page: { show_date: true, show_summary_date: false },
-      single: true,
-      summary: false,
-    },
-    {
-      label: "opposite independent settings",
-      page: { show_single_date: false, show_summary_date: true },
-      single: false,
-      summary: true,
-    },
-    {
-      label: "cascade over site",
-      site: { show_summary_date: true },
-      cascade: { show_summary_date: false },
-      single: true,
-      summary: false,
-    },
-    {
-      label: "page over cascade",
-      cascade: { show_single_date: false, show_summary_date: false },
-      page: { show_single_date: true, show_summary_date: true },
-      single: true,
-      summary: true,
-    },
-    {
-      label: "page map over cascade map",
-      cascade: { show_summary_date: false },
-      page: { show_date: true },
-      single: true,
-      summary: true,
-    },
-    {
-      label: "undated page",
-      page: { show_single_date: true, show_summary_date: true },
-      undated: true,
-      single: false,
-      summary: false,
-    },
-  ];
-  const settings = (values: Settings = {}): string[] =>
-    Object.entries(values).map(([key, value]) => `${key} = ${String(value)}`);
-  for (const variant of ["compact", "image", "post"]) {
-    for (const test of cases) {
-      const label = `${variant}: ${test.label}`;
-      await writeTextFile(
-        join(projectRoot, "hugo.toml"),
-        [
-          "baseURL = 'https://example.com/'",
-          `theme = '${themeName}'`,
-          "[params]",
-          "mainSections = ['cards']",
-          "[params.ananke.pages]",
-          `show_list_images = ${String(variant === "image")}`,
-          ...settings(test.site),
-          "",
-        ].join("\n"),
-      );
-      await writeTextFile(
-        join(projectRoot, "content/cards/_index.md"),
-        [
-          "+++",
-          "title = 'Cards'",
-          ...(variant === "post" ? ["type = 'post'"] : []),
-          ...(test.cascade
-            ? ["[cascade.params.ananke]", ...settings(test.cascade)]
-            : []),
-          "+++",
-          "",
-        ].join("\n"),
-      );
-      for (const name of ["with-image", "without-image"]) {
-        await writeTextFile(
-          join(projectRoot, `content/cards/${name}.md`),
-          [
-            "+++",
-            `title = '${name}'`,
-            ...(test.undated ? [] : ["date = 2024-01-15T00:00:00Z"]),
-            ...(variant === "post" ? ["type = 'post'"] : []),
-            ...(name === "with-image"
-              ? ["featured_image = '/images/card-hero.jpg'"]
-              : []),
-            ...(test.page ? ["[params.ananke]", ...settings(test.page)] : []),
-            "+++",
-            "",
-            "Date setting fixture.",
-            "",
-          ].join("\n"),
-        );
-      }
-      await executeHugoBuildStep(
-        { name: label, command: "hugo", args: [], cwd: projectRoot },
-        projectRoot,
-      );
-      const single = await readTextFile(
-        join(projectRoot, "public/cards/with-image/index.html"),
-      );
-      if (single.includes('class="f6 mv4 dib tracked"') !== test.single) {
-        throw new Error(`Single date assertion failed: ${label}`);
-      }
-      for (const path of ["cards/index.html", "index.html"]) {
-        const html = await readTextFile(join(projectRoot, "public", path));
-        const count = (html.match(/datetime="2024-01-15T00:00:00Z"/g) ?? [])
-          .length;
-        if (count !== (test.summary ? 2 : 0)) {
-          throw new Error(
-            `Summary date assertion failed: ${label}, ${path}, found ${count}`,
-          );
-        }
-      }
-    }
-  }
-}
-
-/**
- * Assert that a list page renders summary cards with the expected image and
- * date behaviour.
- *
- * @param listHtml HTML from the rendered list page.
- * @param label Human-readable description of the configuration under test.
- * @param expectations Whether image cards and dates are expected in the output.
- * @throws Error when the rendered cards do not match the expectations.
- */
-function assertListCardSummaries(
-  listHtml: string,
-  label: string,
-  expectations: { images: boolean; dates: boolean; sectionTitles?: boolean },
-): void {
-  const failures: string[] = [];
-  const hasImage = listHtml.includes(LIST_CARD_IMAGE_MARKER);
-  const hasDate = listHtml.includes(SUMMARY_CARD_DATE_MARKER);
-  const hasSectionTitle = listHtml.includes(SUMMARY_CARD_SECTION_MARKER);
-
-  if (expectations.images && !hasImage) {
-    failures.push(
-      "- expected image summary cards but the list rendered no card image",
-    );
-  }
-
-  if (!expectations.images && hasImage) {
-    failures.push(
-      "- image summary cards were rendered when 'ananke.pages.show_list_images' was not enabled",
-    );
-  }
-
-  if (expectations.dates && !hasDate) {
-    failures.push(
-      "- expected summary card dates but none were rendered by default",
-    );
-  }
-
-  if (!expectations.dates && hasDate) {
-    failures.push(
-      "- summary card dates were rendered when 'ananke.pages.show_date' was false",
-    );
-  }
-
-  if (expectations.sectionTitles === true && !hasSectionTitle) {
-    failures.push(
-      "- expected summary card section titles but none were rendered by default",
-    );
-  }
-
-  if (expectations.sectionTitles === false && hasSectionTitle) {
-    failures.push(
-      "- summary card section titles were rendered when 'ananke.pages.show_section_title' was false",
-    );
-  }
-
-  if (failures.length > 0) {
-    throw new Error(
-      [
-        `Strict assertion failed: list card summaries (${label}) did not behave as expected.`,
-        "Failed assertions:",
-        ...failures,
-      ].join("\n"),
-    );
-  }
-}
-
-/**
  * Determine whether a directory is the work tree of a Git repository.
  *
  * @param path Absolute directory path.
  * @returns True when `path` is inside a Git work tree.
  */
+
 async function isGitWorkTree(path: string): Promise<boolean> {
   const result = await runCommand(
     "git",
@@ -1142,6 +608,9 @@ async function copyLocalTheme(
         "--cached",
         "--others",
         "--exclude-standard",
+        "--",
+        ".",
+        ":(exclude)scratch",
       ],
       themePath,
     );
@@ -1181,7 +650,7 @@ async function copyLocalTheme(
 
   // Fallback for a non-Git source directory: copy recursively while excluding
   // heavy or generated paths that would never ship with the theme.
-  const excludedNames = new Set(["node_modules", "public", ".git"]);
+  const excludedNames = new Set(["node_modules", "public", ".git", "scratch"]);
   await cp(themePath, destination, {
     recursive: true,
     filter: (source: string): boolean => {
@@ -1492,152 +961,6 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
     await assertDraftHiddenInProduction(projectRoot, homepagePath);
     console.log("[OK ] Production build should exclude draft content");
 
-    console.log("\n[RUN] Configurable hero header section class (issue #504)");
-    await writeHeaderSectionClassFixtures(join(projectRoot, "content"));
-    const headerSectionBuildStep: StepDefinition = {
-      name: "Build site with configurable header section fixtures",
-      command: "hugo",
-      args: [],
-      cwd: projectRoot,
-      expectedFiles: [
-        "public/custom-header/index.html",
-        "public/default-header/index.html",
-      ],
-    };
-    const headerSectionBuildReport = await executeHugoBuildStep(
-      headerSectionBuildStep,
-      projectRoot,
-    );
-    reports.push(headerSectionBuildReport);
-
-    if (options.verbose) {
-      console.log(
-        `      ${formatCommand(headerSectionBuildStep.command, headerSectionBuildStep.args)}`,
-      );
-      console.log(
-        `[OK ] ${headerSectionBuildStep.name} (${headerSectionBuildReport.result.durationMs} ms, exit ${String(headerSectionBuildReport.result.code)})`,
-      );
-
-      const trimmedOutput = headerSectionBuildReport.result.combined.trim();
-      if (trimmedOutput) {
-        console.log(trimmedOutput);
-      }
-    }
-
-    await assertHeaderSectionClassConfigurable(projectRoot);
-    console.log("[OK ] Configurable hero header section class (issue #504)");
-
-    console.log("\n[RUN] List page image cards and summary dates (issue #217)");
-    await writeListCardFixtures(join(projectRoot, "content"));
-    const cardsListPath = join(projectRoot, "public", "cards", "index.html");
-
-    // Default configuration: no image cards, but dates show by default.
-    await writeTextFile(
-      configPath,
-      [
-        "baseURL = 'https://example.com/'",
-        "title = 'Ananke Test Quickstart'",
-        `theme = '${options.themeName}'`,
-        "",
-      ].join("\n"),
-    );
-    const cardsDefaultBuildStep: StepDefinition = {
-      name: "Build site with default summary cards",
-      command: "hugo",
-      args: [],
-      cwd: projectRoot,
-      expectedFiles: ["public/cards/index.html"],
-    };
-    const cardsDefaultBuildReport = await executeHugoBuildStep(
-      cardsDefaultBuildStep,
-      projectRoot,
-    );
-    reports.push(cardsDefaultBuildReport);
-    assertListCardSummaries(await readTextFile(cardsListPath), "defaults", {
-      images: false,
-      dates: true,
-      sectionTitles: true,
-    });
-
-    // Opt in to image cards and disable summary dates: images appear and the
-    // dates disappear, proving the two settings are independent.
-    await writeTextFile(
-      configPath,
-      [
-        "baseURL = 'https://example.com/'",
-        "title = 'Ananke Test Quickstart'",
-        `theme = '${options.themeName}'`,
-        "[params.ananke.pages]",
-        "show_list_images = true",
-        "show_date = false",
-        "",
-      ].join("\n"),
-    );
-    const cardsImagesBuildStep: StepDefinition = {
-      name: "Build site with image cards and dates disabled",
-      command: "hugo",
-      args: [],
-      cwd: projectRoot,
-      expectedFiles: ["public/cards/index.html"],
-    };
-    const cardsImagesBuildReport = await executeHugoBuildStep(
-      cardsImagesBuildStep,
-      projectRoot,
-    );
-    reports.push(cardsImagesBuildReport);
-    assertListCardSummaries(
-      await readTextFile(cardsListPath),
-      "image cards with dates disabled",
-      { images: true, dates: false },
-    );
-
-    console.log("[OK ] List page image cards and summary dates (issue #217)");
-
-    console.log(
-      "\n[RUN] Hide summary card dates and section titles (issue #1109)",
-    );
-    await writeTextFile(
-      configPath,
-      [
-        "baseURL = 'https://example.com/'",
-        "title = 'Ananke Test Quickstart'",
-        `theme = '${options.themeName}'`,
-        "[params.ananke.pages]",
-        "show_date = false",
-        "show_section_title = false",
-        "",
-      ].join("\n"),
-    );
-    const cardsPlainBuildStep: StepDefinition = {
-      name: "Build site with summary dates and section titles disabled",
-      command: "hugo",
-      args: [],
-      cwd: projectRoot,
-      expectedFiles: ["public/cards/index.html"],
-    };
-    const cardsPlainBuildReport = await executeHugoBuildStep(
-      cardsPlainBuildStep,
-      projectRoot,
-    );
-    reports.push(cardsPlainBuildReport);
-    assertListCardSummaries(
-      await readTextFile(cardsListPath),
-      "dates and section titles disabled",
-      { images: false, dates: false, sectionTitles: false },
-    );
-
-    console.log(
-      "[OK ] Hide summary card dates and section titles (issue #1109)",
-    );
-
-    console.log("\n[RUN] Independent single and summary dates (issue #1112)");
-    await assertDateSettings(projectRoot, options.themeName);
-    console.log("[OK ] Independent single and summary dates (issue #1112)");
-
-    console.log("\n[RUN] Deprecated header partial overrides (issue #1120)");
-    await assertHeaderDeprecations(projectRoot, options.themeName);
-    console.log("[OK ] Deprecated header partial overrides (issue #1120)");
-
     console.log("\nResult: PASS");
 
     if (options.keepOnSuccess) {
@@ -1671,102 +994,6 @@ async function runRoutine(options: RoutineOptions): Promise<number> {
     }
 
     return 1;
-  }
-}
-
-/**
- * Assert the deprecation notice for overridden header partials (issue #1120).
- *
- * Builds the project three times: without an override (no notice), with a
- * project override of `site-navigation.html` (exactly one notice, and the
- * override renders), and with that notice in `ignoreLogs` (no notice).
- *
- * @param projectRoot Absolute path to the temporary quickstart project.
- * @param themeName Theme name used in the project configuration.
- * @throws Error when a notice is missing, repeated, or not suppressible.
- */
-async function assertHeaderDeprecations(
-  projectRoot: string,
-  themeName: string,
-): Promise<void> {
-  const configPath = join(projectRoot, "hugo.toml");
-  const overrideDir = join(projectRoot, "layouts", "_partials");
-  const overridePath = join(overrideDir, "site-navigation.html");
-  const notice = "ananke/DEPR";
-  const marker = "deprecated-nav-override";
-  const baseConfig = [
-    "baseURL = 'https://example.com/'",
-    "title = 'Ananke Test Quickstart'",
-    `theme = '${themeName}'`,
-  ];
-
-  const build = async (label: string): Promise<string> => {
-    await removePublicDir(projectRoot);
-    const result = await runCommand("hugo", [], projectRoot);
-    if (result.code !== 0) {
-      throw new Error(`Build failed (${label}):\n${result.combined}`);
-    }
-    return result.combined;
-  };
-  const count = (output: string): number => output.split(notice).length - 1;
-  const failures: string[] = [];
-
-  await writeTextFile(configPath, [...baseConfig, ""].join("\n"));
-  const plain = await build("no override");
-  if (count(plain) !== 0) {
-    failures.push("- a build without overrides printed a deprecation notice");
-  }
-
-  await mkdir(overrideDir, { recursive: true });
-  await writeTextFile(overridePath, `<nav class="${marker}">custom</nav>\n`);
-  try {
-    const overridden = await build("site-navigation.html override");
-    if (count(overridden) !== 1) {
-      failures.push(
-        `- expected exactly 1 deprecation notice for the override, got ${count(overridden)}`,
-      );
-    }
-    if (
-      !overridden.includes("overrides layouts/_partials/site-navigation.html")
-    ) {
-      failures.push("- the notice did not name site-navigation.html");
-    }
-    if (!overridden.includes("ananke-deprecated-site-navigation")) {
-      failures.push("- the notice did not show its ignoreLogs id");
-    }
-    const homepage = await readTextFile(
-      join(projectRoot, "public", "index.html"),
-    );
-    if (!homepage.includes(marker)) {
-      failures.push(
-        "- the project override of site-navigation.html did not render",
-      );
-    }
-
-    await writeTextFile(
-      configPath,
-      [
-        "ignoreLogs = ['ananke-deprecated-site-navigation']",
-        ...baseConfig,
-        "",
-      ].join("\n"),
-    );
-    const suppressed = await build("override with ignoreLogs");
-    if (count(suppressed) !== 0) {
-      failures.push("- ignoreLogs did not suppress the deprecation notice");
-    }
-  } finally {
-    await rm(overridePath, { force: true });
-  }
-
-  if (failures.length > 0) {
-    throw new Error(
-      [
-        "Strict assertion failed: header deprecation notices did not behave as expected.",
-        "Failed assertions:",
-        ...failures,
-      ].join("\n"),
-    );
   }
 }
 

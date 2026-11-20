@@ -14,8 +14,15 @@
   padding-left: 1rem;
 }
 
+/* Dark-blue links meet AA contrast on the theme's light surfaces. */
 .nested-links a {
+  color: #00449e;
   overflow-wrap: break-word;
+}
+
+.nested-links a:hover,
+.nested-links a:focus {
+  color: #001b44;
 }
 
 /* ------------------------------------------------------------------ *
@@ -140,6 +147,7 @@
     border-top: 1px solid rgba(255, 255, 255, 0.2);
   }
 
+  .ananke-js .ananke-nav:not(.ananke-nav-expanded) .ananke-nav-panel,
   .ananke-nav-collapsed .ananke-nav-panel {
     display: none;
   }

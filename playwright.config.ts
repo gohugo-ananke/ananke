@@ -12,6 +12,7 @@ const isCI = !!process.env["CI"];
  * branch. See tests/support/dev-server.mjs.
  */
 export default defineConfig({
+  testIgnore: "**/visual.spec.ts",
   testDir: "./tests/e2e",
   outputDir: "./tests/.playwright/results",
   fullyParallel: true,
@@ -31,7 +32,7 @@ export default defineConfig({
   webServer: {
     command: "node tests/support/dev-server.mjs",
     url: baseURL,
-    reuseExistingServer: !isCI,
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });

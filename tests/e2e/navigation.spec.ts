@@ -349,3 +349,37 @@ test.describe("without JavaScript (progressive enhancement)", () => {
     if (box) expect(box.x + box.width).toBeLessThanOrEqual(320);
   });
 });
+
+test("mobile navigation is collapsed before DOMContentLoaded", async ({
+  page,
+  baseURL,
+}) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  let release: () => void = () => {};
+  const deferredScript = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/__deferred-fixture.js", async (route) => {
+    await deferredScript;
+    await route.fulfill({ contentType: "text/javascript", body: "" });
+  });
+  await page.route(new URL("/", baseURL).href, async (route) => {
+    const response = await route.fetch();
+    const html = (await response.text()).replace(
+      "</head>",
+      '<script defer src="/__deferred-fixture.js"></script></head>',
+    );
+    await route.fulfill({ response, body: html });
+  });
+  try {
+    await page.goto("/", { waitUntil: "commit" });
+    await expect(page.locator(".ananke-nav-brand")).toBeVisible();
+    expect(await page.evaluate(() => document.readyState)).not.toBe("complete");
+    await expect(page.locator(".ananke-nav-panel")).toBeHidden();
+  } finally {
+    release();
+  }
+  await page.waitForLoadState("domcontentloaded");
+  await page.getByRole("button", { name: "Menu", exact: true }).click();
+  await expect(page.locator(".ananke-nav-panel")).toBeVisible();
+});
