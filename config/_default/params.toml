@@ -1,4 +1,5 @@
 [ananke]
+responsive_image_widths = [480, 960, 1440, 1920] # header image widths in pixels
 show_recent_posts = true # show recent posts on the homepage
 show_categories = true # show categories terms on single pages
 copy_code = true # show a copy-to-clipboard button on code blocks (progressive enhancement)

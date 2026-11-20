@@ -1,4 +1,5 @@
 ---
+featured_image: images/responsive-header.png
 title: "Ananke Test Fixture"
 ---
 
