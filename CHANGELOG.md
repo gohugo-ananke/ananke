@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.22.0](https://github.com/gohugo-ananke/ananke/compare/v2.21.0...v2.22.0) (2026-11-20)
+
+### Test
+
+* **theme:** enforce layered checks and fix accessibility ([48f8a53](https://github.com/gohugo-ananke/ananke/commit/48f8a5361363ad66f9a8758e457438090e1cf4a4)), closes [#1005](https://github.com/gohugo-ananke/ananke/issues/1005) [#1006](https://github.com/gohugo-ananke/ananke/issues/1006) [#1007](https://github.com/gohugo-ananke/ananke/issues/1007) [#1008](https://github.com/gohugo-ananke/ananke/issues/1008) [#1010](https://github.com/gohugo-ananke/ananke/issues/1010) [#1011](https://github.com/gohugo-ananke/ananke/issues/1011) [#1013](https://github.com/gohugo-ananke/ananke/issues/1013) [#1015](https://github.com/gohugo-ananke/ananke/issues/1015) [#1009](https://github.com/gohugo-ananke/ananke/issues/1009), references [#1004](https://github.com/gohugo-ananke/ananke/issues/1004) [#1012](https://github.com/gohugo-ananke/ananke/issues/1012)
+
 ## [2.21.0](https://github.com/gohugo-ananke/ananke/compare/v2.20.0...v2.21.0) (2026-11-20)
 
 ### Feat
