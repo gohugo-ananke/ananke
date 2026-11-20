@@ -22,6 +22,25 @@ test("resolves site, cascade, and page modes, and rejects invalid values", async
   }
 });
 
+test("resolves each navigation class through page, cascade, and site settings", async ({
+  page,
+}) => {
+  for (const [path, marker] of [
+    ["/", "fixture-site-link"],
+    [CLICK, "fixture-cascade-link"],
+    [HOVER, "fixture-page-link"],
+  ] as const) {
+    await page.goto(path);
+    await expect(page.locator("header .ananke-nav-link").first()).toHaveClass(
+      new RegExp(`\\b${marker}\\b`),
+    );
+    // A page override of one class must retain independently configured site classes.
+    await expect(page.locator(".ananke-nav-toggle")).toHaveClass(
+      /\bfixture-menu-button\b/,
+    );
+  }
+});
+
 test.describe("hover navigation", () => {
   test("opens on hover, crosses the gap, closes on leaving, and follows the parent link", async ({
     page,

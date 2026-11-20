@@ -27,6 +27,7 @@ submenu_mode = "split"
 
 # Replace the default classes of one navigation element (tests/e2e/navigation.spec.ts).
 [params.ananke.navigation.classes]
+link = "hover-white white-90 no-underline fixture-site-link"
 toggle = "f5 white-90 hover-white fixture-menu-button"
 
 # Main menu with submenus (tests/e2e/navigation.spec.ts):
