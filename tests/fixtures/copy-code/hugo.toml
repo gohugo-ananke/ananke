@@ -1,0 +1,4 @@
+title = "Copy code fixture"
+theme = "ananke"
+[params.ananke]
+copy_code = false

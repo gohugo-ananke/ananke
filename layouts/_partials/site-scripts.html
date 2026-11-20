@@ -93,6 +93,9 @@
   (function () {
     "use strict";
 
+    // Apply the mobile layout before navigation markup can paint.
+    document.documentElement.classList.add("ananke-js");
+
     // The toggle button of the open submenu. Only one submenu is open at a time.
     var openButton = null;
     var hoverCloseTimer = null;
@@ -134,6 +137,7 @@
       if (!nav) return;
       button.setAttribute("aria-expanded", expanded ? "true" : "false");
       nav.classList.toggle("ananke-nav-collapsed", !expanded);
+      nav.classList.toggle("ananke-nav-expanded", expanded);
     }
 
     function enhanceHover(button) {

@@ -9,6 +9,8 @@ tag = "tags"
 
 [params]
 mainSections = ["posts"]
+description = "A local fixture for Ananke theme rendering, accessibility, and performance tests."
+favicon = "/favicon.ico"
 
 [params.ananke]
 show_recent_posts = true
@@ -74,3 +76,7 @@ weight = 10
 name = "About"
 pageRef = "/about/"
 weight = 20
+
+[params.ananke.shortcodes.edit_page]
+repo_url = "https://github.com/gohugo-ananke/ananke"
+branch = "main"

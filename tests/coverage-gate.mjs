@@ -16,13 +16,14 @@
  * here (not the deep [ananke.social.networks.*] catalog). Widen GATED_TABLES
  * as the gate matures.
  */
-import { readdirSync, readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import TOML from "@iarna/toml";
 import { parse } from "yaml";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const repoRoot = resolve(here, "..");
+const repoRoot = resolve(process.argv[2] || join(here, ".."));
 
 /** Tables in config/_default/params.toml whose direct keys are gated. */
 const GATED_TABLES = [
@@ -37,18 +38,15 @@ function collectAnankeParams() {
     join(repoRoot, "config", "_default", "params.toml"),
     "utf8",
   );
+  const config = TOML.parse(toml);
   const keys = new Set();
-  let table = null;
-  for (const raw of toml.split("\n")) {
-    const line = raw.trim();
-    if (line.startsWith("[")) {
-      const name = line.slice(1, -1).trim();
-      table = GATED_TABLES.includes(name) ? name : null;
-      continue;
+  for (const table of GATED_TABLES) {
+    const values = table.split(".").reduce((node, key) => node?.[key], config);
+    for (const [key, value] of Object.entries(values || {})) {
+      if (value === null || typeof value !== "object" || Array.isArray(value)) {
+        keys.add(`${table}.${key}`);
+      }
     }
-    if (!table || line === "" || line.startsWith("#")) continue;
-    const eq = line.indexOf("=");
-    if (eq > 0) keys.add(`${table}.${line.slice(0, eq).trim()}`);
   }
   return keys;
 }
@@ -73,13 +71,39 @@ function catalogued(section) {
   return out;
 }
 
-const catalog = parse(readFileSync(join(here, "catalog.yaml"), "utf8")) || {};
+const catalog =
+  parse(readFileSync(join(repoRoot, "tests", "catalog.yaml"), "utf8")) || {};
 const params = collectAnankeParams();
 const shortcodes = collectShortcodes();
 const catParams = catalogued(catalog.params);
 const catShortcodes = catalogued(catalog.shortcodes);
 
 const errors = [];
+for (const section of [catalog.params, catalog.shortcodes]) {
+  for (const [feature, entry] of Object.entries(section || {})) {
+    for (const ref of entry?.tests || []) {
+      if (typeof ref !== "string") {
+        errors.push(`${feature}: test reference must be a path string`);
+        continue;
+      }
+      const path = resolve(repoRoot, ref);
+      const local = relative(repoRoot, path);
+      if (
+        isAbsolute(ref) ||
+        local.startsWith("..") ||
+        local.split(/[\\/]/).includes("scratch") ||
+        !(
+          /\.(spec|test)\.(ts|mjs)$/.test(ref) ||
+          ref === "scripts/test-hugo-quickstart.ts"
+        )
+      ) {
+        errors.push(`${feature}: invalid test path '${ref}'`);
+      } else if (!existsSync(path) || !statSync(path).isFile()) {
+        errors.push(`${feature}: test file '${ref}' does not exist`);
+      }
+    }
+  }
+}
 for (const p of params) {
   if (!catParams.has(p))
     errors.push(`param '${p}' has no test in tests/catalog.yaml`);

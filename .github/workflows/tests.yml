@@ -1,0 +1,152 @@
+name: Theme tests
+
+on:
+  push:
+    branches: [development, main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      update_visual_baselines:
+        description: Generate visual baselines for review as an artifact
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.65.1-noble
+    env:
+      HOME: /root
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          submodules: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: "26"
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78
+        with:
+          hugo-version: "latest"
+          extended: true
+
+      - name: Show tool versions
+        run: |
+          node --version
+          npm --version
+          git --version
+          hugo version
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check feature registration and gate tests
+        run: npm run test:coverage-gate && npm run test:unit
+      - name: Browser, accessibility, and no-JavaScript tests
+        run: npm run test:e2e -- --workers=2
+      - name: Compare visual baselines
+        if: ${{ !inputs.update_visual_baselines }}
+        run: npm run test:visual -- --workers=2
+      - name: Generate visual baselines
+        if: ${{ inputs.update_visual_baselines }}
+        run: npm run test:visual -- --update-snapshots=all --workers=2
+      - name: Upload test results and visual baselines
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: browser-results
+          path: |
+            tests/.playwright/
+            tests/visual-baselines/
+          retention-days: 14
+
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          submodules: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: "26"
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78
+        with:
+          hugo-version: "latest"
+          extended: true
+
+      - name: Show tool versions
+        run: |
+          node --version
+          npm --version
+          git --version
+          hugo version
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install lychee
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download lychee-v0.24.2 --repo lycheeverse/lychee --pattern lychee-x86_64-unknown-linux-gnu.tar.gz --dir /tmp/lychee
+          echo "1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a  /tmp/lychee/lychee-x86_64-unknown-linux-gnu.tar.gz" | sha256sum --check
+          tar -xzf /tmp/lychee/lychee-x86_64-unknown-linux-gnu.tar.gz -C /tmp/lychee --strip-components=1
+          sudo install /tmp/lychee/lychee /usr/local/bin/lychee
+      - name: Markup, internal links, and build diagnostics
+        run: npm run test:static && npm run test:static:gates
+
+  performance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          submodules: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: "26"
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78
+        with:
+          hugo-version: "latest"
+          extended: true
+
+      - name: Show tool versions
+        run: |
+          node --version
+          npm --version
+          git --version
+          hugo version
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Performance, SEO, accessibility, and asset budgets
+        run: npm run test:performance
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lighthouse-results
+          path: |
+            .lighthouseci/
+            tests/.playwright/lighthouse/
+          retention-days: 14

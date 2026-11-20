@@ -5,7 +5,8 @@
     "includes": [
       "!!**/*.html",
       "!!assets/ananke/css/_tachyons.css",
-      "!!assets/ananke/dist"
+      "!!assets/ananke/dist",
+      "!!scratch"
     ]
   }
 }
