@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.21.0](https://github.com/gohugo-ananke/ananke/compare/v2.20.0...v2.21.0) (2026-11-20)
+
+### Feat
+
+* **dev:** add shared documentation preview ([216be4b](https://github.com/gohugo-ananke/ananke/commit/216be4b1581df19bccef58631b1a304ea4ae3ef4))
+* **header:** rework header and navigation ([804d93a](https://github.com/gohugo-ananke/ananke/commit/804d93a7a98f2fead5e905801c6fc1f42596a27c))
+* **images:** process responsive header resources ([4f9b512](https://github.com/gohugo-ananke/ananke/commit/4f9b512caf0b6395b6a0e91a3fbaf406787230c0))
+
+### Build
+
+* **config:** add posthaste setup ([7369175](https://github.com/gohugo-ananke/ananke/commit/736917572c0dbd2c8e0cd6247fcb0d09e531d720))
+* **deps:** update dependencies ([a39cedc](https://github.com/gohugo-ananke/ananke/commit/a39cedca794a26830cc082a4b5ceba567c875532))
+* **vscode:** update workspace configuration ([13ca503](https://github.com/gohugo-ananke/ananke/commit/13ca5032e2043561514e91405d987b7884fcb7f9))
+
+### Chore
+
+* **git:** ignore .playwright-mcp report files ([04c45a2](https://github.com/gohugo-ananke/ananke/commit/04c45a2e7ce682b1ae7317acdb6fd168ed871f08))
+
+### Docs
+
+* **ai:** update AI contribution guidelines and add agent instructions ([b64e5ef](https://github.com/gohugo-ananke/ananke/commit/b64e5ef15f069717831c34efcca4333f40d1bbf8))
+
 ## [2.20.0](https://github.com/gohugo-ananke/ananke/compare/v2.19.2...v2.20.0) (2026-11-18)
 
 ### Feat
