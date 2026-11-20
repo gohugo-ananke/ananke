@@ -1,0 +1,35 @@
+{{/* Return a background style shared by home, list, and individual-page headers.
+     Static URLs and unsupported image formats retain their original URL. */}}
+{{ $url := partials.Include "func/GetFeaturedImage.html" . }}
+{{ $page := . }}
+{{ $stylesheet := "" }}
+{{ $style := printf "background-image: url('%s');" $url }}
+{{ with partials.Include "func/GetFeaturedImageResource.html" . }}
+  {{ if in (slice "jpeg" "png" "webp" "tiff" "bmp" "gif") .MediaType.SubType }}
+    {{ $image := . }}
+    {{ $widths := ($page.Param "ananke.responsive_image_widths") | default (slice 480 960 1440 1920) }}
+    {{ $candidates := slice }}
+    {{ range sort $widths }}
+      {{ if lt (int .) $image.Width }}
+        {{ $resized := $image.Resize (printf "%dx" (int .)) }}
+        {{ $candidates = $candidates | append (dict "width" (int .) "url" $resized.RelPermalink) }}
+      {{ end }}
+    {{ end }}
+    {{ $candidates = $candidates | append (dict "width" $image.Width "url" $image.RelPermalink) }}
+    {{/* Select the next sufficient width without upscaling the source. */}}
+    {{ $id := printf "ananke-header-%s" (crypto.MD5 $image.RelPermalink) }}
+    {{ $first := index $candidates 0 }}
+    {{ $style = printf "background-image: var(--%s, url('%s'));" $id $first.url }}
+    {{ $css := printf ":root { --%s: url('%s'); }" $id $first.url }}
+    {{ range $index, $candidate := $candidates }}
+      {{ if gt $index 0 }}
+        {{ $previous := index $candidates (sub $index 1) }}
+        {{ $css = printf "%s @media (min-width: %dpx) { :root { --%s: url('%s'); } }" $css (add $previous.width 1) $id $candidate.url }}
+      {{ end }}
+    {{ end }}
+    {{/* Publish a shared stylesheet for each image and width configuration. */}}
+    {{ $cssResource := resources.FromString (printf "ananke/header-%s.css" (crypto.MD5 $css)) $css }}
+    {{ $stylesheet = $cssResource.RelPermalink }}
+  {{ end }}
+{{ end }}
+{{ return (dict "style" $style "stylesheet" $stylesheet) }}

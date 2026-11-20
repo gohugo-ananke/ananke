@@ -54,4 +54,7 @@
 
 {{/* return either a permalink, or an empty string. Note that partials can only have a single
 return statement, so this needs to be at the end of the partial (and not in the if block) */}}
+{{ with partials.Include "func/GetFeaturedImageResource.html" . }}
+  {{ $linkToCover = .RelPermalink }}
+{{ end }}
 {{ return $linkToCover }}

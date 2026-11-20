@@ -8,6 +8,8 @@
 # humans; the gate only checks that the key is present and has a non-empty list.
 
 params:
+  ananke.responsive_image_widths:
+    tests: ["tests/e2e/responsive-header.spec.ts"]
   ananke.show_recent_posts:
     tests: ["scripts/test-hugo-quickstart.ts"]
   ananke.show_categories:

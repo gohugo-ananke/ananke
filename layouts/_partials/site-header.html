@@ -3,7 +3,9 @@
   {{/* Trimming the slash and adding absURL make sure the image works no matter where our site lives */}}
   {{ $featured_image_class := site.Params.featured_image_class | compare.Default "cover bg-top" }}
   {{ $header_section_class := .Param "header_section_class" | compare.Default "tc-l pv4 pv6-l ph3 ph4-ns" }}
-  <header class="{{ $featured_image_class }}" style="background-image: url('{{ $featured_image }}');">
+  {{ $background := partials.Include "func/FeaturedImageStyle.html" . }}
+  {{ with $background.stylesheet }}<link rel="stylesheet" href="{{ . }}">{{ end }}
+  <header class="{{ $featured_image_class }}" style="{{ $background.style | safe.CSS }}">
     {{ $cover_dimming_class := site.Params.cover_dimming_class | compare.Default "bg-black-60" }}
     <div class="{{ $cover_dimming_class }}">
       {{ partials.Include "site-navigation.html" .}}
