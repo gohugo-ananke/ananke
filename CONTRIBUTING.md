@@ -41,10 +41,10 @@ npm install
 1. Run a local preview via `npm run` instead of just calling `hugo server`:
 
 ```bash
-npm run server
+npm run dev
 ```
 
- This runs the documentation site from `site/` using contents from `docs/` with local configuration.
+ This runs the sibling `documentation/` site with the local Ananke working tree. Keep both repositories next to each other, install the documentation dependencies, and use Node.js 22.18 or later. The calling repository stays on its branch: `main` selects the companion's `main`, `development` selects `development`, and other named branches select the same local branch in the companion when it exists. Otherwise, they select `development`. The launcher prints both branches and any switch it makes, and stops if the companion needs switching but has uncommitted or untracked changes (excluding `scratch/`). Stop the server before selecting another branch pair. You can run the same command from either repository; see the [documentation development guide](https://github.com/gohugo-ananke/documentation#running-locally).
 
 1. Follow the coding style and format commit messages as described in the conventional commits specification (for example: `docs: add troubleshooting section` or `fix: correct hero image path`).
 

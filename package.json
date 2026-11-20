@@ -43,6 +43,7 @@
     "yaml": "2.9.1"
   },
   "scripts": {
+    "dev": "node ../documentation/scripts/dev.ts",
     "hook:commit": "lint-staged",
     "hook:push": "node -e \"process.exit(require('child_process').execSync('git branch --show-current').toString().trim() === 'main' ? 0 : 1)\" && node scripts/test-hugo-quickstart.ts || true",
     "lint:links": "lychee --config lychee.toml public",
