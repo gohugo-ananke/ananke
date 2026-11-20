@@ -9,6 +9,7 @@ Thanks for helping improve Ananke. This document describes the current contribut
 * [Branch strategy](#branch-strategy)
   * [Long-lived branches](#long-lived-branches)
   * [Branch naming](#branch-naming)
+* [Tests](#tests)
 * [Pull request workflow](#pull-request-workflow)
 * [Circumventing git hooks](#circumventing-git-hooks)
 * [Documentation contributions](#documentation-contributions)
@@ -95,6 +96,12 @@ After a successful rebase between those branches, push with lease:
 ```bash
 git push --force-with-lease
 ```
+
+## Tests
+
+Run the relevant [theme test commands](tests/README.md) for each change and register changed parameters or shortcodes in `tests/catalog.yaml`. `npm test` uses the Node test runner and feature mini-sites; browser, static, visual, and Lighthouse checks have separate commands. The coverage gate checks registration and test paths, not complete behavioural coverage.
+
+Follow [the manual testing guide](tests/manual-tests.md) after relevant UI changes and for release candidates. Record the tested commit, environment, scope, and findings in the pull request or release record. Initial screenshot approval establishes a starting point; changed screenshots and relevant accessibility behaviour need fresh review.
 
 ## Pull request workflow
 

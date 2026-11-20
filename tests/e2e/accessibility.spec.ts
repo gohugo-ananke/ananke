@@ -13,6 +13,7 @@ const PAGES: Record<string, string> = {
   "section list": "/posts/",
   "single page": "/posts/hello/",
   "standalone page": "/about/",
+  "shortcode page with contact form": "/shortcodes/",
   "custom header layout": "/header-layout/",
   "taxonomy terms": "/tags/",
   "taxonomy term": "/tags/alpha/",
@@ -21,26 +22,10 @@ const PAGES: Record<string, string> = {
 
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
-/**
- * Page types with a known, tracked WCAG AA contrast failure (Tachyons `gray`
- * #777 on summary cards and single-page bylines). Marked as expected failures
- * so the suite is green while the bug is open; when #1015 is fixed these will
- * start passing and Playwright will flag the stale annotation for removal.
- */
-const KNOWN_FAILURES = new Set([
-  "section list",
-  "single page",
-  "taxonomy terms",
-  "taxonomy term",
-]);
-
 for (const [name, path] of Object.entries(PAGES)) {
   test(`${name} has no automatically detectable a11y violations`, async ({
     page,
   }) => {
-    if (KNOWN_FAILURES.has(name)) {
-      test.fail(true, "Known WCAG AA contrast issue, tracked in #1015");
-    }
     await page.goto(path);
     const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
     expect(results.violations).toEqual([]);
@@ -95,3 +80,13 @@ test("header with the expanded mobile menu at 375px has no automatically detecta
     .analyze();
   expect(results.violations).toEqual([]);
 });
+
+for (const state of ["focus", "hover"] as const) {
+  test(`content links retain AA contrast on ${state}`, async ({ page }) => {
+    await page.goto("/posts/hello/");
+    const link = page.locator('main a[href="/tags/alpha/"]').first();
+    await link[state]();
+    const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
+    expect(results.violations).toEqual([]);
+  });
+}

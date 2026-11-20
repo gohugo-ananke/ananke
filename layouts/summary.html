@@ -1,7 +1,7 @@
 {{ $show_date := partials.Include "func/ShowDate.html" (dict "page" . "key" "show_summary_date") }}
 {{ $show_section_title := partials.Include "func/IsShown.html" (dict "page" . "key" "show_section_title") }}
 <div class="w-100 mb4 nested-copy-line-height relative bg-white">
-  <div class="mb3 pa4 gray overflow-hidden bg-white">
+  <div class="mb3 pa4 mid-gray overflow-hidden bg-white">
     {{ if $show_section_title }}
       {{ with .CurrentSection.Title }}<span class="f6 db">{{ . }}</span>{{ end }}
     {{ end }}

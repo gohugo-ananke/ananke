@@ -28,7 +28,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: "24"
+          node-version: "26"
 
       - name: Set up Hugo
         uses: peaceiris/actions-hugo@2752ce1d29631191ea3f27c23495fa06139a5b78
@@ -50,7 +50,7 @@ jobs:
       # so this gate actually exercises the code on the current branch / PR.
       - name: Run quickstart test (local working tree)
         run: |
-          node scripts/test-hugo-quickstart.ts
+          npm test
 
       # Additionally verify the documented submodule install against the published
       # theme, but only after merge to a release branch to avoid testing stale

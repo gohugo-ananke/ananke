@@ -4,8 +4,8 @@
 # listed here with at least one test reference, or `npm run test:coverage-gate`
 # fails. This forces a test to accompany each new or changed feature.
 #
-# `tests` entries are free-form references (spec files or fixture folders) for
-# humans; the gate only checks that the key is present and has a non-empty list.
+# `tests` entries must name existing executable spec or quickstart files.
+# This checks registration and paths, not whether assertions cover every behaviour.
 
 params:
   ananke.responsive_image_widths:
@@ -15,7 +15,7 @@ params:
   ananke.show_categories:
     tests: ["scripts/test-hugo-quickstart.ts"]
   ananke.copy_code:
-    tests: ["tests/e2e/copy-button.spec.ts"]
+    tests: ["tests/e2e/copy-button.spec.ts", "tests/fixtures/copy-code/copy-code.test.mjs"]
   ananke.navigation.submenu_mode:
     tests: ["tests/e2e/navigation-modes.spec.ts"]
   ananke.navigation.classes.nav:
@@ -44,9 +44,11 @@ params:
     tests: ["tests/e2e/navigation.spec.ts"]
 
 shortcodes:
+  edit-page:
+    tests: ["tests/e2e/shortcodes.spec.ts"]
   form-contact:
-    tests: ["scripts/test-hugo-quickstart.ts"] # TODO: add a dedicated form-contact test
+    tests: ["tests/e2e/shortcodes.spec.ts"]
   page-index:
-    tests: ["scripts/test-hugo-quickstart.ts"] # TODO: add a dedicated page-index test
+    tests: ["tests/e2e/shortcodes.spec.ts"]
   since:
-    tests: ["scripts/test-hugo-quickstart.ts"] # TODO: add a dedicated since test
+    tests: ["tests/e2e/shortcodes.spec.ts"]

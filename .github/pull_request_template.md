@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD041 -->
 <!---
 
 Add the issue number that is discussed and fixed by this PR (In the form
@@ -26,3 +27,5 @@ functionality, please add the necessary documentation.
 If testing of the new functionality is possible, please add tests.
 
 -->
+
+* [ ] Added or updated feature fixtures and tests, and registered parameters and shortcodes in `tests/catalog.yaml` (or explained why no tests are needed).

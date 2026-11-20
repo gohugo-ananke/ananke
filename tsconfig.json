@@ -7,5 +7,11 @@
     "declarationMap": true,
     "jsx": "react-jsx"
   },
-  "include": ["**/*.ts", "scripts/**/*"]
+  "include": ["**/*.ts", "scripts/**/*"],
+  "exclude": [
+    "node_modules",
+    "scratch",
+    "tests/.playwright",
+    "tests/fixtures/**/public"
+  ]
 }

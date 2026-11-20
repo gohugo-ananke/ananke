@@ -13,8 +13,8 @@ colors:
   text: "#555555"
   text-strong: "#111111"
   text-muted: "#777777"
-  link: "#357EDD"
-  link-hover: "#000000"
+  link: "#00449E"
+  link-hover: "#001B44"
   surface: "#FFFFFF"
   surface-subtle: "#F4F4F4"
   surface-raised: "#FFFFFF"
@@ -253,7 +253,7 @@ The default experience is neutral and editorial: an Avenir-like sans-serif shell
 
 * **Primary (`#000000`)** is the default structural color for headers, navigation, footers, and primary submit actions.
 * **Secondary (`#555555`)** maps to Tachyons `mid-gray` and is the default reading color for most text via the `text_color` parameter.
-* **Tertiary (`#357EDD`)** maps to Tachyons `blue` and is available for links and accent states, though many theme links inherit black/gray and rely on `dim` or hover utilities.
+* **Tertiary (`#357EDD`)** maps to Tachyons `blue` and is available for links and accent states, while content links use `dark-blue` and change to `navy` on hover or focus. Many structural links inherit black/gray and rely on `dim` or hover utilities.
 * **Neutral (`#F4F4F4`)** maps to Tachyons `near-white` and is the default body background through `avenir bg-near-white`.
 * **Surface (`#FFFFFF`)** is used by summary cards and content blocks.
 * **Border (`#CCCCCC`)** maps to Tachyons `moon-gray`, used for low-contrast separators and bordered buttons.
@@ -311,7 +311,7 @@ Ananke uses Tachyons spacing, width, flexbox, and breakpoint suffixes as its lay
 
 Prefer Tachyons responsive suffixes (`-ns`, `-m`, `-l`) rather than custom media queries. Start single-column and progressively enhance at `not-small`, `medium`, and `large` breakpoints.
 
-## Elevation & Depth
+## Elevation & depth
 
 The theme is deliberately flat. Depth is created with contrast, spacing, and hover transitions rather than shadows.
 
@@ -373,7 +373,7 @@ Social links use inline SVG icons at `32px` by `32px`, inheriting `currentColor`
 
 Preformatted blocks are dark (`#222222`) with light text (`#DDDDDD`), horizontal scrolling, `1.5em` padding, and a line height of `2`. Preserve overflow behavior so long code lines remain accessible.
 
-## Do's and Don'ts
+## Do's and don'ts
 
 ### Do
 

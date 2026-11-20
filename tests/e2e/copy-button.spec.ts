@@ -7,6 +7,7 @@ test.describe("copy-to-clipboard code button (#986)", () => {
     await page.goto(POST);
     // Exactly one fenced block on this page → one .code-block wrapper.
     await expect(page.locator(".code-block")).toHaveCount(1);
+    await expect(page.locator("article p code")).toHaveText("code");
     // Inline `code` lives outside a .code-block wrapper.
     await expect(page.locator(".code-block code")).toHaveCount(1);
   });
