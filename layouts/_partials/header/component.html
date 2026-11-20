@@ -1,0 +1,38 @@
+{{- /*
+  Renders one header component through the hook system.
+
+  For a component named `<name>`, this fires three hooks in order:
+
+    - `header/<name>-before`  (empty by default; add your own markup)
+    - `header/<name>`         (the component itself; the theme ships defaults
+                               for logo, languages, menu, social, title, and
+                               description)
+    - `header/<name>-after`   (empty by default; add your own markup)
+
+  Each hook partial lives in `layouts/_partials/hooks/header/` and receives the
+  header context dictionary:
+
+    - `page`            the current page
+    - `region`          "navigation" or "content"
+    - `featured_image`  the featured image URL of the page, or an empty string
+    - `variant`         "site" or "page" (content region only)
+    - `submenu_mode`    "split", "hover", "click", or "toplevel"
+                        (navigation region only; per-call overrides are supported)
+    - `classes`         navigation classes from
+                        func/header/GetNavigationClasses.html (navigation
+                        region only)
+
+  If `header/<name>` has no partial, the theme prints a warning, because the
+  name in `params.ananke.header` is probably misspelt.
+
+  @param name     string  Component name.
+  @param context  map     Header context dictionary (see above).
+*/ -}}
+{{- $name := .name -}}
+{{- $context := .context -}}
+{{- if not (templates.Exists (fmt.Printf "_partials/hooks/header/%s.html" $name)) -}}
+  {{- fmt.Warnidf "ananke-header-component" "[ananke] Header component %q has no hook partial. Create layouts/_partials/hooks/header/%s.html or remove it from params.ananke.header." $name $name -}}
+{{- end -}}
+{{- partials.Include "hook.html" (collections.Dictionary "hook" (fmt.Printf "header/%s-before" $name) "context" $context) -}}
+{{- partials.Include "hook.html" (collections.Dictionary "hook" (fmt.Printf "header/%s" $name) "context" $context) -}}
+{{- partials.Include "hook.html" (collections.Dictionary "hook" (fmt.Printf "header/%s-after" $name) "context" $context) -}}

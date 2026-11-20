@@ -44,3 +44,6 @@ other = "{{ .Count }} sanaa"
 
 [pageTitle]
 other = "{{ .Name }} sivu"
+
+[menuToggle]
+other = "Valikko"

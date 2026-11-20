@@ -1,4 +1,7 @@
+{{- /* @deprecated 2.21.0 remove in 3.0.0: remove this marker, it only detects site overrides of this partial (see #1120) */ -}}
+{{- .Store.Set "ananke.deprecated.theme-partial.site-header.html" true -}}
 {{ $featured_image := partials.Include "func/GetFeaturedImage.html" . }}
+{{ $header := collections.Dictionary "page" . "variant" "site" "featured_image" $featured_image }}
 {{ if $featured_image }}
   {{/* Trimming the slash and adding absURL make sure the image works no matter where our site lives */}}
   {{ $featured_image_class := site.Params.featured_image_class | compare.Default "cover bg-top" }}
@@ -8,33 +11,21 @@
   <header class="{{ $featured_image_class }}" style="{{ $background.style | safe.CSS }}">
     {{ $cover_dimming_class := site.Params.cover_dimming_class | compare.Default "bg-black-60" }}
     <div class="{{ $cover_dimming_class }}">
-      {{ partials.Include "site-navigation.html" .}}
+      {{/* @deprecated 2.21.0 remove in 3.0.0: include site-navigation.html directly (see #1120) */ -}}
+      {{ partials.Include "func/header/IncludeChecked.html" (collections.Dictionary "name" "site-navigation.html" "page" .) }}
       <div class="{{ $header_section_class }}">
-        <h1 class="f2 f-subheadline-l fw2 white-90 mb0 lh-title">
-          {{ .Title | compare.Default .Site.Title }}
-        </h1>
-        {{ with .Params.description }}
-          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center mt3">
-            {{ . }}
-          </h2>
-        {{ end }}
+        {{ partials.Include "header/content.html" $header }}
       </div>
     </div>
   </header>
 {{ else }}
   <header>
     <div class="pb3-m pb6-l {{ .Site.Params.background_color_class | compare.Default "bg-black" }}">
-      {{ partials.Include "site-navigation.html" . }}
+      {{/* @deprecated 2.21.0 remove in 3.0.0: include site-navigation.html directly (see #1120) */ -}}
+      {{ partials.Include "func/header/IncludeChecked.html" (collections.Dictionary "name" "site-navigation.html" "page" .) }}
       {{ $header_section_class := .Param "header_section_class" | compare.Default "tc-l pv3 ph3 ph4-ns" }}
       <div class="{{ $header_section_class }}">
-        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
-          {{ .Title | compare.Default .Site.Title }}
-        </h1>
-        {{ with .Params.description }}
-          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
-            {{ . }}
-          </h2>
-        {{ end }}
+        {{ partials.Include "header/content.html" $header }}
       </div>
     </div>
   </header>

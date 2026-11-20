@@ -36,3 +36,6 @@ other = "标签为“{{ .Title }}”的页面如下"
 
 [pageTitle]
 other = "{{ .Name }} 页"
+
+[menuToggle]
+other = "菜单"

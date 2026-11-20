@@ -36,3 +36,6 @@ other = "Aşağıda, “{{ .Title }}” sınıflandırma terimini kullanan sayfa
 
 [pageTitle]
 other = "{{ .Name }} sayfa"
+
+[menuToggle]
+other = "Menü"

@@ -33,3 +33,6 @@ other = "भेजना"
 
 [taxonomyPageList]
 other = "नीचे आपको ऐसे पेज मिलेंगे जो वर्गीकरण शब्द का उपयोग करते हैं “{{ .Title }}”"
+
+[menuToggle]
+other = "मेनू"

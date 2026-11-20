@@ -39,3 +39,6 @@ other = "Abaixo você encontrará as páginas que utilizam o termo de taxonomia 
 
 [pageTitle]
 other = "{{ .Name }} página"
+
+[menuToggle]
+other = "Menu"

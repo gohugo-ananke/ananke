@@ -3,7 +3,8 @@
  * Feature -> test coverage gate.
  *
  * Fails when a user-facing feature has no test catalogued:
- *   - every direct key under the [ananke] table in config/_default/params.toml
+ *   - every direct key under the tables in GATED_TABLES in
+ *     config/_default/params.toml
  *   - every shortcode in layouts/_shortcodes/
  * must appear in tests/catalog.yaml with a non-empty `tests` list.
  *
@@ -11,9 +12,9 @@
  * (stale entries), so the catalog stays in sync as features are added, renamed,
  * or removed.
  *
- * Scope note: only the direct [ananke] toggles are gated here (not the deep
- * [ananke.social.networks.*] catalog). Widen `collectAnankeParams` as the gate
- * matures.
+ * Scope note: only the direct keys of the tables in GATED_TABLES are gated
+ * here (not the deep [ananke.social.networks.*] catalog). Widen GATED_TABLES
+ * as the gate matures.
  */
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -23,23 +24,31 @@ import { parse } from "yaml";
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, "..");
 
-/** Direct `key = value` entries under the top-level [ananke] table. */
+/** Tables in config/_default/params.toml whose direct keys are gated. */
+const GATED_TABLES = [
+  "ananke",
+  "ananke.navigation",
+  "ananke.navigation.classes",
+];
+
+/** Direct `key = value` entries under the gated tables. */
 function collectAnankeParams() {
   const toml = readFileSync(
     join(repoRoot, "config", "_default", "params.toml"),
     "utf8",
   );
   const keys = new Set();
-  let inAnanke = false;
+  let table = null;
   for (const raw of toml.split("\n")) {
     const line = raw.trim();
     if (line.startsWith("[")) {
-      inAnanke = line === "[ananke]";
+      const name = line.slice(1, -1).trim();
+      table = GATED_TABLES.includes(name) ? name : null;
       continue;
     }
-    if (!inAnanke || line === "" || line.startsWith("#")) continue;
+    if (!table || line === "" || line.startsWith("#")) continue;
     const eq = line.indexOf("=");
-    if (eq > 0) keys.add(`ananke.${line.slice(0, eq).trim()}`);
+    if (eq > 0) keys.add(`${table}.${line.slice(0, eq).trim()}`);
   }
   return keys;
 }

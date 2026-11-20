@@ -27,7 +27,7 @@ Thanks for helping improve Ananke. This document describes the current contribut
 
 The project follows a structured release workflow based on conventional commits, staging branches, and automated versioning.
 
-For details, see [Branch Strategy](#branch-strategy).
+For details, see [Branch Strategy](#branch-strategy). Publish a stable theme release from `main` before publishing the matching documentation. The documentation production build resolves the latest stable theme without changing its checked-in dependency files; preview builds can select an unreleased ref. Follow the [release and publication order](https://ananke-documentation.netlify.app/help/development/#release-and-publication-order), and confirm the resolved theme version in the documentation build log.
 
 ## Before you start
 

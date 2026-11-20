@@ -1,0 +1,14 @@
+{{- /*
+  Resolve a menu's mode: explicit partial argument > page front matter >
+  cascade > site parameters > split. The page's Param method handles the
+  page, cascade, and site layers.
+
+  @param page          page    Current page.
+  @param submenu_mode  string  Optional per-call override.
+*/ -}}
+{{- $mode := .submenu_mode | compare.Default (.page.Param "ananke.navigation.submenu_mode") | compare.Default "split" -}}
+{{- if not (collections.In (collections.Slice "split" "hover" "click" "toplevel") $mode) -}}
+  {{- fmt.Warnf "[ananke] Invalid ananke.navigation.submenu_mode %q; using split. Choose split, hover, click, or toplevel." $mode -}}
+  {{- $mode = "split" -}}
+{{- end -}}
+{{- return $mode -}}
