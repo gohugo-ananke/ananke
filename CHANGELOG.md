@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.23.0](https://github.com/gohugo-ananke/ananke/compare/v2.22.0...v2.23.0) (2026-11-21)
+
+### Feat
+
+* **styles:** add hyphenation utility for post content ([#1128](https://github.com/gohugo-ananke/ananke/issues/1128)) ([daca88d](https://github.com/gohugo-ananke/ananke/commit/daca88d9ec3fb681188993378ce3eeb5c1105083))
+
 ## [2.22.0](https://github.com/gohugo-ananke/ananke/compare/v2.21.0...v2.22.0) (2026-11-20)
 
 ### Test
