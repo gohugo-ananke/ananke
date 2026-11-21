@@ -275,7 +275,7 @@ Site authors can override structural color classes with Hugo params such as `bac
 Tachyons typography utilities define the scale and families. Ananke's defaults layer these choices on top:
 
 * **Body shell:** `avenir` with `bg-near-white` on the `<body>`.
-* **Article body:** `serif f4 lh-copy nested-links`, overridable with `post_content_classes`.
+* **Article body:** `serif f4 lh-copy nested-links`, overridable with `post_content_classes`. Single-page content also has `hyphenate`, Ananke's own hyphenation utility in `_styles.css` (Tachyons has none); sites redefine the class in custom CSS to change or disable it.
 * **Headlines:** `athelas` for article and summary headings; site hero headings use lightweight sans-serif (`fw2`).
 * **Navigation:** lightweight sans-serif with responsive sizes (`f5 f4-ns` for menu items and `f3 fw2` for the site title/logo text).
 * **Metadata:** `helvetica tracked ttu` and small text sizes for section labels, dates, reading time, and word count.

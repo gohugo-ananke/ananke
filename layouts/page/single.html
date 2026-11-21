@@ -16,7 +16,7 @@
           {{ .Title }}
         </h1>
       </header>
-      <div class="nested-copy-line-height lh-copy f4 nested-links {{ $.Param "text_color" | compare.Default "mid-gray" }}">
+      <div class="nested-copy-line-height lh-copy hyphenate f4 nested-links {{ $.Param "text_color" | compare.Default "mid-gray" }}">
         {{- partials.Include "hook.html" (dict "hook" "content-before" "context" .) -}}
         {{ .Content }}
         {{- partials.Include "hook.html" (dict "hook" "content-after" "context" .) -}}
