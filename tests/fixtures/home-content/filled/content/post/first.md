@@ -1,0 +1,5 @@
+---
+title: First post
+---
+
+Body.

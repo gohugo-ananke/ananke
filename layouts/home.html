@@ -8,9 +8,13 @@
     {{- $text_alignment = "tr-l" -}}
   {{- end -}}
 
-  <article class="cf ph3 ph5-l pv3 pv4-l f4 {{ $text_alignment }} center measure-wide lh-copy nested-links {{ $.Param "text_color" | compare.Default "mid-gray" }}">
-    {{ .Content }}
-  </article>
+  {{- /* Render the introduction only when the home page has content, so an
+         empty home page has no blank space above the recent posts. */ -}}
+  {{ with .Content }}
+    <article class="cf ph3 ph5-l pv3 pv4-l f4 {{ $text_alignment }} center measure-wide lh-copy nested-links {{ $.Param "text_color" | compare.Default "mid-gray" }}">
+      {{ . }}
+    </article>
+  {{ end }}
 
   {{/* Define a section to pull recent posts from. For Hugo 0.20 this will default to the section with the most number of pages. */}}
   {{ $mainSections := site.Params.mainSections | compare.Default (collections.Slice "post") }}
