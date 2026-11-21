@@ -1,3 +1,6 @@
 CHANGELOG.md
 tests/.playwright/
 tests/fixtures/site/public/
+.github/changelog-old.md
+/PROJECT.md
+/TODO.md

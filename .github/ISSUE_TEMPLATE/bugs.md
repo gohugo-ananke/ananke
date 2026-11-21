@@ -20,7 +20,7 @@ Provide a general summary of the issue in the Title above and prefix it with `bu
 
 -->
 
-## Expected Behavior
+## Expected behavior
 
 <!---
 
@@ -28,7 +28,7 @@ Could you tell us what you did and what you expected to happen?
 
 -->
 
-## Current Behavior
+## Current behavior
 
 <!---
 
@@ -36,7 +36,7 @@ Could you tell us what happens instead of the expected behavior?
 
 -->
 
-## Possible Solution
+## Possible solution
 
 <!---
 
@@ -44,7 +44,7 @@ It's not mandatory, but please let us know if you know the reason for this issue
 
 -->
 
-## Steps to Reproduce
+## Steps to reproduce
 
 <!---
 
@@ -85,6 +85,7 @@ Keep the following HTML
 
 -->
 
+<!-- markdownlint-disable MD033 -->
 <details><summary>Hugo Config</summary>
 <p>
 
@@ -98,3 +99,4 @@ comment tag, between <p> and </p>.
 
 </p>
 </details>
+<!-- markdownlint-enable MD033 -->

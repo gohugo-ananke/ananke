@@ -1,20 +1,20 @@
-# synch-social-icons.ts
+# `synch-social-icons.ts`
 
 Synchronises local SVG icons with the upstream `simple-icons` repository.
 
 The script is intended for folders such as `assets/ananke/socials/` that already contain SVG icon files. By default it runs in dry-run mode, compares local files with upstream files from `simple-icons/icons/`, and reports what would change.
 
-- [Usage](#usage)
-- [CLI options](#cli-options)
-- [Behaviour](#behaviour)
-- [Default mode](#default-mode)
-- [Full sync mode](#full-sync-mode)
-- [Output states](#output-states)
-- [Progress output](#progress-output)
-- [JSON output](#json-output)
-- [Recommendations](#recommendations)
-- [Notes](#notes)
-- [Adding new icons](#adding-new-icons)
+* [Usage](#usage)
+* [CLI options](#cli-options)
+* [Behaviour](#behaviour)
+* [Default mode](#default-mode)
+* [Full sync mode](#full-sync-mode)
+* [Output states](#output-states)
+* [Progress output](#progress-output)
+* [JSON output](#json-output)
+* [Recommendations](#recommendations)
+* [Notes](#notes)
+* [Adding new icons](#adding-new-icons)
 
 ## Usage
 

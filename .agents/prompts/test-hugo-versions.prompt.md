@@ -2,7 +2,7 @@
 description: Test an Ananke website against multiple local Hugo versions
 ---
 
-# Test ananke websites with local hugo versions
+# Test Ananke websites with local Hugo versions
 
 Use these instructions when testing an Ananke-based website against multiple local Hugo binaries.
 

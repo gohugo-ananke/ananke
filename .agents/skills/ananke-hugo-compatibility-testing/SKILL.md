@@ -297,4 +297,3 @@ Summary file:
 * Always show when no matching Hugo versions were found.
 * Always distinguish between command output differences and generated site output differences.
 * Always use explicit version numbers in the final summary.
-

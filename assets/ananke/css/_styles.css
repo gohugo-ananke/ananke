@@ -253,7 +253,10 @@
   }
 
   /* Bridge the visual gap so a slow pointer can enter the dropdown. */
-  [data-submenu-mode="hover"] > .ananke-has-submenu > .ananke-submenu-toggle:not([hidden]) + .ananke-submenu::before {
+  [data-submenu-mode="hover"]
+    > .ananke-has-submenu
+    > .ananke-submenu-toggle:not([hidden])
+    + .ananke-submenu::before {
     content: "";
     position: absolute;
     inset-inline: 0;

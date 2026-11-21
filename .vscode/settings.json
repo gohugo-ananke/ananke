@@ -11,9 +11,7 @@
       "addWords": true
     }
   ],
-  "cSpell.dictionaries": [
-    "workspace"
-  ],
+  "cSpell.dictionaries": ["workspace"],
   "cSpell.enabledFileTypes": {
     "markdown": true,
     "plaintext": true,

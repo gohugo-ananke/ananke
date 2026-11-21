@@ -1,4 +1,4 @@
-# Release Policy
+# Release policy
 
 This document defines the release workflow for Ananke.
 
@@ -23,7 +23,7 @@ Examples:
 * `fix: correct mobile navigation`
 * `docs: update configuration guide`
 
-## Branching Model
+## Branching model
 
 ```mermaid
 flowchart LR
@@ -65,7 +65,7 @@ flowchart LR
 * Used for testing before release
 * Hosts pre-releases
 
-### feature branches
+### Feature branches
 
 * All work must happen in dedicated branches
 * Branch from `development`
@@ -77,7 +77,7 @@ Examples:
 * `fix/mobile-menu`
 * `docs/improve-installation`
 
-## Pull Request Workflow
+## Pull request workflow
 
 * All pull requests must target `development`
 * No direct commits to `main` or `development`
@@ -92,7 +92,7 @@ This ensures:
 * clean history in `main`
 * meaningful commit grouping in `development`
 
-## Release Types
+## Release types
 
 ### Pre-releases
 
@@ -116,7 +116,7 @@ npm run release
 * Tagged as official release
 * Represents stable production state
 
-## Release Flow:
+## Release flow
 
 Typical flow:
 

@@ -1,4 +1,4 @@
-# Ananke Theme for Hugo
+# Ananke theme for Hugo
 
 Ananke is a flexible, production-ready starter theme for [Hugo](https://gohugo.io/) focused on accessibility, performance, and maintainable defaults.
 
@@ -48,7 +48,7 @@ Ananke supports both installation methods:
 
 If you are new to Hugo, see Hugo's official quick start: [gohugo.io/getting-started/quick-start](https://gohugo.io/getting-started/quick-start/).
 
-## Getting Started
+## Getting started
 
 After installation, use these guides to configure your site:
 
@@ -57,7 +57,7 @@ After installation, use these guides to configure your site:
 * [Customisation](https://ananke-documentation.netlify.app/customisation/)
 * [Troubleshooting](https://ananke-documentation.netlify.app/troubleshooting/)
 
-## Support and Contributions
+## Support and contributions
 
 * Bug reports: [GitHub Issues](https://github.com/gohugo-ananke/ananke/issues)
 * Questions and feature ideas: [GitHub Discussions](https://github.com/gohugo-ananke/ananke/discussions)

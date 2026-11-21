@@ -1,0 +1,7 @@
+{
+  // Agent skills start with YAML front matter (name, description) and do not
+  // need a top-level heading.
+  "config": {
+    "MD041": false
+  }
+}

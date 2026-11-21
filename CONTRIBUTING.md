@@ -1,4 +1,4 @@
-# Contributing to ananke
+# Contributing to Ananke
 
 Thanks for helping improve Ananke. This document describes the current contribution workflow for this repository.
 
@@ -55,7 +55,7 @@ npm run dev
 npm run prepare
 ```
 
- This command is run automatically after `npm install` but you can run it manually to set up hooks in an existing clone or update changed hooks. It uses `simple-git-hooks` to install a commit hook that runs `lint-staged` for markdown files, which in turn runs linting tasks on staged files.
+ This command is run automatically after `npm install` but you can run it manually to set up hooks in an existing clone or update changed hooks. It uses `simple-git-hooks` to install a commit hook that runs `lint-staged`, which lints only the staged files: Biome for JavaScript, TypeScript, and JSON, markdownlint for Markdown, yamllint for YAML, zizmor for workflows, and lockfile-lint for `package-lock.json`. Install [yamllint](https://yamllint.readthedocs.io/) and [zizmor](https://docs.zizmor.sh/) locally, for example with `pipx install yamllint zizmor`.
 
 ## Reporting bugs and requesting features
 
@@ -111,8 +111,10 @@ Follow [the manual testing guide](tests/manual-tests.md) after relevant UI chang
 4. Run quality checks locally:
 
 ```bash
-npm run lint:markdown
+npm run lint
 ```
+
+ `npm run lint` runs Biome, lockfile-lint, markdownlint, the TypeScript check, and yamllint on the whole repository. The `Theme tests` workflow runs the same command in CI.
 
 1. If your change affects behaviour, validate with Hugo locally (for example `hugo` or `hugo server` in the relevant project).
 2. Open a pull request with:

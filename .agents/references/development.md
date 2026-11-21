@@ -9,7 +9,8 @@ Use Hugo compatible with `config/_default/module.toml`. Run `npm ci` for locked 
 ## Commands
 
 * `npm run check`: linting, quickstart tests, and the feature coverage gate; browser tests run separately.
-* `npm run lint`: Biome, lockfile-lint, markdownlint, and TypeScript checks.
+* `npm run lint`: Biome, lockfile-lint, markdownlint, TypeScript, and yamllint checks. The `lint` job in `.github/workflows/tests.yml` runs it in CI. yamllint is a Python tool; install it locally, for example with `pipx install yamllint`.
+* `npm run lint:yaml`: yamllint with `.yamllint.yml` on all YAML files that are not ignored.
 * `npm run lint:code:fix`: Biome fixes; HTML templates, Tachyons source, and asset distribution files are excluded by `biome.json`.
 * `npm run lint:markdown:fix`: Markdown fixes.
 * `npm run lint:typescript`: TypeScript checks without emitting files.

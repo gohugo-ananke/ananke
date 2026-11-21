@@ -5,9 +5,17 @@ locale: en_US.UTF-8
 yaml-files:
   - "*.yaml"
   - "*.yml"
-  - "*.md"
 
 ignore: |
+  node_modules/
+  public/
+  resources/
+  scratch/
+  tests/.playwright/
+  tests/fixtures/**/public/
+  .lighthouseci/
+  .playwright-mcp/
+  .wireit/
   .github/workflows/update-netlify.yml
   .github/workflows/daily-audit.yml
   .github/workflows/codeql-analysis.yml
@@ -37,7 +45,8 @@ rules:
   indentation:
     spaces: consistent
     indent-sequences: consistent
-    check-multi-line-strings: true
+    # shell scripts in workflow `run` blocks need nested indentation
+    check-multi-line-strings: false
   key-duplicates: enable
   key-ordering: disable
   line-length:

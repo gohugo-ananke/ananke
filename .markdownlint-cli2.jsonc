@@ -1,0 +1,11 @@
+{
+  // Project additions to @dnbhq/markdownlint-config, which the npm scripts and
+  // lint-staged pass with --config. Settings for one rule replace the shared
+  // settings for that rule, so repeat "ignore" from the shared configuration.
+  "config": {
+    "dnb-title-case-style": {
+      "ignore": ["JavaScript"],
+      "properNouns": ["Ananke", "Hugo", "MIT License"]
+    }
+  }
+}
