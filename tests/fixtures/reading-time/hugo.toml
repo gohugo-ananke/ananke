@@ -1,0 +1,6 @@
+title = "Reading time fixture"
+theme = "ananke"
+
+[params]
+show_reading_time = true
+reading_speed = 100 # words per minute, so the fixture word counts give exact minutes

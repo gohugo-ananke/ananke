@@ -1,0 +1,5 @@
+---
+title: Short post
+---
+
+Word.

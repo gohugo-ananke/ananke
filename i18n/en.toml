@@ -45,7 +45,7 @@ other = "Below you will find pages that utilize the taxonomy term “{{ .Title }
 
 [readingTime]
 one = "One minute read"
-other = "{{ .Count }} minutes read"
+other = "{{ .Count }} minute read"
 
 [wordCount]
 one = "One word"
