@@ -1,0 +1,17 @@
+title = "Language switcher fixture"
+theme = "ananke"
+defaultContentLanguage = "en"
+
+[languages.en]
+label = "English"
+locale = "en-GB"
+weight = 1
+
+[languages.de]
+label = "Deutsch"
+locale = "de-DE"
+weight = 2
+
+[languages.fr]
+locale = "fr-FR"
+weight = 3

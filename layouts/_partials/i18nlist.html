@@ -3,7 +3,9 @@
 <ul class="{{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pr0 ml3" "pl0 mr3" }}">
     {{ range .Translations }}
     <li class="list f5 f4-ns fw4 dib {{ compare.Conditional (compare.Eq $.Site.Language.Direction "rtl") "pl3" "pr3" }}">
-        <a class="hover-white white-90 no-underline" href="{{ .RelPermalink }}">{{ .Lang }}</a>
+        {{- /* The link text is the language `label` from the site configuration,
+               or the language key when no label is set (#707). */ -}}
+        <a class="hover-white white-90 no-underline" href="{{ .RelPermalink }}" hreflang="{{ .Language.Locale }}" lang="{{ .Language.Locale }}">{{ .Language.Label | compare.Default .Lang }}</a>
     </li>
     {{ end}}
 </ul>
