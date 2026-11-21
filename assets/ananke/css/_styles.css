@@ -26,6 +26,26 @@
 }
 
 /* ------------------------------------------------------------------ *
+ * Hyphenation utility (Tachyons has none)
+ *
+ * Browsers hyphenate only text in a language they have a dictionary
+ * for; baseof.html sets `lang` from the site locale. Words need six
+ * letters, with three on each side of the break. Headings and code
+ * keep their words whole. Sites change or disable this by redefining
+ * `.hyphenate` in ananke.custom_css, for example
+ * `.hyphenate { hyphens: manual; }`.
+ * ------------------------------------------------------------------ */
+
+.hyphenate {
+  hyphens: auto;
+  hyphenate-limit-chars: 6 3 3;
+}
+
+.hyphenate :where(h1, h2, h3, h4, h5, h6, code, kbd, samp) {
+  hyphens: manual;
+}
+
+/* ------------------------------------------------------------------ *
  * Header navigation (see layouts/_partials/site-navigation.html)
  *
  * Colours, type, and spacing come from Tachyons classes in the template;
