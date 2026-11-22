@@ -1,0 +1,83 @@
+################################################################################
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+################################################################################
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+      day: friday
+      time: "22:00"
+      timezone: Asia/Bangkok
+    assignees:
+      - davidsneighbour
+    target-branch: development
+    open-pull-requests-limit: 999
+    pull-request-branch-name:
+      separator: /
+    labels:
+      - type:dependencies
+    ignore:
+      # do not update @davidsneighbour packages, that is done via renovate
+      - dependency-name: "@davidsneighbour/*"
+      - dependency-name: "@dnbhq/*"
+    commit-message:
+      prefix: "build(deps)"
+    cooldown:
+      default-days: 7
+      # include:
+      #   - "requests"
+      exclude:
+        - "@davidsneighbour/*"
+        - "@dnbhq/*"
+
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: monthly
+      day: friday
+      time: "22:00"
+      timezone: Asia/Bangkok
+    assignees:
+      - davidsneighbour
+    target-branch: development
+    open-pull-requests-limit: 999
+    pull-request-branch-name:
+      separator: /
+    labels:
+      - type:dependencies
+    commit-message:
+      prefix: "build(deps)"
+    cooldown:
+      default-days: 7
+      # include:
+      #   - "requests"
+      exclude:
+        - "@davidsneighbour/*"
+        - "@dnbhq/*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      day: friday
+      time: "22:00"
+      timezone: Asia/Bangkok
+    assignees:
+      - davidsneighbour
+    target-branch: development
+    open-pull-requests-limit: 999
+    pull-request-branch-name:
+      separator: /
+    labels:
+      - type:dependencies
+    commit-message:
+      prefix: "build(deps)"
+    cooldown:
+      default-days: 7
+      # include:
+      #   - "requests"
+      exclude:
+        - "@davidsneighbour/*"
+        - "@dnbhq/*"
