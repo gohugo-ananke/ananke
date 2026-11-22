@@ -8,6 +8,9 @@
  *   - every shortcode in layouts/_shortcodes/
  * must appear in tests/catalog.yaml with a non-empty `tests` list.
  *
+ * An optional `docs` value names the documentation page of the feature as a
+ * site-relative path; it is checked for format only.
+ *
  * It also reports catalog entries that no longer match a real param/shortcode
  * (stale entries), so the catalog stays in sync as features are added, renamed,
  * or removed.
@@ -78,9 +81,15 @@ const shortcodes = collectShortcodes();
 const catParams = catalogued(catalog.params);
 const catShortcodes = catalogued(catalog.shortcodes);
 
+const DOCS_PATH = /^\/(?:[a-z0-9-]+\/)*(?:#[a-z0-9-]+)?$/;
 const errors = [];
 for (const section of [catalog.params, catalog.shortcodes]) {
   for (const [feature, entry] of Object.entries(section || {})) {
+    // Optional documentation target: a site-relative path on the
+    // documentation site, for example "/configuration/reference/#homepage".
+    if (entry?.docs !== undefined && !DOCS_PATH.test(String(entry.docs))) {
+      errors.push(`${feature}: invalid docs path '${entry.docs}'`);
+    }
     for (const ref of entry?.tests || []) {
       if (typeof ref !== "string") {
         errors.push(`${feature}: test reference must be a path string`);
