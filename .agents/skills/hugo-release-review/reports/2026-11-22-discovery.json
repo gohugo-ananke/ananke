@@ -1,0 +1,615 @@
+{
+  "schema_version": 1,
+  "coverage_start": "v0.128.0",
+  "frozen_target": "v0.170.1",
+  "retrieved_at": "2026-11-21T23:30:21.940Z",
+  "page_count": 4,
+  "total_release_count": 387,
+  "legacy_tags_below_range": [
+    "v0.53",
+    "v0.52",
+    "v0.51",
+    "v0.50",
+    "v0.49",
+    "v0.48",
+    "v0.47",
+    "v0.46",
+    "v0.45",
+    "v0.44",
+    "v0.43",
+    "v0.42",
+    "v0.41",
+    "v0.40",
+    "v0.39",
+    "v0.38",
+    "v0.37",
+    "v0.36",
+    "v0.35",
+    "v0.34",
+    "v0.33",
+    "v0.32",
+    "v0.31",
+    "v0.30",
+    "v0.29",
+    "v0.28",
+    "v0.27",
+    "v0.26",
+    "v0.25",
+    "v0.24",
+    "v0.23",
+    "v0.22",
+    "v0.21",
+    "v0.20",
+    "v0.19",
+    "v0.18",
+    "v0.17",
+    "v0.16"
+  ],
+  "ordered_releases": [
+    {
+      "version": "v0.128.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.128.0",
+      "published_at": "2024-06-25T16:32:06Z"
+    },
+    {
+      "version": "v0.128.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.128.1",
+      "published_at": "2024-07-02T08:10:59Z"
+    },
+    {
+      "version": "v0.128.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.128.2",
+      "published_at": "2024-07-04T08:29:16Z"
+    },
+    {
+      "version": "v0.129.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.129.0",
+      "published_at": "2024-07-17T13:42:56Z"
+    },
+    {
+      "version": "v0.130.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.130.0",
+      "published_at": "2024-07-29T14:08:46Z"
+    },
+    {
+      "version": "v0.131.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.131.0",
+      "published_at": "2024-08-02T09:24:58Z"
+    },
+    {
+      "version": "v0.132.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.132.0",
+      "published_at": "2024-08-12T15:39:59Z"
+    },
+    {
+      "version": "v0.132.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.132.1",
+      "published_at": "2024-08-13T10:24:13Z"
+    },
+    {
+      "version": "v0.132.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.132.2",
+      "published_at": "2024-08-14T16:32:38Z"
+    },
+    {
+      "version": "v0.133.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.133.0",
+      "published_at": "2024-08-17T20:13:11Z"
+    },
+    {
+      "version": "v0.133.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.133.1",
+      "published_at": "2024-08-26T14:31:18Z"
+    },
+    {
+      "version": "v0.134.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.134.0",
+      "published_at": "2024-09-03T10:19:50Z"
+    },
+    {
+      "version": "v0.134.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.134.1",
+      "published_at": "2024-09-05T11:08:29Z"
+    },
+    {
+      "version": "v0.134.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.134.2",
+      "published_at": "2024-09-10T12:14:33Z"
+    },
+    {
+      "version": "v0.134.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.134.3",
+      "published_at": "2024-09-19T14:54:53Z"
+    },
+    {
+      "version": "v0.135.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.135.0",
+      "published_at": "2024-09-27T13:33:44Z"
+    },
+    {
+      "version": "v0.136.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.136.0",
+      "published_at": "2024-10-15T13:45:25Z"
+    },
+    {
+      "version": "v0.136.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.136.1",
+      "published_at": "2024-10-16T16:26:09Z"
+    },
+    {
+      "version": "v0.136.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.136.2",
+      "published_at": "2024-10-17T14:44:59Z"
+    },
+    {
+      "version": "v0.136.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.136.3",
+      "published_at": "2024-10-21T14:35:44Z"
+    },
+    {
+      "version": "v0.136.4",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.136.4",
+      "published_at": "2024-10-22T08:58:58Z"
+    },
+    {
+      "version": "v0.136.5",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.136.5",
+      "published_at": "2024-10-24T12:42:35Z"
+    },
+    {
+      "version": "v0.137.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.137.0",
+      "published_at": "2024-11-04T16:25:00Z"
+    },
+    {
+      "version": "v0.137.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.137.1",
+      "published_at": "2024-11-05T12:05:31Z"
+    },
+    {
+      "version": "v0.138.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.138.0",
+      "published_at": "2024-11-18T17:36:25Z"
+    },
+    {
+      "version": "v0.139.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.139.0",
+      "published_at": "2024-11-18T16:33:50Z"
+    },
+    {
+      "version": "v0.139.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.139.1",
+      "published_at": "2024-11-23T14:34:12Z"
+    },
+    {
+      "version": "v0.139.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.139.2",
+      "published_at": "2024-11-23T15:53:49Z"
+    },
+    {
+      "version": "v0.139.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.139.3",
+      "published_at": "2024-11-29T15:53:57Z"
+    },
+    {
+      "version": "v0.139.4",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.139.4",
+      "published_at": "2024-12-09T18:00:17Z"
+    },
+    {
+      "version": "v0.139.5",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.139.5",
+      "published_at": "2024-12-14T19:18:24Z"
+    },
+    {
+      "version": "v0.140.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.140.0",
+      "published_at": "2024-12-17T14:41:02Z"
+    },
+    {
+      "version": "v0.140.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.140.1",
+      "published_at": "2024-12-23T16:41:07Z"
+    },
+    {
+      "version": "v0.140.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.140.2",
+      "published_at": "2024-12-30T15:33:58Z"
+    },
+    {
+      "version": "v0.141.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.141.0",
+      "published_at": "2025-01-16T13:28:56Z"
+    },
+    {
+      "version": "v0.142.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.142.0",
+      "published_at": "2025-01-22T12:37:07Z"
+    },
+    {
+      "version": "v0.143.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.143.0",
+      "published_at": "2025-02-01T16:10:20Z"
+    },
+    {
+      "version": "v0.143.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.143.1",
+      "published_at": "2025-02-04T09:16:02Z"
+    },
+    {
+      "version": "v0.144.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.144.0",
+      "published_at": "2025-02-17T16:40:24Z"
+    },
+    {
+      "version": "v0.144.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.144.1",
+      "published_at": "2025-02-18T12:32:04Z"
+    },
+    {
+      "version": "v0.144.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.144.2",
+      "published_at": "2025-02-19T12:57:23Z"
+    },
+    {
+      "version": "v0.145.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.145.0",
+      "published_at": "2025-02-26T16:00:08Z"
+    },
+    {
+      "version": "v0.146.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.146.0",
+      "published_at": "2025-04-10T15:14:17Z"
+    },
+    {
+      "version": "v0.146.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.146.1",
+      "published_at": "2025-04-10T16:59:43Z"
+    },
+    {
+      "version": "v0.146.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.146.2",
+      "published_at": "2025-04-11T17:40:22Z"
+    },
+    {
+      "version": "v0.146.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.146.3",
+      "published_at": "2025-04-12T17:38:10Z"
+    },
+    {
+      "version": "v0.146.4",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.146.4",
+      "published_at": "2025-04-14T13:26:40Z"
+    },
+    {
+      "version": "v0.146.5",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.146.5",
+      "published_at": "2025-04-15T18:23:20Z"
+    },
+    {
+      "version": "v0.146.6",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.146.6",
+      "published_at": "2025-04-20T11:33:00Z"
+    },
+    {
+      "version": "v0.146.7",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.146.7",
+      "published_at": "2025-04-22T17:48:01Z"
+    },
+    {
+      "version": "v0.147.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.0",
+      "published_at": "2025-04-25T17:17:15Z"
+    },
+    {
+      "version": "v0.147.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.1",
+      "published_at": "2025-05-01T14:18:24Z"
+    },
+    {
+      "version": "v0.147.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.2",
+      "published_at": "2025-05-06T12:18:23Z"
+    },
+    {
+      "version": "v0.147.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.3",
+      "published_at": "2025-05-12T12:40:39Z"
+    },
+    {
+      "version": "v0.147.4",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.4",
+      "published_at": "2025-05-20T11:06:23Z"
+    },
+    {
+      "version": "v0.147.5",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.5",
+      "published_at": "2025-05-22T11:57:26Z"
+    },
+    {
+      "version": "v0.147.6",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.6",
+      "published_at": "2025-05-27T11:33:52Z"
+    },
+    {
+      "version": "v0.147.7",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.7",
+      "published_at": "2025-05-31T12:55:29Z"
+    },
+    {
+      "version": "v0.147.8",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.8",
+      "published_at": "2025-06-07T13:52:06Z"
+    },
+    {
+      "version": "v0.147.9",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.147.9",
+      "published_at": "2025-06-23T08:43:04Z"
+    },
+    {
+      "version": "v0.148.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.148.0",
+      "published_at": "2025-07-08T14:00:02Z"
+    },
+    {
+      "version": "v0.148.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.148.1",
+      "published_at": "2025-07-11T13:22:24Z"
+    },
+    {
+      "version": "v0.148.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.148.2",
+      "published_at": "2025-07-27T13:12:22Z"
+    },
+    {
+      "version": "v0.149.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.149.0",
+      "published_at": "2025-08-27T16:06:03Z"
+    },
+    {
+      "version": "v0.149.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.149.1",
+      "published_at": "2025-09-04T14:48:21Z"
+    },
+    {
+      "version": "v0.150.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.150.0",
+      "published_at": "2025-09-08T13:22:55Z"
+    },
+    {
+      "version": "v0.150.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.150.1",
+      "published_at": "2025-09-25T11:44:59Z"
+    },
+    {
+      "version": "v0.151.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.151.0",
+      "published_at": "2025-10-02T13:54:48Z"
+    },
+    {
+      "version": "v0.151.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.151.1",
+      "published_at": "2025-10-15T15:24:31Z"
+    },
+    {
+      "version": "v0.151.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.151.2",
+      "published_at": "2025-10-16T17:26:28Z"
+    },
+    {
+      "version": "v0.152.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.152.0",
+      "published_at": "2025-10-21T16:54:23Z"
+    },
+    {
+      "version": "v0.152.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.152.1",
+      "published_at": "2025-10-22T19:27:43Z"
+    },
+    {
+      "version": "v0.152.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.152.2",
+      "published_at": "2025-10-24T15:47:22Z"
+    },
+    {
+      "version": "v0.153.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.153.0",
+      "published_at": "2025-12-19T11:46:28Z"
+    },
+    {
+      "version": "v0.153.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.153.1",
+      "published_at": "2025-12-20T15:42:45Z"
+    },
+    {
+      "version": "v0.153.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.153.2",
+      "published_at": "2025-12-22T18:25:24Z"
+    },
+    {
+      "version": "v0.153.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.153.3",
+      "published_at": "2025-12-26T16:38:54Z"
+    },
+    {
+      "version": "v0.153.4",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.153.4",
+      "published_at": "2025-12-28T21:58:12Z"
+    },
+    {
+      "version": "v0.153.5",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.153.5",
+      "published_at": "2025-12-30T10:48:25Z"
+    },
+    {
+      "version": "v0.154.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.154.0",
+      "published_at": "2025-12-31T14:25:22Z"
+    },
+    {
+      "version": "v0.154.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.154.1",
+      "published_at": "2026-01-01T17:53:52Z"
+    },
+    {
+      "version": "v0.154.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.154.2",
+      "published_at": "2026-01-02T16:52:23Z"
+    },
+    {
+      "version": "v0.154.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.154.3",
+      "published_at": "2026-01-06T17:16:58Z"
+    },
+    {
+      "version": "v0.154.4",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.154.4",
+      "published_at": "2026-01-10T16:30:41Z"
+    },
+    {
+      "version": "v0.154.5",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.154.5",
+      "published_at": "2026-01-11T21:18:01Z"
+    },
+    {
+      "version": "v0.155.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.155.0",
+      "published_at": "2026-01-28T17:29:04Z"
+    },
+    {
+      "version": "v0.155.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.155.1",
+      "published_at": "2026-01-30T10:36:30Z"
+    },
+    {
+      "version": "v0.155.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.155.2",
+      "published_at": "2026-02-02T10:41:52Z"
+    },
+    {
+      "version": "v0.155.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.155.3",
+      "published_at": "2026-02-08T17:06:13Z"
+    },
+    {
+      "version": "v0.156.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.156.0",
+      "published_at": "2026-02-18T17:21:05Z"
+    },
+    {
+      "version": "v0.157.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.157.0",
+      "published_at": "2026-02-25T17:00:45Z"
+    },
+    {
+      "version": "v0.158.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.158.0",
+      "published_at": "2026-03-16T18:07:38Z"
+    },
+    {
+      "version": "v0.159.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.159.0",
+      "published_at": "2026-03-23T18:36:09Z"
+    },
+    {
+      "version": "v0.159.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.159.1",
+      "published_at": "2026-03-26T10:18:33Z"
+    },
+    {
+      "version": "v0.159.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.159.2",
+      "published_at": "2026-04-01T14:42:10Z"
+    },
+    {
+      "version": "v0.160.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.160.0",
+      "published_at": "2026-04-04T14:17:16Z"
+    },
+    {
+      "version": "v0.160.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.160.1",
+      "published_at": "2026-04-08T14:23:31Z"
+    },
+    {
+      "version": "v0.161.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.161.0",
+      "published_at": "2026-04-28T13:55:11Z"
+    },
+    {
+      "version": "v0.161.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.161.1",
+      "published_at": "2026-04-29T14:38:49Z"
+    },
+    {
+      "version": "v0.162.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.162.0",
+      "published_at": "2026-05-26T14:16:07Z"
+    },
+    {
+      "version": "v0.162.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.162.1",
+      "published_at": "2026-05-28T18:06:06Z"
+    },
+    {
+      "version": "v0.163.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.163.0",
+      "published_at": "2026-06-08T14:36:18Z"
+    },
+    {
+      "version": "v0.163.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.163.1",
+      "published_at": "2026-06-11T17:19:53Z"
+    },
+    {
+      "version": "v0.163.2",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.163.2",
+      "published_at": "2026-06-15T15:27:33Z"
+    },
+    {
+      "version": "v0.163.3",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.163.3",
+      "published_at": "2026-06-18T16:41:48Z"
+    },
+    {
+      "version": "v0.164.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.164.0",
+      "published_at": "2026-07-06T17:48:54Z"
+    },
+    {
+      "version": "v0.165.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.165.0",
+      "published_at": "2026-08-12T15:39:00Z"
+    },
+    {
+      "version": "v0.166.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.166.0",
+      "published_at": "2026-09-09T15:10:02Z"
+    },
+    {
+      "version": "v0.167.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.167.0",
+      "published_at": "2026-09-28T15:20:52Z"
+    },
+    {
+      "version": "v0.168.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.168.0",
+      "published_at": "2026-10-13T17:24:15Z"
+    },
+    {
+      "version": "v0.169.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.169.0",
+      "published_at": "2026-10-27T16:24:46Z"
+    },
+    {
+      "version": "v0.170.0",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.170.0",
+      "published_at": "2026-11-13T16:09:01Z"
+    },
+    {
+      "version": "v0.170.1",
+      "url": "https://github.com/gohugoio/hugo/releases/tag/v0.170.1",
+      "published_at": "2026-11-17T17:08:14Z"
+    }
+  ]
+}
