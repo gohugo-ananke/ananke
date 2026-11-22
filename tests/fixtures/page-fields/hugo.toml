@@ -1,0 +1,39 @@
+baseURL = "https://example.org/"
+title = "Page fields fixture"
+theme = "ananke"
+
+[params.ananke.navigation]
+submenu_mode = "click"
+
+[[menus.main]]
+name = "Articles"
+identifier = "articles"
+pageRef = "/articles"
+weight = 10
+
+[[menus.main]]
+name = "Explicit fields"
+parent = "articles"
+pageRef = "/articles/explicit"
+
+[[menus.main]]
+name = "Fallback"
+identifier = "fallback"
+pageRef = "/fallback"
+weight = 20
+
+[[menus.main]]
+name = "Untitled"
+parent = "fallback"
+pageRef = "/fallback/untitled"
+
+[[menus.main]]
+name = "Custom overview"
+identifier = "custom"
+pageRef = "/custom"
+weight = 30
+
+[[menus.main]]
+name = "Custom child"
+parent = "custom"
+pageRef = "/custom/child"

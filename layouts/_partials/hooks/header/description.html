@@ -6,7 +6,7 @@
   pages) renders a `div`.
 */ -}}
 {{- $context := . -}}
-{{- with .page.Params.description -}}
+{{- with partials.Include "func/GetExplicitPageField.html" (dict "page" .page "field" "description") -}}
   {{- if compare.Eq $context.variant "page" -}}
     <div class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
       {{ . }}

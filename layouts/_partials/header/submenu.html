@@ -16,7 +16,7 @@
   {{- if .URL }}
   {{- $label := lang.Translate "menuOverview" . | compare.Default .Name }}
   {{- with .Page }}
-    {{- with .Params.linktitle }}{{- $label = . }}{{- end }}
+    {{- with partials.Include "func/GetExplicitPageField.html" (dict "page" . "field" "linktitle") }}{{- $label = . }}{{- end }}
   {{- end }}
   {{- $current := partials.Include "func/header/GetMenuCurrent.html" (dict "page" $page "entry" .) }}
   <li class="ananke-submenu-item ananke-submenu-overview">

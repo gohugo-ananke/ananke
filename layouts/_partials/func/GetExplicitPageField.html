@@ -1,0 +1,18 @@
+{{- /*
+  Return an explicitly set title, description, or linktitle through its Page
+  method. Preserve the former templates' empty-field fallbacks and custom
+  params overrides, which can differ from the reserved front matter fields.
+  Inspect the parameter map with index, not a deprecated .Params.field lookup.
+*/ -}}
+{{- $page := .page -}}
+{{- $field := .field -}}
+{{- $value := false -}}
+{{- if collections.IsSet $page.Params $field -}}
+  {{- $methods := dict "title" $page.Title "description" $page.Description "linktitle" $page.LinkTitle -}}
+  {{- $value = index $methods $field -}}
+  {{- $stored := index $page.Params $field -}}
+  {{- if ne $stored $value -}}
+    {{- $value = $stored -}}
+  {{- end -}}
+{{- end -}}
+{{- return $value -}}
