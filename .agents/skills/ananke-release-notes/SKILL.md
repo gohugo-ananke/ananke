@@ -40,33 +40,17 @@ Use this exact structure:
 
 Do not remove headings. If a section has no relevant content, write a short sentence stating that there are no additional notes for that section.
 
-## Primary breaking change
+## Breaking-change evidence
 
-The release notes must include this breaking change prominently:
+Include breaking changes only when the candidate release introduces them. Check the full range from the previous stable tag, the public configuration and template interfaces, and the migration documentation. If there are no breaking changes in that range, say so.
 
-```markdown
-BREAKING CHANGE: Ananke is now using the latest css.Build functionality of Hugo. This means that the old SASS/SCSS pipeline is removed and you need to update your build process if you were relying on it.
-```
-
-Rewrite the wording only if it improves clarity, but keep the meaning intact.
-
-The breaking change section must explain:
-
-* the old SASS/SCSS pipeline has been removed
-* Ananke now relies on Hugo's current `css.Build` functionality
-* users with custom build scripts, asset pipelines, or theme overrides may need to update their setup
-* users should check their Hugo version before upgrading
-* users should review any custom SASS/SCSS overrides or imports
+The removal of the SASS/SCSS pipeline and adoption of `css.Build` are historical changes. Do not announce them as new in every release. Mention them only when they are relevant to the actual release range or its upgrade guidance.
 
 ## Requirements
 
-The requirements section must include:
+Read the minimum Hugo version from both [theme.toml](../../../theme.toml) (`min_version`) and [config/_default/module.toml](../../../config/_default/module.toml) (`hugoVersion.min`). These files are the source of truth; do not copy a version from an older release note or this skill.
 
-```markdown
-* Hugo v0.161+
-```
-
-If repository files indicate a more specific or newer requirement, report the conflict clearly instead of silently changing the version.
+If the declarations disagree, report the conflict before preparing a requirement claim. State the verified minimum, any required edition or external tool, and any requirement change introduced by the candidate. Do not infer a higher minimum from the version used for testing.
 
 ## Changelog
 
