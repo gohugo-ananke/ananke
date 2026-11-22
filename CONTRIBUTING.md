@@ -142,9 +142,9 @@ The theme documentation lives in a separate repository at [gohugo-ananke/documen
 
 ### Documentation obligations
 
-Every pull request with a user-facing change needs a matching pull request in the documentation repository, or a short reason in the pull request template why no change is needed. The documentation organises pages by reader need: tutorials, how-to guides, explanation, and reference. Change only the document types that the change affects:
+Every pull request with a user-facing change needs a matching pull request in the documentation repository, or a short reason in the pull request template why no change is needed. The check "Require a documentation decision" fails on pull requests into `development` until the documentation item is checked and the line "Documentation PR or reason:" has a value. Dependabot pull requests are exempt. The documentation organises pages by reader need: tutorials, how-to guides, explanation, and reference. Change only the document types that the change affects:
 
-* **New or changed option or shortcode:** update its row in the [configuration reference](https://ananke-documentation.netlify.app/configuration/reference/) or its shortcode reference page. Give the type, default, scope (site, page, or both), the first release, and an example that you tested. Add or update the `docs` path of the entry in `tests/catalog.yaml`.
+* **New or changed option or shortcode:** update its row in the [configuration reference](https://ananke-documentation.netlify.app/configuration/reference/) or its shortcode reference page. Give the type, default, scope (site, page, or both), the first release, and an example that you tested. Add or update the `docs` path of the entry in `tests/catalog.yaml`; the coverage gate requires it.
 * **Changed task or workflow:** update the how-to guide that describes it.
 * **Breaking change or deprecation:** add the change to [Update Ananke](https://ananke-documentation.netlify.app/get-started/update-ananke/#changes-that-need-action) and link an upgrade guide.
 * **New concept or trade-off:** add or update an explanation page only when readers need it to make a choice. A feature does not need one page of each type.
