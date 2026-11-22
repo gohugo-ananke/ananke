@@ -5,7 +5,7 @@ Ananke is a flexible, production-ready starter theme for [Hugo](https://gohugo.i
 ![Ananke screenshot](images/screenshot.png)
 
 * Demo: [gohugo-ananke.github.io/documentation](https://gohugo-ananke.github.io/documentation/)
-* Documentation: [ananke-documentation.netlify.app](https://ananke-documentation.netlify.app/)
+* Documentation: [gohugo-ananke.github.io/documentation](https://gohugo-ananke.github.io/documentation/)
 * Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 > [!IMPORTANT]
@@ -43,8 +43,8 @@ Ananke is a flexible, production-ready starter theme for [Hugo](https://gohugo.i
 
 Ananke supports both installation methods:
 
-* [Install as Hugo Module (recommended)](https://ananke-documentation.netlify.app/installation/gohugo-module/)
-* [Install as Git Submodule](https://ananke-documentation.netlify.app/installation/git-submodule/)
+* [Install as Hugo Module (recommended)](https://gohugo-ananke.github.io/documentation/get-started/hugo-module/)
+* [Install as Git Submodule](https://gohugo-ananke.github.io/documentation/get-started/git-submodule/)
 
 If you are new to Hugo, see Hugo's official quick start: [gohugo.io/getting-started/quick-start](https://gohugo.io/getting-started/quick-start/).
 
@@ -52,10 +52,10 @@ If you are new to Hugo, see Hugo's official quick start: [gohugo.io/getting-star
 
 After installation, use these guides to configure your site:
 
-* [Getting Started](https://ananke-documentation.netlify.app/getting-started/)
-* [Configuration](https://ananke-documentation.netlify.app/configuration/)
-* [Customisation](https://ananke-documentation.netlify.app/customisation/)
-* [Troubleshooting](https://ananke-documentation.netlify.app/troubleshooting/)
+* [Getting Started](https://gohugo-ananke.github.io/documentation/get-started/)
+* [Configuration](https://gohugo-ananke.github.io/documentation/configuration/)
+* [Customisation](https://gohugo-ananke.github.io/documentation/customisation/)
+* [Troubleshooting](https://gohugo-ananke.github.io/documentation/help/troubleshooting/)
 
 ## Support and contributions
 

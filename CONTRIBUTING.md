@@ -29,7 +29,7 @@ Thanks for helping improve Ananke. This document describes the current contribut
 
 The project follows a structured release workflow based on conventional commits, staging branches, and automated versioning.
 
-For details, see [Branch Strategy](#branch-strategy). Publish a stable theme release from `main` before publishing the matching documentation. The documentation production build resolves the latest stable theme without changing its checked-in dependency files; preview builds can select an unreleased ref. Follow the [release and publication order](https://ananke-documentation.netlify.app/help/development/#release-and-publication-order), and confirm the resolved theme version in the documentation build log.
+For details, see [Branch Strategy](#branch-strategy). Publish a stable theme release from `main` before publishing the matching documentation. The documentation production build resolves the latest stable theme without changing its checked-in dependency files; preview builds can select an unreleased ref. Follow the [release and publication order](https://gohugo-ananke.github.io/documentation/help/development/#release-and-publication-order), and confirm the resolved theme version in the documentation build log.
 
 ## Before you start
 
@@ -144,14 +144,14 @@ The theme documentation lives in a separate repository at [gohugo-ananke/documen
 
 Every pull request with a user-facing change needs a matching pull request in the documentation repository, or a short reason in the pull request template why no change is needed. The check "Require a documentation decision" fails on pull requests into `development` until the documentation item is checked and the line "Documentation PR or reason:" has a value. Dependabot pull requests are exempt. The documentation organises pages by reader need: tutorials, how-to guides, explanation, and reference. Change only the document types that the change affects:
 
-* **New or changed option or shortcode:** update its row in the [configuration reference](https://ananke-documentation.netlify.app/configuration/reference/) or its shortcode reference page. Give the type, default, scope (site, page, or both), the first release, and an example that you tested. Add or update the `docs` path of the entry in `tests/catalog.yaml`; the coverage gate requires it.
+* **New or changed option or shortcode:** update its row in the [configuration reference](https://gohugo-ananke.github.io/documentation/configuration/reference/) or its shortcode reference page. Give the type, default, scope (site, page, or both), the first release, and an example that you tested. Add or update the `docs` path of the entry in `tests/catalog.yaml`; the coverage gate requires it.
 * **Changed task or workflow:** update the how-to guide that describes it.
-* **Breaking change or deprecation:** add the change to [Update Ananke](https://ananke-documentation.netlify.app/get-started/update-ananke/#changes-that-need-action) and link an upgrade guide.
+* **Breaking change or deprecation:** add the change to [Update Ananke](https://gohugo-ananke.github.io/documentation/get-started/update-ananke/#changes-that-need-action) and link an upgrade guide.
 * **New concept or trade-off:** add or update an explanation page only when readers need it to make a choice. A feature does not need one page of each type.
 
 Mark a new feature with the `since` shortcode and its first release. Until that release is published, keep the documentation pull request unmerged, or mark the content as a preview. Do not describe unreleased behaviour as available.
 
-Publish the documentation only after the stable theme release, in the [release and publication order](https://ananke-documentation.netlify.app/help/development/#release-and-publication-order).
+Publish the documentation only after the stable theme release, in the [release and publication order](https://gohugo-ananke.github.io/documentation/help/development/#release-and-publication-order).
 
 ## Attribution
 
