@@ -13,6 +13,7 @@ Thanks for helping improve Ananke. This document describes the current contribut
 * [Pull request workflow](#pull-request-workflow)
 * [Circumventing git hooks](#circumventing-git-hooks)
 * [Documentation contributions](#documentation-contributions)
+  * [Documentation obligations](#documentation-obligations)
 * [Attribution](#attribution)
 * [License](#license)
 
@@ -139,7 +140,18 @@ This should be used sparingly and only when you have a good reason to bypass che
 
 The theme documentation lives in a separate repository at [gohugo-ananke/documentation](https://github.com/gohugo-ananke/documentation).
 
-Please keep links relative where possible and remove stale references when updating pages.
+### Documentation obligations
+
+Every pull request with a user-facing change needs a matching pull request in the documentation repository, or a short reason in the pull request template why no change is needed. The documentation organises pages by reader need: tutorials, how-to guides, explanation, and reference. Change only the document types that the change affects:
+
+* **New or changed option or shortcode:** update its row in the [configuration reference](https://ananke-documentation.netlify.app/configuration/reference/) or its shortcode reference page. Give the type, default, scope (site, page, or both), the first release, and an example that you tested. Add or update the `docs` path of the entry in `tests/catalog.yaml`.
+* **Changed task or workflow:** update the how-to guide that describes it.
+* **Breaking change or deprecation:** add the change to [Update Ananke](https://ananke-documentation.netlify.app/get-started/update-ananke/#changes-that-need-action) and link an upgrade guide.
+* **New concept or trade-off:** add or update an explanation page only when readers need it to make a choice. A feature does not need one page of each type.
+
+Mark a new feature with the `since` shortcode and its first release. Until that release is published, keep the documentation pull request unmerged, or mark the content as a preview. Do not describe unreleased behaviour as available.
+
+Publish the documentation only after the stable theme release, in the [release and publication order](https://ananke-documentation.netlify.app/help/development/#release-and-publication-order).
 
 ## Attribution
 

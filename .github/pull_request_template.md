@@ -29,3 +29,6 @@ If testing of the new functionality is possible, please add tests.
 -->
 
 * [ ] Added or updated feature fixtures and tests, and registered parameters and shortcodes in `tests/catalog.yaml` (or explained why no tests are needed).
+* [ ] Documentation: linked the gohugo-ananke/documentation pull request, or explained why no documentation change is needed. See [Documentation obligations](https://github.com/gohugo-ananke/ananke/blob/development/CONTRIBUTING.md#documentation-obligations).
+
+Documentation PR or reason:
