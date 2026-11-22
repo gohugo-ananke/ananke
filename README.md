@@ -4,7 +4,7 @@ Ananke is a flexible, production-ready starter theme for [Hugo](https://gohugo.i
 
 ![Ananke screenshot](images/screenshot.png)
 
-* Demo: [ananke-theme.netlify.app](https://ananke-theme.netlify.app/)
+* Demo: [gohugo-ananke.github.io/documentation](https://gohugo-ananke.github.io/documentation/)
 * Documentation: [ananke-documentation.netlify.app](https://ananke-documentation.netlify.app/)
 * Changelog: [CHANGELOG.md](CHANGELOG.md)
 
