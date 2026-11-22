@@ -8,8 +8,8 @@
  *   - every shortcode in layouts/_shortcodes/
  * must appear in tests/catalog.yaml with a non-empty `tests` list.
  *
- * An optional `docs` value names the documentation page of the feature as a
- * site-relative path; it is checked for format only.
+ * Every entry also needs a `docs` value: the documentation page of the
+ * feature as a site-relative path. Only its format is checked.
  *
  * It also reports catalog entries that no longer match a real param/shortcode
  * (stale entries), so the catalog stays in sync as features are added, renamed,
@@ -85,9 +85,11 @@ const DOCS_PATH = /^\/(?:[a-z0-9-]+\/)*(?:#[a-z0-9-]+)?$/;
 const errors = [];
 for (const section of [catalog.params, catalog.shortcodes]) {
   for (const [feature, entry] of Object.entries(section || {})) {
-    // Optional documentation target: a site-relative path on the
+    // Required documentation target: a site-relative path on the
     // documentation site, for example "/configuration/reference/#homepage".
-    if (entry?.docs !== undefined && !DOCS_PATH.test(String(entry.docs))) {
+    if (entry?.docs === undefined) {
+      errors.push(`${feature}: missing docs path`);
+    } else if (!DOCS_PATH.test(String(entry.docs))) {
       errors.push(`${feature}: invalid docs path '${entry.docs}'`);
     }
     for (const ref of entry?.tests || []) {
@@ -136,7 +138,7 @@ if (errors.length > 0) {
   console.error("\nCoverage gate failed:");
   for (const e of errors) console.error(`  - ${e}`);
   console.error(
-    "\nAdd the feature and at least one test reference to tests/catalog.yaml.",
+    "\nAdd the feature, at least one test reference, and its docs path to tests/catalog.yaml.",
   );
   process.exit(1);
 }

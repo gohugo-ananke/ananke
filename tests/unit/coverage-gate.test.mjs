@@ -11,7 +11,7 @@ function runFixture({
   shortcode = false,
   reference = "tests/e2e/example.spec.ts",
   makeTest = true,
-  docs = "",
+  docs = "/configuration/reference/",
 } = {}) {
   const root = mkdtempSync(join(tmpdir(), "ananke-coverage-gate-"));
   const write = (file, content) => {
@@ -78,4 +78,10 @@ test("an invalid documentation path fails", () => {
   const result = runFixture({ docs: "https://example.com/page" });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /invalid docs path/);
+});
+
+test("a missing documentation path fails", () => {
+  const result = runFixture({ docs: null });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /missing docs path/);
 });

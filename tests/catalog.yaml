@@ -5,9 +5,9 @@
 # fails. This forces a test to accompany each new or changed feature.
 #
 # `tests` entries must name existing executable spec or quickstart files.
-# `docs` names the documentation page as a site-relative path on
-# https://ananke-documentation.netlify.app. The gate checks only its
-# format.
+# Every entry also needs `docs`: the documentation page as a site-relative
+# path on https://ananke-documentation.netlify.app. The gate checks only
+# its format.
 # This checks registration and paths, not whether assertions cover every behaviour.
 
 params:
