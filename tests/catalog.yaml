@@ -5,52 +5,76 @@
 # fails. This forces a test to accompany each new or changed feature.
 #
 # `tests` entries must name existing executable spec or quickstart files.
+# Every entry also needs `docs`: the documentation page as a site-relative
+# path on https://ananke-documentation.netlify.app. The gate checks only
+# its format.
 # This checks registration and paths, not whether assertions cover every behaviour.
 
 params:
   ananke.responsive_image_widths:
+    docs: "/configuration/reference/#general-options"
     tests: ["tests/e2e/responsive-header.spec.ts"]
   ananke.show_recent_posts:
+    docs: "/configuration/reference/#general-options"
     tests: ["scripts/test-hugo-quickstart.ts"]
   ananke.show_categories:
+    docs: "/configuration/reference/#general-options"
     tests: ["scripts/test-hugo-quickstart.ts"]
   ananke.copy_code:
+    docs: "/configuration/reference/#general-options"
     tests:
       - "tests/e2e/copy-button.spec.ts"
       - "tests/fixtures/copy-code/copy-code.test.mjs"
   ananke.navigation.submenu_mode:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation-modes.spec.ts"]
   ananke.navigation.classes.nav:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.inner:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.brand:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.toggle:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.group:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/header.spec.ts"]
   ananke.navigation.classes.panel:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.menu:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.item:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.link:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.submenu_toggle:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.submenu:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
   ananke.navigation.classes.submenu_link:
+    docs: "/configuration/reference/#header-and-navigation"
     tests: ["tests/e2e/navigation.spec.ts"]
 
 shortcodes:
   edit-page:
+    docs: "/content/shortcodes/edit-page/"
     tests: ["tests/e2e/shortcodes.spec.ts"]
   form-contact:
+    docs: "/content/shortcodes/contact-form/"
     tests: ["tests/e2e/shortcodes.spec.ts"]
   page-index:
+    docs: "/content/shortcodes/#page-index"
     tests: ["tests/e2e/shortcodes.spec.ts"]
   since:
+    docs: "/content/shortcodes/since/"
     tests: ["tests/e2e/shortcodes.spec.ts"]

@@ -11,6 +11,7 @@ function runFixture({
   shortcode = false,
   reference = "tests/e2e/example.spec.ts",
   makeTest = true,
+  docs = "/configuration/reference/",
 } = {}) {
   const root = mkdtempSync(join(tmpdir(), "ananke-coverage-gate-"));
   const write = (file, content) => {
@@ -24,7 +25,7 @@ function runFixture({
     );
     write(
       "tests/catalog.yaml",
-      `params:\n  ananke.existing:\n    tests: ["${reference}"]\n`,
+      `params:\n  ananke.existing:\n    tests: ["${reference}"]\n${docs ? `    docs: "${docs}"\n` : ""}`,
     );
     mkdirSync(join(root, "layouts/_shortcodes"), { recursive: true });
     if (shortcode) write("layouts/_shortcodes/new.html", "<p>new</p>");
@@ -64,4 +65,23 @@ test("multiline arrays and commented table headers cannot bypass the gate", () =
   });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /ananke.navigation.new.*has no test/);
+});
+
+test("a documentation path passes", () => {
+  assert.equal(
+    runFixture({ docs: "/configuration/reference/#homepage" }).status,
+    0,
+  );
+});
+
+test("an invalid documentation path fails", () => {
+  const result = runFixture({ docs: "https://example.com/page" });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /invalid docs path/);
+});
+
+test("a missing documentation path fails", () => {
+  const result = runFixture({ docs: null });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /missing docs path/);
 });
