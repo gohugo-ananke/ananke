@@ -42,7 +42,7 @@ export function buildFixtureSite(options = {}) {
         "production",
         "--printPathWarnings",
         "--logLevel",
-        "warn",
+        "info",
         ...(options.config ? ["--config", options.config] : []),
       ],
       { encoding: "utf8" },
@@ -70,9 +70,14 @@ export function buildFixtureSite(options = {}) {
 export function checkDiagnostics(output, expectedWarnings = []) {
   const warnings = stripVTControlCharacters(output)
     .split("\n")
-    .filter((line) => /^(?:WARN|DEPRECATED)\s/.test(line));
+    .filter((line) =>
+      /^(?:(?:WARN|DEPRECATED)\s|INFO\s+deprecated:)/.test(line),
+    );
   const matches = (line, expected) => {
-    const message = line.replace(/^(?:WARN|DEPRECATED)\s+/, "");
+    const message = line.replace(
+      /^(?:(?:WARN|DEPRECATED)\s+|INFO\s+deprecated:\s*)/,
+      "",
+    );
     return typeof expected === "string"
       ? message === expected
       : expected.test(message);

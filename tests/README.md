@@ -46,7 +46,7 @@ The gate parses TOML and checks direct values in `[ananke]`, `[ananke.navigation
 
 ## Static checks
 
-Unexpected Hugo warnings, deprecations, and path warnings fail the shared fixture build. Two exact warnings are required for the intentionally invalid navigation fixtures (`unknown` and `invalid`); a missing or repeated warning also fails. The deprecated-header mini-site also requires its one expected deprecation warning and tests suppression. Other feature mini-sites allow no warnings.
+Unexpected Hugo warnings, deprecations, and path warnings fail the shared fixture build. Builds run at info log level so that new `INFO deprecated:` messages also fail before Hugo promotes them to warnings. Ordinary info messages are allowed. Two exact warnings are required for the intentionally invalid navigation fixtures (`unknown` and `invalid`); a missing or repeated warning also fails. The deprecated-header mini-site also requires its one expected deprecation warning and tests suppression. Other feature mini-sites allow no warnings.
 
 HTML validation uses `html-validate:standard` for validity rather than formatting preferences. Hugo's built-in `page/1/` redirects omit an explicit body. The gate checks their redirect metadata, supplies the implied body with the DOM parser, and validates the resulting document. Other pages are validated as emitted.
 

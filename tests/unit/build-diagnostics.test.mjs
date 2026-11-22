@@ -15,6 +15,13 @@ test("unexpected deprecations fail", () => {
     /Unexpected Hugo/,
   );
 });
+test("info-level deprecations fail without rejecting normal info messages", () => {
+  checkDiagnostics("INFO  build completed\n");
+  assert.throws(
+    () => checkDiagnostics("INFO  deprecated: Use .Title instead.\n"),
+    /Unexpected Hugo/,
+  );
+});
 test("expected diagnostics are required exactly once", () => {
   checkDiagnostics("WARN  Intentional warning\n", ["Intentional warning"]);
   assert.throws(
